@@ -61,12 +61,10 @@ class Session
 
 	/**
 	 * Sets the session ID.
-	 *
-	 * @param string $id Default: null
 	 */
-	public function setId($id = null)
+	public function setId()
 	{
-		$this->_id = session_id($id);
+		$this->_id = session_id();
 	}
 
 	/**
@@ -87,7 +85,7 @@ class Session
 	 */
 	public function setTokens($tokenName, $value = '')
 	{
-		$value = $value ? $this->_toolbox->generateToken();
+		$value = $value ? $value : $this->_toolbox->generateToken();
 
 		$this->_tokens[$tokenName] = $value;
 

@@ -59,7 +59,7 @@ class Response
 	 * @param array       $headers
 	 * @param string|null $body
 	 */
-	private function _init(Config $config, Toolbox $toobox, $code, $headers, $body)
+	private function _init(Config $config, Toolbox $toolbox, $code, $headers, $body)
 	{
 		$this->_config  = $config;
 		$this->_toolbox = $toolbox;
