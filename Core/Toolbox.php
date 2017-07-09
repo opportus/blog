@@ -162,7 +162,53 @@ class Toolbox
 	}
 
 	/**
-	 * Validates Email.
+	 * Formats/Sanitizes datetime.
+	 *
+	 * @param  string $datetime
+	 * @param  string $format   Default: DATE_ISO8601
+	 * @return string
+	 */
+	public function formatDatetime($datetime, $format = DATE_ISO8601)
+	{
+		$datetime = new DateTime($datetime);
+		return $datetime->format($format);
+	}
+
+	/**
+	 * Validates string.
+	 *
+	 * @param  string $string
+	 * @return bool
+	 */
+	public function validateString($string)
+	{
+		return $this->sanitizeString($string) === $string;
+	}
+
+	/**
+	 * Validates key.
+	 *
+	 * @param  string $key
+	 * @return bool
+	 */
+	public function validateKey($key)
+	{
+		return $this->sanitizeKey($key) === $key;
+	}
+
+	/**
+	 * Validates integer.
+	 *
+	 * @param  int  $int
+	 * @return bool
+	 */
+	public function validateInt($int)
+	{
+		return $this->sanitizeInt($int) === $int;
+	}
+
+	/**
+	 * Validates email.
 	 *
 	 * @param  string $email
 	 * @return bool
@@ -184,16 +230,15 @@ class Toolbox
 	}
 
 	/**
-	 * Formats datetime.
+	 * Validates datetime.
 	 *
 	 * @param  string $datetime
-	 * @param  string $format   Default: DATE_ISO8601
-	 * @return string
+	 * @param  string $format
+	 * @return bool
 	 */
-	public function formatDatetime($datetime, $format = DATE_ISO8601)
+	public function validateDatetime($datetime, $format)
 	{
-		$datetime = new DateTime($datetime);
-		return $datetime->format($format);
+		return $this->formatDatetime($datetime, $format) === $datetime;
 	}
 }
 
