@@ -194,7 +194,7 @@ class Toolbox
 						break;
 				}
 
-				$intlDatetimeFormatter = new \IntlDateFormatter($this->_config->getApp('locale'), $dateType, $dateTime);
+				$intlDatetimeFormatter = new \IntlDateFormatter($this->_config->getApp('locale'), $dateType, $timeType);
 
 				return ucwords($intlDatetimeFormatter->format($datetimeFormatter));
 
