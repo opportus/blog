@@ -65,7 +65,7 @@
 						<?php endforeach; ?>
 					</ul>
 					<ul class="nav navbar-nav right-hand">
-						<?php foreach ($rightHandMenuItems as $item) : ?>
+						<?php foreach ($menuItemsRightHand as $item) : ?>
 							<li>
 								<a class="<?php echo $toolbox->escHtml($item['class']); ?>" href="<?php echo $toolbox->sanitizeUrl($item['link']); ?>" title="<?php echo $toolbox->escHtml($item['title']); ?>" style="<?php echo $toolbox->escHtml($item['style']); ?>"><?php echo $toolbox->escHtml($item['name']); ?></a>
 							</li>

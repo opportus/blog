@@ -259,7 +259,7 @@ class Gateway implements GatewayInterface
 		// Constructs the query....
 		$sql  = 'SELECT ' . implode(', ', array_map(array($this->_toolbox, 'sanitizeKey'), $params['columns']));
 		$sql .= ' FROM ' . $this->_toolbox->sanitizeKey($params['table']);
-		if ($params['where'][0]['data']) {
+		if ('' !== $params['where'][0]['data']) {
 			$sql .= ' WHERE ';
 			foreach ($params['where'] as $clauseNumber => $param) {
 				$sql .= $this->_toolbox->sanitizeCondition($param['condition']) . ' ' . $this->_toolbox->sanitizeKey($param['field']) . ' ' . $this->_toolbox->sanitizeOperator($param['operator']) . ' ?';
@@ -274,7 +274,7 @@ class Gateway implements GatewayInterface
 
 		// Prepares the query...
 		$this->_prepare($sql, $params['database']);
-		if ($params['where'][0]['data']) {
+		if ('' !== $params['where'][0]['data']) {
 			foreach ($params['where'] as $clauseNumber => $param) {
 				$this->_bindParam($this->_toolbox->sanitizeInt($clauseNumber + 1), $param['data'], $this->_toolbox->sanitizeInt($param['dataType']));
 			}

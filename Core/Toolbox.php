@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use \Datetime;
+
 /**
  * The toolbox...
  *
@@ -39,7 +41,29 @@ class Toolbox
 	}
 
 	/**
-	 * Sanitizes strings to include in sql queries.
+	 * Escapes HTML.
+	 *
+	 * @param  string $string
+	 * @return string
+	 */
+	public function escHtml($string)
+	{
+		return filter_var($string, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+	}
+
+	/**
+	 * Sanitizes strings.
+	 *
+	 * @param  string $string
+	 * @return string
+	 */
+	public function sanitizeString($string)
+	{
+		return filter_var($string, FILTER_SANITIZE_STRING);
+	}
+
+	/**
+	 * Sanitizes SQL query strings.
 	 *
 	 * @param  string $key
 	 * @return string $key
@@ -53,7 +77,7 @@ class Toolbox
 	}
 
 	/**
-	 * Sanitizes SQL comparison operators to include in SQL queries.
+	 * Sanitizes SQL query comparison operators.
 	 *
 	 * @param  string $operator
 	 * @return string $operator
@@ -85,7 +109,7 @@ class Toolbox
 	}
 
 	/**
-	 * Sanitizes SQL condition to include in SQL queries.
+	 * Sanitizes SQL query conditions.
 	 *
 	 * @param  string $condition
 	 * @return string $condition
@@ -116,30 +140,6 @@ class Toolbox
 	}
 
 	/**
-	 * Sanitizes url.
-	 *
-	 * @param  string $url
-	 * @return string
-	 */
-	public function sanitizeUrl($url)
-	{
-		return filter_var($url, FILTER_SANITIZE_URL);
-	}
-
-	/**
-	 * Sanitizes datetime.
-	 *
-	 * @param  string $datetime
-	 * @return string $datetime
-	 */
-	public function sanitizeDatetime($datetime)
-	{
-		$datetime = new \DateTime($datetime);
-		$datetime = $datetime->format('Y-M-D H:I:S') ? $datetime->format('Y-M-D H:I:S') : '0000-00-00 00:00:00';
-		return $datetime;
-	}
-
-	/**
 	 * Sanitizes email.
 	 *
 	 * @param  string $email
@@ -151,14 +151,136 @@ class Toolbox
 	}
 
 	/**
-	 * Escapes HTML.
+	 * Sanitizes url.
 	 *
-	 * @param  string $string
+	 * @param  string $url
 	 * @return string
 	 */
-	public function escHtml($string)
+	public function sanitizeUrl($url)
 	{
-		return filter_var( $string, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_NO_ENCODE_QUOTES );
+		return filter_var($url, FILTER_SANITIZE_URL);
+	}
+
+	/**
+	 * Formats/Sanitizes datetime.
+	 *
+	 * @param  string $datetime
+	 * @param  string $format   Default: ''
+	 * @param  string $type     Default: 'datetime' Possible values: 'datetime', 'date', 'time'
+	 * @return string
+	 */
+	public function formatDatetime($datetime, $format = '', $type = 'datetime')
+	{
+		$datetimeFormatter = new DateTime($datetime);
+
+		if ('' === $format) {
+			if (extension_loaded('intl')) {
+				switch ($type) {
+					case 'datetime':
+						$dateType = \IntlDateFormatter::FULL;
+						$timeType = \IntlDateFormatter::MEDIUM;
+						break;
+					case 'date':
+						$dateType = \IntlDateFormatter::FULL;
+						$timeType = \IntlDateFormatter::NONE;
+						break;
+					case 'time':
+						$dateType = \IntlDateFormatter::NONE;
+						$timeType = \IntlDateFormatter::MEDIUM;
+						break;
+					default :
+						$dateType = \IntlDateFormatter::FULL;
+						$timeType = \IntlDateFormatter::MEDIUM;
+						break;
+				}
+
+				$intlDatetimeFormatter = new \IntlDateFormatter($this->_config->getApp('locale'), $dateType, $timeType);
+
+				return ucwords($intlDatetimeFormatter->format($datetimeFormatter));
+
+			} else {
+				switch ($type) {
+					case 'datetime':
+						$format = $this->_config->getApp('defaultDateFormat') . ' ' . $this->_config->getApp('defaultTimeFormat');
+						break;
+					case 'date':
+						$format = $this->_config->getApp('defaultDateFormat');
+						break;
+					case 'time':
+						$format = $this->_config->getApp('defaultTimeFormat');
+						break;
+				}
+			}
+		}
+
+		return $datetimeFormatter->format($format);
+	}
+
+	/**
+	 * Validates string.
+	 *
+	 * @param  string $string
+	 * @return bool
+	 */
+	public function validateString($string)
+	{
+		return $this->sanitizeString($string) === $string;
+	}
+
+	/**
+	 * Validates key.
+	 *
+	 * @param  string $key
+	 * @return bool
+	 */
+	public function validateKey($key)
+	{
+		return $this->sanitizeKey($key) === $key;
+	}
+
+	/**
+	 * Validates integer.
+	 *
+	 * @param  int  $int
+	 * @return bool
+	 */
+	public function validateInt($int)
+	{
+		return $this->sanitizeInt($int) === $int;
+	}
+
+	/**
+	 * Validates email.
+	 *
+	 * @param  string $email
+	 * @return bool
+	 */
+	public function validateEmail($email)
+	{
+		return filter_var($email, FILTER_VALIDATE_EMAIL);
+	}
+
+	/**
+	 * Validates URL.
+	 *
+	 * @param  string $url
+	 * @return bool
+	 */
+	public function validateUrl($url)
+	{
+		return filter_var($url, FILTER_VALIDATE_URL);
+	}
+
+	/**
+	 * Validates datetime.
+	 *
+	 * @param  string $datetime
+	 * @param  string $format
+	 * @return bool
+	 */
+	public function validateDatetime($datetime, $format)
+	{
+		return $this->formatDatetime($datetime, $format) === $datetime;
 	}
 }
 
