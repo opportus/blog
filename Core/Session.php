@@ -22,16 +22,6 @@ class Session
 	private $_toolbox;
 
 	/**
-	 * @var string $_id
-	 */
-	private $_id;
-
-	/**
-	 * @var array $_tokens
-	 */
-	private $_tokens = array();
-
-	/**
 	 * Constructor.
 	 *
 	 * @param object $config
@@ -54,60 +44,33 @@ class Session
 		$this->_toolbox = $toolbox;
 
 		$this->start();
-
-		$this->_id     = $this->setId();
-		$this->_tokens = $this->setTokens('token');
 	}
 
 	/**
-	 * Sets the session ID.
-	 */
-	public function setId()
-	{
-		$this->_id = session_id();
-	}
-
-	/**
-	 * Gets the session ID.
+	 * Sets a token.
 	 *
-	 * @return string $this->_id
+	 * @param  string $name
+	 * @param  string $salt      Default: ''
+	 * @param  string $key       Default: ''
+	 * @param  string $algo      Default: ''
+	 * @return string
 	 */
-	public function getId()
+	public function setToken($name, $salt = '', $key = '', $algo = 'sha256')
 	{
-		return $this->_id;
+		return $_SESSION[$name] = $this->_toolbox->generateToken($salt, $key, $algo);
 	}
 
 	/**
-	 * Sets tokens.
+	 * Gets a token.
 	 *
-	 * @param string $tokenName
-	 * @param string $value     Default: ''
+	 * @param  string $name
+	 * @return string
 	 */
-	public function setTokens($tokenName, $value = '')
+	public function get($name)
 	{
-		$value = $value ? $value : $this->_toolbox->generateToken();
-
-		$this->_tokens[$tokenName] = $value;
-
-		$_SESSION[$tokenName] = $value;
+		return isset($_SESSION[$name]) ? $_SESSION[$name]: '';
 	}
 
-	/**
-	 * Gets tokens.
-	 *
-	 * @param  string       $tokenName
-	 * @return string|array
-	 */
-	public function getTokens($tokenName = '')
-	{
-		if (isset($this->_tokens[$tokenName])) {
-			return $this->_tokens[$tokenName];
-		} elseif ('' === $tokenName) {
-			return $this->_tokens;
-		} else {
-			return '';
-		}
-	}
 	/**
 	 * Starts the session.
 	 *
