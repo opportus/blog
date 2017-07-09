@@ -165,13 +165,55 @@ class Toolbox
 	 * Formats/Sanitizes datetime.
 	 *
 	 * @param  string $datetime
-	 * @param  string $format   Default: DATE_ISO8601
+	 * @param  string $format   Default: ''
+	 * @param  string $type     Default: 'datetime' Possible values: 'datetime', 'date', 'time'
 	 * @return string
 	 */
-	public function formatDatetime($datetime, $format = DATE_ISO8601)
+	public function formatDatetime($datetime, $format = '', $type = 'datetime')
 	{
-		$datetime = new DateTime($datetime);
-		return $datetime->format($format);
+		$datetimeFormatter = new DateTime($datetime);
+
+		if ('' === $format) {
+			if (extension_loaded('intl')) {
+				switch ($type) {
+					case 'datetime':
+						$dateType = \IntlDateFormatter::FULL;
+						$timeType = \IntlDateFormatter::MEDIUM;
+						break;
+					case 'date':
+						$dateType = \IntlDateFormatter::FULL;
+						$timeType = \IntlDateFormatter::NONE;
+						break;
+					case 'time':
+						$dateType = \IntlDateFormatter::NONE;
+						$timeType = \IntlDateFormatter::MEDIUM;
+						break;
+					default :
+						$dateType = \IntlDateFormatter::FULL;
+						$timeType = \IntlDateFormatter::MEDIUM;
+						break;
+				}
+
+				$intlDatetimeFormatter = new \IntlDateFormatter($this->_config->getApp('locale'), $dateType, $timeType);
+
+				return ucwords($intlDatetimeFormatter->format($datetimeFormatter));
+
+			} else {
+				switch ($type) {
+					case 'datetime':
+						$format = $this->_config->getApp('defaultDateFormat') . ' ' . $this->_config->getApp('defaultTimeFormat');
+						break;
+					case 'date':
+						$format = $this->_config->getApp('defaultDateFormat');
+						break;
+					case 'time':
+						$format = $this->_config->getApp('defaultTimeFormat');
+						break;
+				}
+			}
+		}
+
+		return $datetimeFormatter->format($format);
 	}
 
 	/**
