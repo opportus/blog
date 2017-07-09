@@ -52,7 +52,18 @@ class Toolbox
 	}
 
 	/**
-	 * Sanitizes strings to include in sql queries.
+	 * Sanitizes strings.
+	 *
+	 * @param  string $string
+	 * @return string
+	 */
+	public function sanitizeString($string)
+	{
+		return filter_var($string, FILTER_SANITIZE_STRING);
+	}
+
+	/**
+	 * Sanitizes SQL query strings.
 	 *
 	 * @param  string $key
 	 * @return string $key
@@ -66,7 +77,7 @@ class Toolbox
 	}
 
 	/**
-	 * Sanitizes SQL comparison operators to include in SQL queries.
+	 * Sanitizes SQL query comparison operators.
 	 *
 	 * @param  string $operator
 	 * @return string $operator
@@ -98,7 +109,7 @@ class Toolbox
 	}
 
 	/**
-	 * Sanitizes SQL condition to include in SQL queries.
+	 * Sanitizes SQL query conditions.
 	 *
 	 * @param  string $condition
 	 * @return string $condition
