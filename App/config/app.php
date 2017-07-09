@@ -16,6 +16,9 @@ return array(
 	// The locale...
 	'locale' => 'en-EN',
 
+	// The not so secret token key... Change it !
+	'secret' => '&%3kVgismIT2ev+Gj=]-M4P4=H$/?lb:|ms u`rF,1c&I;k=U?w(57mw~`=pWM$>',
+
 	// The default date format...
 	'defaultDateFormat' => 'Y-m-d',
 

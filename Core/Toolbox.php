@@ -282,5 +282,33 @@ class Toolbox
 	{
 		return $this->formatDatetime($datetime, $format) === $datetime;
 	}
+
+	/**
+	 * Generates token.
+	 *
+	 * @param  string $salt Default: ''
+	 * @param  string $key  Default: ''
+	 * @param  string $algo Default: 'sha256'
+	 * @return string
+	 */
+	public function generateToken($salt = '', $key = '', $algo = 'sha256')
+	{
+		$salt = $salt ? $salt : bin2hex(random_bytes(32));
+		$key  = $key  ? $key  : $this->_config->getApp('secret');
+
+		return hash_hmac($algo, $salt, $key);
+	}
+
+	/**
+	 * Checks token.
+	 *
+	 * @param  string knownToken
+	 * @param  string userToken
+	 * @return bool
+	 */
+	public function checkToken($knownToken, $userToken)
+	{
+		return hash_equals($knownToken, $userToken);
+	}
 }
 

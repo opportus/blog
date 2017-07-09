@@ -17,6 +17,11 @@ class Router
 	private $_config;
 
 	/**
+	 * @var object $_toolbox
+	 */
+	private $_toolbox;
+
+	/**
 	 * @var object $_request
 	 */
 	private $_request;
@@ -30,22 +35,25 @@ class Router
 	 * Constructor.
 	 *
 	 * @param object $config
+	 * @param pbject $toolbox
 	 * @param object $request
 	 */
-	public function __construct(Config $config, Request $request)
+	public function __construct(Config $config, Toolbox $toolbox, Request $request)
 	{
-		$this->_init($config, $request);
+		$this->_init($config, $toolbox, $request);
 	}
 
 	/**
 	 * Initializes the router.
 	 *
 	 * @param object $config
+	 * @param pbject $toolbox
 	 * @param object $request
 	 */
-	private function _init(Config $config, Request $request)
+	private function _init(Config $config, Toolbox $toolbox, Request $request)
 	{
 		$this->_config  = $config;
+		$this->_toolbox = $toolbox;
 		$this->_request = $request;
 
 		$this->_setRoute();
