@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use \Datetime;
+
 /**
  * The toolbox...
  *
@@ -127,19 +129,6 @@ class Toolbox
 	}
 
 	/**
-	 * Sanitizes datetime.
-	 *
-	 * @param  string $datetime
-	 * @return string $datetime
-	 */
-	public function sanitizeDatetime($datetime)
-	{
-		$datetime = new \DateTime($datetime);
-		$datetime = $datetime->format('Y-M-D H:I:S') ? $datetime->format('Y-M-D H:I:S') : '0000-00-00 00:00:00';
-		return $datetime;
-	}
-
-	/**
 	 * Sanitizes email.
 	 *
 	 * @param  string $email
@@ -159,6 +148,19 @@ class Toolbox
 	public function escHtml($string)
 	{
 		return filter_var( $string, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_NO_ENCODE_QUOTES );
+	}
+
+	/**
+	 * Formats datetime.
+	 *
+	 * @param  string $datetime
+	 * @param  string $format   Default: DATE_ISO8601
+	 * @return string
+	 */
+	public function formatDatetime($datetime, $format = DATE_ISO8601)
+	{
+		$datetime = new DateTime($datetime);
+		return $datetime->format($format);
 	}
 }
 
