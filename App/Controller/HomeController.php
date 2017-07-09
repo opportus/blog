@@ -23,7 +23,7 @@ final class HomeController extends AppController implements ControllerInterface
 			'description'        => '',
 			'author'             => '',
 			'menuItems'          => $this->config->getApp('frontMenuItems'),
-			'rightHandMenuItems' => $this->config->getApp('frontMenuItemsRightHand'),
+			'menuItemsRightHand' => $this->config->getApp('frontMenuItemsRightHand'),
 		));
 
 		$this->response->setBody($body);

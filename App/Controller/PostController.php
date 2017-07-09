@@ -26,7 +26,7 @@ final class PostController extends AppController implements ControllerInterface
 				'title'              => $post->getTitle(),
 				'description'        => $post->getExcerpt(),
 				'author'             => $user->getFirstName() . ' ' . $user->getSecondName(),
-				'datetime'           => $post->getModificationDatetime() !== null ? $toolbox->formatDatetime($post->getModificationDatetime(), $config->getApp('datetimeFormat')) : $toolbox->formatDatetime($post->getCreationDatetime(), $config->getApp('datetimeFormat')),
+				'datetime'           => $post->getModificationDatetime() !== null ? $this->toolbox->formatDatetime($post->getModificationDatetime()) : $this->toolbox->formatDatetime($post->getCreationDatetime()),
 				'excerpt'            => $post->getExcerpt(),
 				'content'            => $post->getContent(),
 				'id'                 => $post->getId(),
@@ -34,7 +34,7 @@ final class PostController extends AppController implements ControllerInterface
 				'imageAlt'           => '',
 				'imageTitle'         => '',
 				'menuItems'          => $this->config->getApp('frontMenuItems'),
-				'menuItemsRightHand' => $this->config->getApp('RightHandFrontMenuItems'),
+				'menuItemsRightHand' => $this->config->getApp('frontMenuItemsRightHand'),
 			));
 
 			$this->response->setBody($body);
