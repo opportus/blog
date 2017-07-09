@@ -27,8 +27,12 @@
  */
 
 return array(
-	//'App\Controller\HomeController' => function () {
-	//	return new App\Controller\HomeController($this->get('Config'), $this->get('Toolbox'), $this->get('Request'), $this->get('Response'), $this);
-	//},
+
+	'App\Controller\HomeController' => function () {
+		return new App\Controller\HomeController($this->get('Config'), $this->get('Toolbox'), $this->get('Request'), $this->get('Response'), $this);
+	},
+	'App\Controller\_404Controller' => function () {
+		return new App\Controller\_404Controller($this->get('Config'), $this->get('Toolbox'), $this->get('Request'), $this->get('Response'), $this);
+	},
 );
 
