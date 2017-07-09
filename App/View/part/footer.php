@@ -12,7 +12,7 @@
 		<footer>
 			<div class="row">
 				<div class="col-lg-12">
-					<p>&copy; <?php echo date('Y') . ' ' . $toolbox->escHtml($config->getApp('name')); ?></p>
+					<p>&copy; <?php echo date('Y') . ' ' . $toolbox->sanitizeString($config->getApp('name')); ?></p>
 				</div>
 			</div>
 			<!-- /.row -->

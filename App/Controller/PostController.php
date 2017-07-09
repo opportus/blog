@@ -30,9 +30,9 @@ final class PostController extends AppController implements ControllerInterface
 				'excerpt'            => $post->getExcerpt(),
 				'content'            => $post->getContent(),
 				'id'                 => $post->getId(),
-				'imageUrl'           => '',
-				'imageAlt'           => '',
-				'imageTitle'         => '',
+				'imageUrl'           => $post->getImage() !== null ? $this->container->get('App\Model\ImageRepository')->get($post->getImage())->getUrl() : '',
+				'imageAlt'           => $post->getImage() !== null ? $this->container->get('App\Model\ImageRepository')->get($post->getImage())->getAlt() : '',
+				'imageTitle'         => $post->getImage() !== null ? $this->container->get('App\Model\ImageRepository')->get($post->getImage())->getTitle() : '',
 				'menuItems'          => $this->config->getApp('frontMenuItems'),
 				'menuItemsRightHand' => $this->config->getApp('frontMenuItemsRightHand'),
 			));
