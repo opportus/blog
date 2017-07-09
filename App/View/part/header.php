@@ -12,9 +12,9 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="<?php echo $toolbox->escHtml($description); ?>">
-	<meta name="author" content="<?php echo $toolbox->escHtml($author) ?>">
-	<title><?php echo $toolbox->escHtml($title); ?></title>
+	<meta name="description" content="<?php echo $toolbox->sanitizeString($description); ?>">
+	<meta name="author" content="<?php echo $toolbox->sanitizeString($author) ?>">
+	<title><?php echo $toolbox->sanitizeString($title); ?></title>
 	<!-- FontAwesome CSS -->
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<!-- Bootstrap Core CSS -->
@@ -49,9 +49,9 @@
 					</button>
 					<a class="navbar-brand" href="<?php echo $toolbox->sanitizeUrl($config->getApp('url')); ?>">
 						<?php if (isset($logo)) : ?>
-							<img class="navbar-brand" src="<?php echo $toolbox->sanitizeUrl($logo['url']); ?>" title="<?php echo $toolbox->escHtml($logo['title']); ?>" alt="<?php echo $toolbox->escHtml($logo['alt']); ?>" style="<?php echo $toolbox->escHtml($logo['style']); ?>">
+							<img class="navbar-brand" src="<?php echo $toolbox->sanitizeUrl($logo['url']); ?>" title="<?php echo $toolbox->sanitizeString($logo['title']); ?>" alt="<?php echo $toolbox->sanitizeString($logo['alt']); ?>" style="<?php echo $toolbox->sanitizeString($logo['style']); ?>">
 						<?php else : ?>
-							<?php echo $toolbox->escHtml($config->getApp('name')); ?>
+							<?php echo $toolbox->sanitizeString($config->getApp('name')); ?>
 						<?php endif;?>
 					</a>
 				</div>
@@ -60,14 +60,14 @@
 					<ul class="nav navbar-nav">
 						<?php foreach ($menuItems as $item) : ?>
 							<li>
-								<a class="<?php echo $toolbox->escHtml($item['class']); ?>" href="<?php echo $toolbox->sanitizeUrl($item['link']); ?>" title="<?php echo $toolbox->escHtml($item['title']); ?>" style="<?php echo $toolbox->escHtml($item['style']); ?>"><?php echo $toolbox->escHtml($item['name']); ?></a>
+								<a class="<?php echo $toolbox->sanitizeString($item['class']); ?>" href="<?php echo $toolbox->sanitizeUrl($item['link']); ?>" title="<?php echo $toolbox->sanitizeString($item['title']); ?>" style="<?php echo $toolbox->sanitizeString($item['style']); ?>"><?php echo $toolbox->sanitizeString($item['name']); ?></a>
 							</li>
 						<?php endforeach; ?>
 					</ul>
 					<ul class="nav navbar-nav right-hand">
 						<?php foreach ($menuItemsRightHand as $item) : ?>
 							<li>
-								<a class="<?php echo $toolbox->escHtml($item['class']); ?>" href="<?php echo $toolbox->sanitizeUrl($item['link']); ?>" title="<?php echo $toolbox->escHtml($item['title']); ?>" style="<?php echo $toolbox->escHtml($item['style']); ?>"><?php echo $toolbox->escHtml($item['name']); ?></a>
+								<a class="<?php echo $toolbox->sanitizeString($item['class']); ?>" href="<?php echo $toolbox->sanitizeUrl($item['link']); ?>" title="<?php echo $toolbox->sanitizeString($item['title']); ?>" style="<?php echo $toolbox->sanitizeString($item['style']); ?>"><?php echo $toolbox->sanitizeString($item['name']); ?></a>
 							</li>
 						<?php endforeach; ?>
 					</ul>

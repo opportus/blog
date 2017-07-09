@@ -11,7 +11,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<header class="jumbotron">
-			<h1><?php echo $toolbox->escHtml($title); ?></h1>
+			<h1><?php echo $toolbox->sanitizeString($title); ?></h1>
 		</header>
 	</div>
 </div>

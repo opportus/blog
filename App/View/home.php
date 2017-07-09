@@ -12,8 +12,8 @@
 <div>
 	<!-- Title -->
 	<header class="jumbotron">
-		<h1><?php echo $toolbox->escHtml($title); ?></h1>
-		<p><?php echo $toolbox->escHtml($description); ?></h1>
+		<h1><?php echo $toolbox->sanitizeString($title); ?></h1>
+		<p><?php echo $toolbox->sanitizeString($description); ?></h1>
 	</header>
 	<hr>
 	<!-- Contact Form -->
