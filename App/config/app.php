@@ -18,5 +18,59 @@ return array(
 
 	// The name of your app...
 	'name' => '',
+
+	// The front menu items...
+	'frontMenuItems' => array(
+		array(
+			'name'  => 'BLOG',
+			'link'  => '',
+			'title' => '',
+			'class' => '',
+			'style' => '',
+		),
+		array(
+			'name'  => 'CONTACT',
+			'link'  => '',
+			'title' => '',
+			'class' => '',
+			'style' => '',
+		),
+		array(
+			'name'  => 'CV',
+			'link'  => '',
+			'title' => '',
+			'class' => '',
+			'style' => '',
+		),
+	),
+
+	// The right hand front menu items...
+	'frontMenuItemsRightHand' => array(
+		array(
+			'name'  => 'GITHUB',
+			'link'  => '',
+			'title' => '',
+			'class' => '',
+			'style' => '',
+		),
+	),
+
+	// The back menu items...
+	'backMenuItems' => array(
+		array(
+			'name'  => 'POSTS',
+			'link'  => '',
+			'title' => '',
+			'class' => '',
+			'style' => '',
+		),
+		array(
+			'name'  => 'USERS',
+			'link'  => '',
+			'title' => '',
+			'class' => '',
+			'style' => '',
+		),
+	),
 );
 
