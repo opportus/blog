@@ -13,5 +13,9 @@ return array(
 	//	'controller' => 'App\Controller\HomeController',
 	//	'action'     => 'view',
 	//),
+	'#^/(.+)#i' => array(
+		'controller' => 'App\Controller\_404Controller',
+		'action'     => 'view',
+	),
 );
 
