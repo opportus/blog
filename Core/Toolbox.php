@@ -41,6 +41,17 @@ class Toolbox
 	}
 
 	/**
+	 * Escapes HTML.
+	 *
+	 * @param  string $string
+	 * @return string
+	 */
+	public function escHtml($string)
+	{
+		return filter_var($string, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+	}
+
+	/**
 	 * Sanitizes strings to include in sql queries.
 	 *
 	 * @param  string $key
@@ -118,17 +129,6 @@ class Toolbox
 	}
 
 	/**
-	 * Sanitizes url.
-	 *
-	 * @param  string $url
-	 * @return string
-	 */
-	public function sanitizeUrl($url)
-	{
-		return filter_var($url, FILTER_SANITIZE_URL);
-	}
-
-	/**
 	 * Sanitizes email.
 	 *
 	 * @param  string $email
@@ -140,14 +140,36 @@ class Toolbox
 	}
 
 	/**
-	 * Escapes HTML.
+	 * Sanitizes url.
 	 *
-	 * @param  string $string
+	 * @param  string $url
 	 * @return string
 	 */
-	public function escHtml($string)
+	public function sanitizeUrl($url)
 	{
-		return filter_var( $string, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_NO_ENCODE_QUOTES );
+		return filter_var($url, FILTER_SANITIZE_URL);
+	}
+
+	/**
+	 * Validates Email.
+	 *
+	 * @param  string $email
+	 * @return bool
+	 */
+	public function validateEmail($email)
+	{
+		return filter_var($email, FILTER_VALIDATE_EMAIL);
+	}
+
+	/**
+	 * Validates URL.
+	 *
+	 * @param  string $url
+	 * @return bool
+	 */
+	public function validateUrl($url)
+	{
+		return filter_var($url, FILTER_VALIDATE_URL);
 	}
 
 	/**
