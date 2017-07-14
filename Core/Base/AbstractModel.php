@@ -77,9 +77,9 @@ abstract class AbstractModel implements ModelInterface
 		foreach ($modelMethods as $method) {
 			if (strpos($method, 'get') === 0) {
 				$field = str_replace('get_', '', strtolower(preg_replace('/\B[A-Z]/', '_$0', $method)));
-				$value = $method();
-
-				$data[$field] = $value;
+				if ($value = $this->$method()) {
+					$data[$field] = $value;
+				}
 			}
 		}
 

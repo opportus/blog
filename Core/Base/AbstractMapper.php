@@ -44,7 +44,7 @@ abstract class AbstractMapper implements MapperInterface
 	/**
 	 * Initializes the mapper.
 	 *
-	 * @param object $gateway
+	 * @param object  $gateway
 	 * @param string  $table
 	 * @param $object $mappers Default: array()
 	 */
@@ -56,56 +56,70 @@ abstract class AbstractMapper implements MapperInterface
 	}
 
 	/**
-	 * Gets.
+	 * Creates.
 	 *
-	 * @param  array|int $params Default: array()
+	 * @param  array $params
 	 * @return array
 	 */
-	public function get($params = array())
+	public function create(array $params)
 	{
-		if (! is_array($params) && ! is_int($params)) {
-			throw new InvalidArgumentException(__CLASS__ . '::' . __FUNCTION__ . '() accepts only array or integer as argument');
-		}
-
-		if (is_int($params)) {
-			$id     = $params;
-			$params = array();
-
-			$params['where'] = array(
-				0 => array(
-					'field'     => 'id',
-					'operator'  => '=',
-					'data'      => $id,
-					'dataType'  => 1,
-				)
-			);
-		}
-
 		$params['table'] = $this->table;
 
-		$this->gateway->read($params);
+		if ($this->gateway->create($params)) {
+			$params = array(
+				'where' => array(
+					0 => array(
+						'column'   => 'id',
+						'operator' => '=',
+						'value'    => $this->gateway->getLastInsertId('id'),
+					),
+				),
+			);
 
-		return $this->gateway->getAll();
+			return $this->read($params);
+
+		} else {
+			return array();
+		}
 	}
 
 	/**
-	 * Inserts/Updates the data into the table.
+	 * Reads.
 	 *
-	 * @param array $data
-	 * @todo  implement
+	 * @param  array $params
+	 * @return array
 	 */
-	public function add(array $data)
-	{	
-	}
-
-	/**
-	 * Deletes a row.
-	 *
-	 * @param int $id
-	 * @todo  implement
-	 */
-	public function delete($id)
+	public function read(array $params)
 	{
+		$params['table'] = $this->table;
+
+		return $this->gateway->read($params);
+	}
+
+	/**
+	 * Updates.
+	 *
+	 * @param  array $params
+	 * @return bool
+	 */
+	public function update(array $params)
+	{
+		$params['table'] = $this->table;
+
+		return $this->gateway->update($params);
+	}
+
+	/**
+	 * Deletes.
+	 *
+	 * @param  array $params
+	 * @return bool
+	 */
+	public function delete(array $params)
+	{
+		$params['table'] = $this->table;
+
+		return $this->gateway->delete($params);
 	}
 }
 
