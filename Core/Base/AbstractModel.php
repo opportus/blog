@@ -49,6 +49,13 @@ abstract class AbstractModel implements ModelInterface
 	 */
 	public function hydrate(array $data)
 	{
+		if (empty($data)) {
+			return;
+
+		} elseif (! array_key_exists('id', $data)) {
+			$data = current($data);
+		}
+
 		$modelProperties = get_object_vars($this);
 
 		foreach($data as $field => $value) {
