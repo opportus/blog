@@ -122,13 +122,5 @@ class Session
 	{
 		session_abort();
 	}
-
-	/**
-	 * Unsets the session.
-	 */
-	public function unset()
-	{
-		session_unset();
-	}
 }
 
