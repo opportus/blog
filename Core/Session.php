@@ -70,6 +70,18 @@ class Session
 	}
 
 	/**
+	 * Unsets a session variable.
+	 *
+	 * @param string|int $name
+	 */
+	public function unset($name)
+	{
+		if (isset($_SESSION[$name]) {
+			unset($_SESSION[$name]);
+		}
+	}
+
+	/**
 	 * Sets a token as session variable.
 	 *
 	 * @param  string $name
