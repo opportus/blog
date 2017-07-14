@@ -78,7 +78,7 @@ class PostModel extends AbstractModel implements ModelInterface
 	 */
 	public function setId($id)
 	{
-		if ($this->toolbox->validateInt($id)) {
+		if (0 !== $id && $this->toolbox->validateInt($id)) {
 			$this->id = $this->toolbox->sanitizeInt($id);
 			return true;
 
@@ -95,7 +95,7 @@ class PostModel extends AbstractModel implements ModelInterface
 	 */
 	public function setSlug($slug)
 	{
-		if ($this->toolbox->validateKey($slug)) {
+		if ('' !== $slug && $this->toolbox->validateKey($slug)) {
 			$this->slug = $this->toolbox->sanitizeKey($slug);
 			return true;
 
@@ -112,7 +112,7 @@ class PostModel extends AbstractModel implements ModelInterface
 	 */
 	public function setStatus($status)
 	{
-		if ($this->toolbox->validateKey($status)) {
+		if ('' !== $status && $this->toolbox->validateKey($status)) {
 			$this->status = $this->toolbox->sanitizeKey($status);
 			return true;
 
@@ -129,7 +129,7 @@ class PostModel extends AbstractModel implements ModelInterface
 	 */
 	public function setAuthor($author)
 	{
-		if ($this->toolbox->validateInt($author)) {
+		if (0 != $author && is_numeric($author)) {
 			$this->author = $this->toolbox->sanitizeInt($author);
 			return true;
 
@@ -180,7 +180,7 @@ class PostModel extends AbstractModel implements ModelInterface
 	 */
 	public function setTitle($title)
 	{
-		if ($this->toolbox->validateString($title)) {
+		if ($title && $this->toolbox->validateString($title)) {
 			$this->title = $this->toolbox->sanitizeString($title);
 			return true;
 
@@ -214,6 +214,7 @@ class PostModel extends AbstractModel implements ModelInterface
 	public function setContent($content)
 	{
 		$this->content = $this->toolbox->escHtml($content);
+		return true;
 	}
 
 	/**
@@ -224,7 +225,7 @@ class PostModel extends AbstractModel implements ModelInterface
 	 */
 	public function setImage($image)
 	{
-		if ($this->toolbox->validateInt($image)) {
+		if (0 != $image && is_numeric($image)) {
 			$this->image = $this->toolbox->sanitizeInt($image);
 			return true;
 

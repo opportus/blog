@@ -58,5 +58,14 @@ return array(
 	'App\Model\PostRepository' => function () {
 		return new App\Model\PostRepository($this, $this->get('App\Model\PostMapper'));
 	},
+	'App\Model\ImageModel' => function () {
+		return new App\Model\ImageModel($this->get('Toolbox'));
+	},
+	'App\Model\UserModel' => function () {
+		return new App\Model\UserModel($this->get('Toolbox'));
+	},
+	'App\Model\PostModel' => function () {
+		return new App\Model\PostModel($this->get('Toolbox'));
+	},
 );
 
