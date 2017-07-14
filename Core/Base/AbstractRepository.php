@@ -132,7 +132,7 @@ abstract class AbstractRepository implements RepositoryInterface
 	 * Adds the model.
 	 *
 	 * @param  object $model
-	 * @return bool
+	 * @return mixed  $model->id
 	 */
 	public function add(AbstractModel $model)
 	{
@@ -151,18 +151,15 @@ abstract class AbstractRepository implements RepositoryInterface
 				),
 			);
 
-			return $this->mapper->update($params);
+			$this->mapper->update($params);
 
 		} elseif (! empty($data = $this->mapper->create($params))) {
 			$modelClass                    = str_replace('Repository', 'Model', get_class($this));
 			$model                         = new $modelClass($this->container->get('Toolbox'), $data);
 			$this->models[$model->getId()] = $model;
-
-			return true;
-
-		} else {
-			return false;
 		}
+
+		return $model->getId();
 	}
 
 	/**
