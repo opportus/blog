@@ -47,7 +47,30 @@ class Session
 	}
 
 	/**
-	 * Sets a token.
+	 * Sets a session variable.
+	 *
+	 * @param  string|int $name
+	 * @param  mixed      $value
+	 * @return mixed
+	 */
+	public function set($name, $value)
+	{
+		return $_SESSION[$name] = $value;
+	}
+
+	/**
+	 * Gets a session variable.
+	 *
+	 * @param  string|int $name
+	 * @return mixed
+	 */
+	public function get($name)
+	{
+		return isset($_SESSION[$name]) ? $_SESSION[$name]: '';
+	}
+
+	/**
+	 * Sets a token as session variable.
 	 *
 	 * @param  string $name
 	 * @param  string $salt      Default: ''
@@ -58,17 +81,6 @@ class Session
 	public function setToken($name, $salt = '', $key = '', $algo = 'sha256')
 	{
 		return $_SESSION[$name] = $this->_toolbox->generateToken($salt, $key, $algo);
-	}
-
-	/**
-	 * Gets a token.
-	 *
-	 * @param  string $name
-	 * @return string
-	 */
-	public function get($name)
-	{
-		return isset($_SESSION[$name]) ? $_SESSION[$name]: '';
 	}
 
 	/**
