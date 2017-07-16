@@ -101,7 +101,7 @@ final class PostController extends AppController implements ControllerInterface
 		if (! isset($_POST['token']) || ! $this->toolbox->checkToken($_POST['token'], $this->toolbox->generateToken('PostController/edit', $this->request->getSession()->get('postEditToken')))) {
 			$this->request->getSession()->destroy();
 
-			die('No way...');
+			throw new Exception('Invalid token for IP: ' . $_SERVER['REMOTE_ADDR']);
 		}
 
 		$repository = $this->container->get('App\Model\PostRepository');
@@ -165,7 +165,7 @@ final class PostController extends AppController implements ControllerInterface
 		if (! isset($_POST['token']) || ! $this->toolbox->checkToken($_POST['token'], $this->toolbox->generateToken('PostController/edit', $this->request->getSession()->get('postEditToken')))) {
 			$this->request->getSession()->destroy();
 
-			die('No way...');
+			throw new Exception('Invalid token for IP: ' . $_SERVER['REMOTE_ADDR']);
 		}
 
 		try {
