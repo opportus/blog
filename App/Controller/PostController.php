@@ -41,7 +41,7 @@ final class PostController extends AppController implements ControllerInterface
 			$this->response->setBody($body);
 			$this->response->send();
 
-			die();
+			return;
 		}
 
 		$this->action404();
@@ -89,8 +89,6 @@ final class PostController extends AppController implements ControllerInterface
 
 		$this->response->setBody($body);
 		$this->response->send();
-
-		die();
 	}
 
 	/**
@@ -153,7 +151,7 @@ final class PostController extends AppController implements ControllerInterface
 			$this->response->setHeaders('Location: ' . $this->config->getApp('url') . '/cockpit/post/edit/' . $id);
 			$this->response->send();
 
-			die();
+			exit;
 		}
 	}
 
@@ -191,7 +189,7 @@ final class PostController extends AppController implements ControllerInterface
 			$this->response->setHeaders('Location: ' . $this->config->getApp('url') . '/cockpit/post/edit/');
 			$this->response->send();
 
-			die();
+			exit;
 		}
 	}
 }

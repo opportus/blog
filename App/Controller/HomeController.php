@@ -28,8 +28,6 @@ final class HomeController extends AppController implements ControllerInterface
 
 		$this->response->setBody($body);
 		$this->response->send();
-
-		return;
 	}
 }
 

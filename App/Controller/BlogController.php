@@ -43,8 +43,6 @@ final class BlogController extends AppController implements ControllerInterface
 
 		$this->response->setBody($body);
 		$this->response->send();
-
-		return;
 	}
 }
 
