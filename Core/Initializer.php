@@ -33,6 +33,7 @@ class Initializer
 		$container->get('Config');
 		$container->get('Toolbox');
 		$container->get('Gateway');
+		$container->get('Session');
 		$container->get('Request');
 		$container->get('Response');
 		$container->get('Router');

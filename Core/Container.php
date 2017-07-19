@@ -46,14 +46,17 @@ class Container
 		$this->set('Gateway', function () {
 			return new Gateway($this->get('Config'), $this->get('Toolbox'));
 		});
+		$this->set('Session', function () {
+			return new Session($this->get('Config'), $this->get('Toolbox'));
+		});
 		$this->set('Request', function () {
-			return new Request();
+			return new Request($this->get('Config'), $this->get('Toolbox'), $this->get('Session'));
 		});
 		$this->set('Response', function () {
-			return new Response();
+			return new Response($this->get('Config'), $this->get('Toolbox'));
 		});
 		$this->set('Router', function () {
-			return new Router($this->get('Config'), $this->get('Request'));
+			return new Router($this->get('Config'), $this->get('Toolbox'), $this->get('Request'));
 		});
 		$this->set('Dispatcher', function () {
 			return new Dispatcher($this->get('Config'), $this->get('Toolbox'), $this->get('Request'), $this->get('Response'), $this->get('Router'), $this);

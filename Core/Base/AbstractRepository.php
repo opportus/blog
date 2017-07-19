@@ -61,9 +61,7 @@ abstract class AbstractRepository implements RepositoryInterface
 	 */
 	public function get($params = array())
 	{
-		if (! is_array($params) && ! is_int($params)) {
-			throw new InvalidArgumentException(__CLASS__ . '::' . __FUNCTION__ . '() accepts only array or integer as argument');
-		}
+		$models = array();
 
 		if (is_int($params)) {
 			$id = $params;
@@ -71,23 +69,27 @@ abstract class AbstractRepository implements RepositoryInterface
 			if (isset($this->models[$id])) {
 				return $this->model[$id];
 			}
-		}
 
-		$data   = array();
-		$models = array();
+			$params = array(
+				'where' => array(
+					0 => array(
+						'column'   => 'id',
+						'operator' => '=',
+						'value'    => $id,
+					),
+				),
+			);
 
-		// Filters the request...
-		if (is_array($params) && isset($params['where'])) {
-			foreach ($params['where'] as $clauseNumber => $param) {
+		} elseif (is_array($params) && isset($params['where'])) {
+			foreach ($params['where'] as $clauseNumber => $clause) {
 
 				// The repository handles only requests based on the model/row ID...
-				if (isset($param['field']) && 'id' !== $param['field']) {
+				if (isset($clause['column']) && 'id' !== $clause['column']) {
 					unset($params['where'][$clauseNumber]);
 					continue;
-				}
 
-				if (isset($param['data'])) {
-					$id = $param['data'];
+				} elseif (isset($clause['value'])) {
+					$id = $clause['value'];
 
 					// If the model is already in the repository...
 					if (isset($this->models[$id])) {
@@ -97,13 +99,21 @@ abstract class AbstractRepository implements RepositoryInterface
 					}
 				}
 			}
+
+			// Reorders where clauses...
+			$i = 0;
+			foreach ($params['where'] as $clauseNumber => $clause) {
+				if ($i = 0 && isset($clause['condition'])) {
+					unset($clause['condition']);
+				}
+
+				$params['where'][$i] = $clause;
+
+				$i++;
+			}
 		}
 
-		if ($test = $this->mapper->get($params)) {
-			$data = $test;
-		}
-
-		if (! empty($data)) {
+		if (! empty($data = $this->mapper->read($params))) {
 			$modelClass = str_replace('Repository', 'Model', get_class($this));
 
 			foreach ($data as $datum) {
@@ -121,27 +131,62 @@ abstract class AbstractRepository implements RepositoryInterface
 	/**
 	 * Adds the model.
 	 *
-	 * @param object $model
+	 * @param  object $model
+	 * @return mixed  $model->id
 	 */
-	public function add(Model $model)
+	public function add(AbstractModel $model)
 	{
-		$this->models[$model->getId()] = $model;
+		$params = array(
+			'data'  => $model->extractData(),
+		);
 
-		$this->mapper->add($model->extractData());
+		if (null !== $model->getId()) {
+			$this->models[$model->getId()] = $model;
+
+			$params['where'] = array(
+				0 => array(
+					'column'   => 'id',
+					'operator' => '=',
+					'value'    => $model->getId(),
+				),
+			);
+
+			$this->mapper->update($params);
+
+		} elseif (! empty($data = $this->mapper->create($params))) {
+			$modelClass                    = str_replace('Repository', 'Model', get_class($this));
+			$model                         = new $modelClass($this->container->get('Toolbox'), $data);
+			$this->models[$model->getId()] = $model;
+		}
+
+		return $model->getId();
 	}
 
 	/**
-	 * Deletes the model from persistance.
+	 * Deletes the model.
 	 *
-	 * @param int $id
+	 * @param  int  $id
+	 * @return bool
 	 */
 	public function delete($id)
 	{
+		$id = (int) $id;
+
 		if (isset($this->models[$id])) {
 			unset($this->models[$id]);
-
-			$this->mapper->delete($id);
 		}
+
+		$params = array(
+			'where' => array(
+				0 => array(
+					'column'   => 'id',
+					'operator' => '=',
+					'value'    => $id,
+				),
+			),
+		);
+
+		return $this->mapper->delete($params);
 	}
 }
 

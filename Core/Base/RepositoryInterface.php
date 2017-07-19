@@ -22,14 +22,16 @@ Interface RepositoryInterface
 	/**
 	 * Adds the model.
 	 *
-	 * @param object $model
+	 * @param  object $model
+	 * @return bool
 	 */
-	public function add(Model $model);
+	public function add(AbstractModel $model);
 
 	/**
 	 * Deletes the model.
 	 *
-	 * @param int $id
+	 * @param  int  $id
+	 * @return bool
 	 */
 	public function delete($id);
 }

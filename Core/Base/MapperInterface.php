@@ -12,25 +12,35 @@ namespace Core\Base;
 interface MapperInterface
 {
 	/**
-	 * Gets data.
+	 * Creates.
 	 *
-	 * @param  array|int $params Default: array()
+	 * @param  array $data
 	 * @return array
 	 */
-	public function get($params = array());
+	public function create(array $params);
 
 	/**
-	 * Insert/Updates data..
+	 * Reads.
 	 *
-	 * @param array $data
+	 * @param  array $params
+	 * @return array
 	 */
-	public function add(array $data);
+	public function read(array $params);
 
 	/**
-	 * Deletes data.
+	 * Updates.
 	 *
-	 * @param int $id
+	 * @param  array $params
+	 * @return bool
 	 */
-	public function delete($id);
+	public function update(array $params);
+
+	/**
+	 * Deletes.
+	 *
+	 * @param  array $params
+	 * @return bool
+	 */
+	public function delete(array $params);
 }
 

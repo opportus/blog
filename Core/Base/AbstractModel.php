@@ -49,6 +49,13 @@ abstract class AbstractModel implements ModelInterface
 	 */
 	public function hydrate(array $data)
 	{
+		if (empty($data)) {
+			return;
+
+		} elseif (! array_key_exists('id', $data)) {
+			$data = current($data);
+		}
+
 		$modelProperties = get_object_vars($this);
 
 		foreach($data as $field => $value) {
@@ -77,9 +84,9 @@ abstract class AbstractModel implements ModelInterface
 		foreach ($modelMethods as $method) {
 			if (strpos($method, 'get') === 0) {
 				$field = str_replace('get_', '', strtolower(preg_replace('/\B[A-Z]/', '_$0', $method)));
-				$value = $method();
-
-				$data[$field] = $value;
+				if ($value = $this->$method()) {
+					$data[$field] = $value;
+				}
 			}
 		}
 

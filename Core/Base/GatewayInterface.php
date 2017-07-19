@@ -28,39 +28,44 @@ interface GatewayInterface
 	public function disconnect($database = 'default');
 
 	/**
-	 * Gets the result.
+	 * Gets last insert ID.
 	 *
-	 * @return array
+	 * @param  string $name     Default: null
+	 * @param  string $database Default: 'default'
+	 * @return string
 	 */
-	public function get();
-
-	/**
-	 * Gets all results.
-	 *
-	 * @return array
-	 */
-	public function getAll();
+	public function getLastInsertId($name = null, $database = 'default');
 
 	/**
 	 * Creates.
+	 *
+	 * @param  array $params
+	 * @return bool
 	 */
-	public function create();
+	public function create(array $params);
 
 	/**
 	 * Reads.
 	 *
-	 * @param array $params
+	 * @param  array $params
+	 * @return array
 	 */
 	public function read(array $params);
 
 	/**
 	 * Updates.
+	 *
+	 * @param  array $params
+	 * @return bool
 	 */
-	public function update();
+	public function update(array $params);
 
 	/**
 	 * Deletes.
+	 *
+	 * @param  array $params
+	 * @return bool
 	 */
-	public function delete();
+	public function delete(array $params);
 }
 

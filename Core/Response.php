@@ -12,6 +12,16 @@ namespace Core;
 class Response
 {
 	/**
+	 * @var object $_config
+	 */
+	private $_config;
+
+	/**
+	 * @var object $_toolbox
+	 */
+	private $_toolbox;
+
+	/**
 	 * @var string $_code
 	 */
 	private $_code;
@@ -29,24 +39,30 @@ class Response
 	/**
 	 * Constructor.
 	 *
+	 * @param object      $config
+	 * @param object      $toolbox
 	 * @param string|int  $code    Default: 200
 	 * @param array       $headers Default: array()
 	 * @param string|null $body    Default: null
 	 */
-	public function __construct($code = 200, $headers = array(), $body = null)
+	public function __construct(Config $config, Toolbox $toolbox, $code = 200, $headers = array(), $body = null)
 	{
-		$this->_init($code, $headers, $body);
+		$this->_init($config, $toolbox, $code, $headers, $body);
 	}
 
 	/**
 	 * Initializes the response.
 	 *
+	 * @param object      $config
+	 * @param object      $toolbox
 	 * @param string|int  $code
 	 * @param array       $headers
 	 * @param string|null $body
 	 */
-	private function _init($code, $headers, $body)
+	private function _init(Config $config, Toolbox $toolbox, $code, $headers, $body)
 	{
+		$this->_config  = $config;
+		$this->_toolbox = $toolbox;
 		$this->_code    = $code;
 		$this->_headers = $headers;
 		$this->_body    = $body;

@@ -60,10 +60,6 @@ class Gateway implements GatewayInterface
 		$this->_toolbox = $toolbox;
 	}
 
-	//-----------------------------------------------------------------------------------//
-	//---------------------------------| PDO WRAPPERS  |---------------------------------//
-	//-----------------------------------------------------------------------------------//
-
 	/**
 	 * Connects to the given database.
 	 *
@@ -108,18 +104,38 @@ class Gateway implements GatewayInterface
 	}
 
 	/**
-	 * Prepares the statement.
+	 * Gets last insert ID.
 	 *
-	 * @param  string $statement
-	 * @param  string $database  Default: 'default'
-	 * @return object $this
+	 * @param  string $name     Default: null
+	 * @param  string $database Default: 'database'
+	 * @return string
 	 */
-	private function _prepare($statement, $database = 'default')
+	public function getLastInsertId($name = null, $database = 'default')
 	{
 		$this->connect($database);
 
 		try {
-			$this->_statement = $this->_connections[$database]->prepare($statement);
+			return $this->_connections[$database]->lastInsertId($name);
+
+		} catch (PDOException $e) {
+			throw new RunTimeException($e->getMessage());
+		}
+	}
+
+	/**
+	 * Prepares the statement.
+	 *
+	 * @param  string $statement
+	 * @param  string $database      Default: 'default'
+	 * @param  array  $driverOptions Default: array()
+	 * @return object $this
+	 */
+	private function _prepare($statement, $database = 'default', $driverOptions = array())
+	{
+		$this->connect($database);
+
+		try {
+			$this->_statement = $this->_connections[$database]->prepare($statement, $driverOptions);
 
 			return $this;
 
@@ -129,17 +145,29 @@ class Gateway implements GatewayInterface
 	}
 
 	/**
-	 * Binds param to the statement.
+	 * Binds value to the statement.
 	 *
 	 * @param  mixed  $parameter
-	 * @param  mixed  &$variable
-	 * @param  int    $dataType  Default: \PDO::PARAM_STR
+	 * @param  mixed  $value
+	 * @param  int    $dataType  Default: null
 	 * @return object $this
 	 */
-	private function _bindParam($parameter, $variable, $dataType = PDO::PARAM_STR)
+	private function _bindValue($parameter, $value, $dataType = null)
 	{
 		try {
-			$this->_statement->bindParam($parameter, $variable, $dataType);
+			if (null === $dataType) {
+				if (is_string($value)) {
+					$dataType = PDO::PARAM_STR;
+
+				} elseif (is_int($value)) {
+					$dataType = PDO::PARAM_INT;
+
+				} elseif (is_null($value)) {
+					$dataType = PDO::PARAM_NULL;
+				}
+			}
+
+			$this->_statement->bindValue($parameter, $value, $dataType);
 
 			return $this;
 
@@ -167,32 +195,14 @@ class Gateway implements GatewayInterface
 	}
 
 	/**
-	 * Gets the result.
+	 * Fetches all results from the statement.
 	 *
-	 * @param  int   $fetchStyle        Default: \PDO::FETCH_ASSOC
-	 * @param  int   $cursorOrientation Default: \PDO::FETCH_ORI_NEXT
-	 * @param  int   $cursorOffset      Default: 0
-	 * @return array
-	 */
-	public function get($fetchStyle = PDO::FETCH_ASSOC, $cursorOrientation = PDO::FETCH_ORI_NEXT, $cursorOffset = 0)
-	{
-		try {
-			return $this->_statement->fetch($fetchStyle, $cursorOrientation, $cursorOffset);
-
-		} catch (PDOException $e) {
-			throw new RunTimeException($e->getMessage());
-		}
-	}
-
-	/**
-	 * Gets all results.
-	 *
-	 * @param  int   $fetchStyle    Default: \PDO::FETCH_ASSOC
+	 * @param  int   $fetchStyle    Default: PDO::FETCH_ASSOC
 	 * @param  mixed $fetchArgument Default: 0
 	 * @param  array $ctorArgs      Default: array()
 	 * @return array
 	 */
-	public function getAll($fetchStyle = PDO::FETCH_ASSOC, $fetchArgument = 0, array $ctorArgs = array())
+	private function _fetchAll($fetchStyle = PDO::FETCH_ASSOC, $fetchArgument = 0, array $ctorArgs = array())
 	{
 		try {
 			switch ($fetchStyle) {
@@ -218,15 +228,47 @@ class Gateway implements GatewayInterface
 	/**
 	 * Creates.
 	 *
-	 * @todo Implement...
+	 * @param  array $params
+	 * @return bool
 	 */
-	public function create(){}
+	public function create(array $params)
+	{
+		$defaultParams = array(
+			// The data array MUST be structured as follow: 'column_name' => $value
+			'data'     => array(),
+			'table'    => '',
+			'database' => 'default',
+		);
+
+		$columns    = array();
+		$values     = array();
+		$bindParams = array();
+		$params     = array_merge($defaultParams, $params);
+
+		foreach ($params['data'] as $column => $value) {
+			$columns[]    = $column;
+			$values[]     = $value;
+			$bindParams[] = '?';
+		}
+
+		$sql  = 'INSERT INTO ' . $this->_toolbox->sanitizeKey($params['table']);
+		$sql .= ' (' . implode(', ', array_map(array($this->_toolbox, 'sanitizeKey'), $columns)) . ')';
+		$sql .= ' VALUES (' . implode(', ', $bindParams) . ')';
+
+		$this->_prepare($sql, $params['database']);
+
+		foreach ($values as $valueNumber => $value) {
+			$this->_bindValue($this->_toolbox->sanitizeInt($valueNumber + 1), $value);
+		}
+
+		return $this->_execute();
+	}
 
 	/**
 	 * Reads.
 	 *
-	 * @param  array  $params
-	 * @return object $this
+	 * @param  array $params
+	 * @return array
 	 *
 	 * @todo Implement joins...
 	 */
@@ -238,10 +280,9 @@ class Gateway implements GatewayInterface
 			'where'    => array(
 				0 => array(
 					'condition' => '',
-					'field'     => 'id',
+					'column'    => 'id',
 					'operator'  => '=',
-					'data'      => '',
-					'dataType'  => 1,
+					'value'     => '',
 				),
 			),
 			'orderby'  => '',
@@ -250,54 +291,152 @@ class Gateway implements GatewayInterface
 			'database' => 'default',
 		);
 
-		// Normalizes the params...
 		$params = array_merge($defaultParams, $params);
-		foreach ($params['where'] as $clauseNumber => $param) {
+
+		foreach ($params['where'] as $clauseNumber => $clause) {
 			$params['where'][$clauseNumber] = array_merge($defaultParams['where'][$clauseNumber], $params['where'][$clauseNumber]);
 		}
 
-		// Constructs the query....
 		$sql  = 'SELECT ' . implode(', ', array_map(array($this->_toolbox, 'sanitizeKey'), $params['columns']));
 		$sql .= ' FROM ' . $this->_toolbox->sanitizeKey($params['table']);
-		if ('' !== $params['where'][0]['data']) {
+
+		if ('' !== $params['where'][0]['value']) {
 			$sql .= ' WHERE ';
-			foreach ($params['where'] as $clauseNumber => $param) {
-				$sql .= $this->_toolbox->sanitizeCondition($param['condition']) . ' ' . $this->_toolbox->sanitizeKey($param['field']) . ' ' . $this->_toolbox->sanitizeOperator($param['operator']) . ' ?';
+
+			foreach ($params['where'] as $clauseNumber => $clause) {
+				$sql .= $clause['condition'] ? $this->_toolbox->sanitizeCondition($clause['condition']) . ' ' : '';
+			   	$sql .= $this->_toolbox->sanitizeKey($clause['column']) . ' ' . $this->_toolbox->sanitizeOperator($clause['operator']) . ' ?';
 			}
 		}
+
 		if ($params['orderby']) {
 			$sql   .= ' ORDER BY ' . $this->_toolbox->sanitizeKey($params['orderby']) . '  ' . $this->_toolbox->sanitizeKey($params['order']);
 		}
+
 		if ($params['limit']) {
 			$sql   .= ' LIMIT ' . $this->_toolbox->sanitizeInt($params['limit']);
 		}
 
-		// Prepares the query...
 		$this->_prepare($sql, $params['database']);
-		if ('' !== $params['where'][0]['data']) {
-			foreach ($params['where'] as $clauseNumber => $param) {
-				$this->_bindParam($this->_toolbox->sanitizeInt($clauseNumber + 1), $param['data'], $this->_toolbox->sanitizeInt($param['dataType']));
+
+		if ('' !== $params['where'][0]['value']) {
+			foreach ($params['where'] as $clauseNumber => $clause) {
+				$this->_bindValue($this->_toolbox->sanitizeInt($clauseNumber + 1), $clause['value']);
 			}
 		}
 
-		// Executes the statement...
 		$this->_execute();
 
-		return $this;
+		return $this->_fetchAll();
 	}
 
 	/**
 	 * Updates.
 	 *
-	 * @todo Implement...
+	 * @param  array $params
+	 * @return bool
 	 */
-	public function update(){}
+	public function update(array $params)
+	{
+		$defaultParams = array(
+			// The data array MUST be structured as follow: 'column_name' => $value
+			'data'     => array(),
+			'table'    => '',
+			'database' => 'default',
+			'where'    => array(
+				0 => array(
+					'condition' => '',
+					'column'    => 'id',
+					'operator'  => '=',
+					'value'     => '',
+				),
+			),
+		);
+
+		$bindValues = array();
+		$params     = array_merge($defaultParams, $params);
+
+		foreach ($params['where'] as $clauseNumber => $clause) {
+			$params['where'][$clauseNumber] = array_merge($defaultParams['where'][$clauseNumber], $params['where'][$clauseNumber]);
+		}
+
+		$sql  = 'UPDATE ' . $this->_toolbox->sanitizeKey($params['table']);
+		$sql .= ' SET ';
+
+		foreach ($params['data'] as $column => $value) {
+			$bindValues[] = $value;
+
+			$sql .= $this->_toolbox->sanitizeKey($column) . ' = ?';
+			$sql .= count($bindValues) === count($params['data']) ? '' : ', ';
+		}
+
+		if ('' !== $params['where'][0]['value']) {
+			$sql .= ' WHERE ';
+
+			foreach ($params['where'] as $clauseNumber => $clause) {
+				$bindValues[] = $clause['value'];
+
+				$sql .= $clause['condition'] ? $this->_toolbox->sanitizeCondition($clause['condition']) . ' ' : '';
+			   	$sql .= $this->_toolbox->sanitizeKey($clause['column']) . ' ' . $this->_toolbox->sanitizeOperator($clause['operator']) . ' ?';
+			}
+		}
+
+		$this->_prepare($sql, $params['database']);
+
+		foreach ($bindValues as $valueNumber => $value) {
+			$this->_bindValue($this->_toolbox->sanitizeInt($valueNumber + 1), $value);
+		}
+
+		return $this->_execute();
+	}
 
 	/**
 	 * Deletes.
 	 *
-	 * @todo Implement...
+	 * @param  array $params
+	 * @return bool
 	 */
-	public function delete(){}
+	public function delete(array $params)
+	{
+		$defaultParams = array(
+			'table'    => '',
+			'database' => 'default',
+			'where'    => array(
+				0 => array(
+					'condition' => '',
+					'column'    => 'id',
+					'operator'  => '=',
+					'value'     => '',
+				),
+			),
+		);
+
+		$params = array_merge($defaultParams, $params);
+
+		foreach ($params['where'] as $clauseNumber => $clause) {
+			$params['where'][$clauseNumber] = array_merge($defaultParams['where'][$clauseNumber], $params['where'][$clauseNumber]);
+		}
+
+		$sql = 'DELETE FROM ' . $this->_toolbox->sanitizeKey($params['table']);
+
+		if ('' !== $params['where'][0]['value']) {
+			$sql .= ' WHERE ';
+
+			foreach ($params['where'] as $clauseNumber => $clause) {
+				$sql .= $clause['condition'] ? $this->_toolbox->sanitizeCondition($clause['condition']) . ' ' : '';
+			   	$sql .= $this->_toolbox->sanitizeKey($clause['column']) . ' ' . $this->_toolbox->sanitizeOperator($clause['operator']) . ' ?';
+			}
+		}
+
+		$this->_prepare($sql, $params['database']);
+
+		if ('' !== $params['where'][0]['value']) {
+			foreach ($params['where'] as $clauseNumber => $clause) {
+				$this->_bindValue($this->_toolbox->sanitizeInt($clauseNumber + 1), $clause['value']);
+			}
+		}
+
+		return $this->_execute();
+	}
 }
 

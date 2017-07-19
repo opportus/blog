@@ -31,7 +31,7 @@ abstract class AppController extends AbstractController
 		$this->response->setBody($body);
 		$this->response->send();
 
-		die();
+		exit;
 	}
 }
 
