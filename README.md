@@ -36,7 +36,7 @@ It is composed of 20 classes which by their name and their nature, should be sel
 
 #### The View
 
-Some design purists would argue that it's MVP and not MVC, but whatever, personnally I find it much more natural and straightforward to implement and use the view this way...<br />
+Architecture purists would argue that it's MVP and not MVC, however, I find it personnaly, much more natural and straightforward to implement and use the views this way...<br />
 You implement your views as dumb HTML templates. The `AbstractController` has a method `render(string $template, array $data)` which basically returns as a string your template filled with your data (Symfony like), which you then output via the `Response->setBody($html)` and `Response->send()`...
 
 #### The Model Layer
@@ -54,7 +54,7 @@ KISS > Flexibility > Extensibility
 
 ### Important Notes
 
-Note that this framework is still in pre-alpha, so it may include new features and possibly heavy changes anytime soon...<br />
+Note that this framework is still in pre-alpha, so it may include new features and possibly heavy changes anytime soon...
 Note also that PHP versions lower than the **7** *might* never be supported...
 
 ## Contributing
