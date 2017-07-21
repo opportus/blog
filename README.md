@@ -3,7 +3,7 @@
 Hedo is (at least at this time) a very minimalistic and basic framework that I've written as a school project but that I plan to maintain and develop as I use it for my personnal projects.<br />
 It is composed of 20 classes which by their name and their nature, should be self-explanatory enough about how the framework can help you.
 
-11 very core classes:
+**11 very core classes**:
 
  - Autoloader
  - Config
@@ -17,14 +17,14 @@ It is composed of 20 classes which by their name and their nature, should be sel
  - Session
  - Toolbox
 
-4 abstract classes:
+**4 abstract classes**:
 
  - AbstractController
  - AbstractMapper
  - AbstractModel
  - AbstractRepository
 
-5 interfaces:
+**5 interfaces**:
 
  - ControllerInterface
  - MapperInterface
@@ -54,7 +54,7 @@ KISS > Flexibility > Extensibility
 
 ### Important Notes
 
-Note that this framework is still in pre-alpha, so it may include new features and possibly heavy changes anytime soon...
+Note that this framework is still in pre-alpha, so it may include new features and possibly heavy changes anytime soon...<br />
 Note also that PHP versions lower than the **7** *might* never be supported...
 
 ## Contributing
