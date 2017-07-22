@@ -3,7 +3,7 @@
 Hedo is (at least at this time) a very minimalistic and basic framework I've written as a school project but that I plan to maintain and develop as I use it for my personnal projects.<br />
 It is composed of 20 classes which by their name and their nature should be self-explanatory enough about how the framework can help you.
 
-*11 very core classes*:
+**11 very core classes**:
 
  - Autoloader
  - Config
@@ -17,14 +17,14 @@ It is composed of 20 classes which by their name and their nature should be self
  - Session
  - Toolbox
 
-*4 abstract classes*:
+**4 abstract classes**:
 
  - AbstractController
  - AbstractMapper
  - AbstractModel
  - AbstractRepository
 
-*5 interfaces*:
+**5 interfaces**:
 
  - ControllerInterface
  - MapperInterface
@@ -37,13 +37,13 @@ It is composed of 20 classes which by their name and their nature should be self
 Architecture purists would argue that it's MVP and not MVC, however, I find it much more natural and straightforward to implement and use the views this way...<br />
 You implement your views as dumb HTML templates. Then in your controller...
 
-	```php
-	class MyController extends Core\Base\AbstractController
-	{
-		$this->Response->setBody($this->render('myTemplate', array('title' => $title)));
-		$this->Response->send();
-	}
-	```
+```php
+class MyController extends Core\Base\AbstractController
+{
+	$this->Response->setBody($this->render('myTemplate', array('title' => $title)));
+	$this->Response->send();
+}
+```
 
 ...Symfony like.
 
