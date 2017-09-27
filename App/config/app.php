@@ -31,6 +31,9 @@ return array(
 	// The name of your app...
 	'name' => '',
 
+	// The email address of the admin to which send the contact form's message...
+	'adminEmail' => '',
+
 	// The front menu items...
 	'frontMenuItems' => array(
 		array(
@@ -78,6 +81,17 @@ return array(
 		),
 		array(
 			'name'  => 'USERS',
+			'link'  => '',
+			'title' => '',
+			'class' => '',
+			'style' => '',
+		),
+	),
+
+	// The right hand back menu items...
+	'backMenuItemsRightHand' => array(
+		array(
+			'name'  => 'NEW POST',
 			'link'  => '',
 			'title' => '',
 			'class' => '',

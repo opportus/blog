@@ -13,6 +13,10 @@ return array(
 		'controller' => 'App\Controller\HomeController',
 		'action'     => 'view',
 	),
+	'#^/contact/?$#' => array(
+		'controller' => 'App\Controller\HomeController',
+		'action'     => 'contact',
+	),
 	'#^/blog/?$#i' => array(
 		'controller' => 'App\Controller\BlogController',
 		'action'     => 'view',
