@@ -56,6 +56,15 @@ Its very basic ORM implements:
  - Repository pattern
  - Domain model pattern
 
+### PSR
+
+Hedo is compliant to:
+
+ - PSR1
+ - PSR2
+ - PSR4
+ - PSR11
+
 ### Phylosophy
 
 KISS > Flexibility > Extensibility
