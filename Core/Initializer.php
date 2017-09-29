@@ -117,7 +117,7 @@ class Initializer
 		});
 
 		foreach (require(CONFIG . '/dic.php') as $alias => $resolver) {
-			$this->set($alias, $resolver);
+			$container->set($alias, $resolver);
 		}
 	}
 }
