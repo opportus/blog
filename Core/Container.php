@@ -1,6 +1,6 @@
 <?php
 
-namespace Core;
+namespace Hedo\Core;
 
 /**
  * The dependency injection container...
@@ -20,52 +20,6 @@ class Container
 	 * @var array $_instances
 	 */
 	private $_instances = array();
-
-	/**
-	 * Constructor.
-	 */
-	public function __construct()
-	{
-		$this->_init();
-	}
-
-	/**
-	 * Initializes the container.
-	 */
-	private function _init()
-	{
-		$this->set('Autoloader', function () {
-			return new Autoloader();
-		});
-		$this->set('Config', function () {
-			return new Config(require(CONFIG . '/dic.php'), require(CONFIG . '/db.php'), require(CONFIG . '/routes.php'), require(CONFIG . '/app.php'));
-		});
-		$this->set('Toolbox', function () {
-			return new Toolbox($this->get('Config'));
-		});
-		$this->set('Gateway', function () {
-			return new Gateway($this->get('Config'), $this->get('Toolbox'));
-		});
-		$this->set('Session', function () {
-			return new Session($this->get('Config'), $this->get('Toolbox'));
-		});
-		$this->set('Request', function () {
-			return new Request($this->get('Config'), $this->get('Toolbox'), $this->get('Session'));
-		});
-		$this->set('Response', function () {
-			return new Response($this->get('Config'), $this->get('Toolbox'));
-		});
-		$this->set('Router', function () {
-			return new Router($this->get('Config'), $this->get('Toolbox'), $this->get('Request'));
-		});
-		$this->set('Dispatcher', function () {
-			return new Dispatcher($this->get('Config'), $this->get('Toolbox'), $this->get('Request'), $this->get('Response'), $this->get('Router'), $this);
-		});
-
-		foreach (require(CONFIG . '/dic.php') as $alias => $resolver) {
-			$this->set($alias, $resolver);
-		}
-	}
 
 	/**
 	 * Sets registry entry.

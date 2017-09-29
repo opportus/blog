@@ -1,9 +1,9 @@
 <?php
 
-namespace Core\Base;
+namespace Hedo\Core\Base;
 
-use Core\Container;
-use Core\Mapper;
+use Hedo\Core\Container;
+use Hedo\Core\Mapper;
 use \InvalidArgumentException;
 
 /**

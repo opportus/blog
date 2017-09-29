@@ -1,12 +1,12 @@
 <?php
 
-namespace Core;
+namespace Hedo\Core;
 
 use \PDO;
 use \Exception;
 use \PDOException;
 use \RunTimeException;
-use Core\Base\GatewayInterface;
+use Hedo\Core\Base\GatewayInterface;
 
 /**
  * The default data gateway depending on PDO_MYSQL...

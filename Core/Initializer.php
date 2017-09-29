@@ -1,6 +1,6 @@
 <?php
 
-namespace Core;
+namespace Hedo\Core;
 
 /**
  * The initializer...
@@ -16,20 +16,22 @@ class Initializer
 	 */
 	public function __construct()
 	{
-		$this->_init();
+		$this->init();
 	}
 
 	/**
 	 * Initializes the core.
 	 */
-	private function _init()
+	protected function init()
 	{
-		$this->_define();
-		$this->_require();
+		$this->define();
+		$this->require();
 
 		$container = new Container();
 
-		$container->get('Autoloader');
+		$this->registerDependencies($container);
+		$this->registerNamespaces($container->get('Autoloader'));
+
 		$container->get('Config');
 		$container->get('Toolbox');
 		$container->get('Gateway');
@@ -43,7 +45,7 @@ class Initializer
 	/**
 	 * Defines constants.
 	 */
-	private function _define()
+	protected function define()
 	{
 		define('ROOT',    dirname(dirname(__FILE__)));
 
@@ -57,10 +59,66 @@ class Initializer
 	/**
 	 * Requires files.
 	 */
-	private function _require()
+	protected function require()
 	{
 		require_once(CORE . '/Container.php');
 		require_once(CORE . '/Autoloader.php');
+	}
+
+	/**
+	 * Registers namespaces.
+	 *
+	 * @param object $autoloader
+	 */
+	protected function registerNamespaces($autoloader)
+	{
+		$autoloader->registerNamespace('Hedo\Core', CORE);
+
+		foreach (require(CONFIG . '/namespaces.php') as $namespace => $dirs) {
+			foreach ($dirs as $dir) {
+				$autoloader->registerNamespace($namespace, $dir);
+			}
+		}
+	}
+
+	/**
+	 * Registers dependencies.
+	 *
+	 * @param object $container
+	 */
+	protected function registerDependencies($container)
+	{
+		$container->set('Autoloader', function () {
+			return new Autoloader();
+		});
+		$container->set('Config', function () {
+			return new Config(require(CONFIG . '/dic.php'), require(CONFIG . '/db.php'), require(CONFIG . '/routes.php'), require(CONFIG . '/app.php'));
+		});
+		$container->set('Toolbox', function () {
+			return new Toolbox($container->get('Config'));
+		});
+		$container->set('Gateway', function () {
+			return new Gateway($container->get('Config'), $container->get('Toolbox'));
+		});
+		$container->set('Session', function () {
+			return new Session($container->get('Config'), $container->get('Toolbox'));
+		});
+		$container->set('Request', function () {
+			return new Request($container->get('Config'), $container->get('Toolbox'), $container->get('Session'));
+		});
+		$container->set('Response', function () {
+			return new Response($container->get('Config'), $container->get('Toolbox'));
+		});
+		$container->set('Router', function () {
+			return new Router($container->get('Config'), $container->get('Toolbox'), $container->get('Request'));
+		});
+		$container->set('Dispatcher', function () {
+			return new Dispatcher($container->get('Config'), $container->get('Toolbox'), $container->get('Request'), $container->get('Response'), $container->get('Router'), $container);
+		});
+
+		foreach (require(CONFIG . '/dic.php') as $alias => $resolver) {
+			$this->set($alias, $resolver);
+		}
 	}
 }
 
