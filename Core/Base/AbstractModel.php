@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\Base;
+namespace Hedo\Core\Base;
 
-use Core\Toolbox;
+use Hedo\Core\Toolbox;
 
 /**
  * The base model...

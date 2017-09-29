@@ -1,12 +1,12 @@
 <?php
 
-namespace Core\Base;
+namespace Hedo\Core\Base;
 
-use Core\Config;
-use Core\Toolbox;
-use Core\Request;
-use Core\Response;
-use Core\Container;
+use Hedo\Core\Config;
+use Hedo\Core\Toolbox;
+use Hedo\Core\Request;
+use Hedo\Core\Response;
+use Hedo\Core\Container;
 
 /**
  * The base controller...

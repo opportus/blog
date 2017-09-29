@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\Base;
+namespace Hedo\Core\Base;
 
-use Core\Gateway;
+use Hedo\Core\Gateway;
 use \InvalidArgumentException;
 
 /**

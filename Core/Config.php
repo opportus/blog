@@ -1,6 +1,6 @@
 <?php
 
-namespace Core;
+namespace Hedo\Core;
 
 /**
  * The configuration...
@@ -15,6 +15,11 @@ class Config
 	 * @var array $_dic
 	 */
 	private $_dic = array();
+
+	/**
+	 * @var array $_namespaces
+	 */
+	private $_namespaces = array();
 
 	/**
 	 * @var array $_db
@@ -35,29 +40,32 @@ class Config
 	 * Constructor.
 	 *
 	 * @param array $dic
+	 * @param array $namespaces
 	 * @param array $db
 	 * @param array $routes
 	 * @param array $app
 	 */
-	public function __construct(array $dic, array $db, array $routes, array $app)
+	public function __construct(array $dic, array $namespaces, array $db, array $routes, array $app)
 	{
-		$this->_init($dic, $db, $routes, $app);
+		$this->_init($dic, $namespaces, $db, $routes, $app);
 	}
 
 	/**
 	 * Initializes the config.
 	 *
 	 * @param array $dic
+	 * @param array $namespaces
 	 * @param array $db
 	 * @param array $routes
 	 * @param array $app
 	 */
-	private function _init(array $dic, array $db, array $routes, array $app)
+	private function _init(array $dic, array $namespaces, array $db, array $routes, array $app)
 	{
-		$this->_dic    = $dic;
-		$this->_db     = $db;
-		$this->_routes = $routes;
-		$this->_app    = $app;
+		$this->_dic        = $dic;
+		$this->_namespaces = $namespaces;
+		$this->_db         = $db;
+		$this->_routes     = $routes;
+		$this->_app        = $app;
 	}
 
 	/**
@@ -73,6 +81,21 @@ class Config
 		}
 
 		return $this->_dic;
+	}
+
+	/**
+	 * Gets namespaces configuration.
+	 *
+	 * @param  string $setting           Default: ''
+	 * @return array  $this->_namespaces
+	 */
+	public function getNamespaces($setting = '')
+	{
+		if (isset($this->_namespaces[$setting])) {
+			return $this->_namespaces[$setting];
+		}
+
+		return $this->_namespaces;
 	}
 
 	/**

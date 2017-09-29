@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Base;
+namespace Hedo\Core\Base;
 
 /**
  * The model interface...
