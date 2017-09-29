@@ -21,7 +21,7 @@ class Autoloader
 	 */
 	public function __construct()
 	{
-		$this->_register();
+		$this->register();
 	}
 
 	/**
