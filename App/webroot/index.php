@@ -2,4 +2,4 @@
 
 require_once('../../Core/Initializer.php');
 
-new Core\Initializer();
+new Hedo\Core\Initializer();
