@@ -12,24 +12,24 @@ namespace Hedo\Core;
 class Request
 {
 	/**
-	 * @var object $_config
+	 * @var object $config
 	 */
-	private $_config;
+	protected $config;
 
 	/**
-	 * @var object $_toolbox
+	 * @var object $toolbox
 	 */
-	private $_toolbox;
+	protected $toolbox;
 
 	/**
-	 * @var object $_session
+	 * @var object $session
 	 */
-	private $_session;
+	protected $session;
 
 	/**
-	 * @var string $_uri
+	 * @var string $uri
 	 */
-	private $_uri = '';
+	protected $uri = '';
 
 	/**
 	 * Constructor.
@@ -40,7 +40,7 @@ class Request
 	 */
 	public function __construct(Config $config, Toolbox $toolbox, Session $session)
 	{
-		$this->_init($config, $toolbox, $session);
+		$this->init($config, $toolbox, $session);
 	}
 
 	/**
@@ -50,33 +50,33 @@ class Request
 	 * @param object $toolbox
 	 * @param object $session
 	 */
-	private function _init(Config $config, Toolbox $toolbox, Session $session)
+	protected function init(Config $config, Toolbox $toolbox, Session $session)
 	{
-		$this->_config  = $config;
-		$this->_toolbox = $toolbox;
-		$this->_session = $session;
+		$this->config  = $config;
+		$this->toolbox = $toolbox;
+		$this->session = $session;
 
-		$this->_uri     = $_SERVER['REQUEST_URI'];
+		$this->uri     = $_SERVER['REQUEST_URI'];
 	}
 
 	/**
 	 * Gets session.
 	 *
-	 * @return object $this->_session
+	 * @return object $this->session
 	 */
 	public function getSession()
 	{
-		return $this->_session;
+		return $this->session;
 	}
 
 	/**
 	 * Gets uri.
 	 *
-	 * @return string $this->_uri
+	 * @return string $this->uri
 	 */
 	public function getUri()
 	{
-		return $this->_uri;
+		return $this->uri;
 	}
 }
 

@@ -12,24 +12,24 @@ namespace Hedo\Core;
 class Router
 {
 	/**
-	 * @var object $_config
+	 * @var object $config
 	 */
-	private $_config;
+	protected $config;
 
 	/**
-	 * @var object $_toolbox
+	 * @var object $toolbox
 	 */
-	private $_toolbox;
+	protected $toolbox;
 
 	/**
-	 * @var object $_request
+	 * @var object $request
 	 */
-	private $_request;
+	protected $request;
 
 	/**
-	 * @var array $_route
+	 * @var array $route
 	 */
-	private $_route = array();
+	protected $route = array();
 
 	/**
 	 * Constructor.
@@ -40,7 +40,7 @@ class Router
 	 */
 	public function __construct(Config $config, Toolbox $toolbox, Request $request)
 	{
-		$this->_init($config, $toolbox, $request);
+		$this->init($config, $toolbox, $request);
 	}
 
 	/**
@@ -50,25 +50,25 @@ class Router
 	 * @param pbject $toolbox
 	 * @param object $request
 	 */
-	private function _init(Config $config, Toolbox $toolbox, Request $request)
+	protected function init(Config $config, Toolbox $toolbox, Request $request)
 	{
-		$this->_config  = $config;
-		$this->_toolbox = $toolbox;
-		$this->_request = $request;
+		$this->config  = $config;
+		$this->toolbox = $toolbox;
+		$this->request = $request;
 
-		$this->_setRoute();
+		$this->setRoute();
 	}
 
 	/**
 	 * Sets the route.
 	 */
-	private function _setRoute()
+	protected function setRoute()
 	{
-		foreach ($this->_config->getRoutes() as $route => $settings) {
-			if (preg_match($route, $this->_request->getUri(), $matches)) {
-				$this->_route['controller'] = isset($settings['controller']) ? $settings['controller'] : '';
-				$this->_route['action']     = isset($settings['action']) ? $settings['action'] : '';
-				$this->_route['params']     = isset($matches[1]) ? explode('/', trim($matches[1], '/')) : array('');
+		foreach ($this->config->getRoutes() as $route => $settings) {
+			if (preg_match($route, $this->request->getUri(), $matches)) {
+				$this->route['controller'] = isset($settings['controller']) ? $settings['controller'] : '';
+				$this->route['action']     = isset($settings['action']) ? $settings['action'] : '';
+				$this->route['params']     = isset($matches[1]) ? explode('/', trim($matches[1], '/')) : array('');
 
 				break;
 			}
@@ -83,10 +83,10 @@ class Router
 	 */
 	public function getRoute($segment = '')
 	{
-		if (isset($this->_route[$segment])) {
-			return $this->_route[$segment];
+		if (isset($this->route[$segment])) {
+			return $this->route[$segment];
 		} elseif ('' === $segment) {
-			return $this->_route;
+			return $this->route;
 		} else {
 			return '';
 		}

@@ -18,24 +18,24 @@ use Hedo\Core\Base\GatewayInterface;
 class Gateway implements GatewayInterface
 {
 	/**
-	 * @var object $_config
+	 * @var object $config
 	 */
-	private $_config;
+	protected $config;
 
 	/**
-	 * @var object $_toolbox
+	 * @var object $toolbox
 	 */
-	private $_toolbox;
+	protected $toolbox;
 
 	/**
-	 * @var array $_connections
+	 * @var array $connections
 	 */
-	private $_connections = array();
+	protected $connections = array();
 
 	/**
-	 * @var object $_statement
+	 * @var object $statement
 	 */
-	private $_statement;
+	protected $statement;
 
 	/**
 	 * Constructor.
@@ -45,7 +45,7 @@ class Gateway implements GatewayInterface
 	 */
 	public function __construct(Config $config, Toolbox $toolbox)
 	{
-		$this->_init($config, $toolbox);
+		$this->init($config, $toolbox);
 	}
 
 	/**
@@ -54,10 +54,10 @@ class Gateway implements GatewayInterface
 	 * @param object $config
 	 * @param object $toolbox
 	 */
-	private function _init(Config $config, Toolbox $toolbox)
+	protected function init(Config $config, Toolbox $toolbox)
 	{
-		$this->_config  = $config;
-		$this->_toolbox = $toolbox;
+		$this->config  = $config;
+		$this->toolbox = $toolbox;
 	}
 
 	/**
@@ -67,12 +67,12 @@ class Gateway implements GatewayInterface
 	 */
 	public function connect($database = 'default')
 	{
-		if (isset($this->_connections[$database])) {
+		if (isset($this->connections[$database])) {
 			return;
 		}
 
 		try {
-			$credentials = $this->_config->getDb($database);
+			$credentials = $this->config->getDb($database);
 
 			$pdo = new PDO(
 				'mysql:host=' . $credentials['dbHost'] . ';dbname=' . $credentials['dbName'],
@@ -84,7 +84,7 @@ class Gateway implements GatewayInterface
 			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-			$this->_connections[$database] = $pdo;
+			$this->connections[$database] = $pdo;
 
 		} catch (PDOException $e) {
 			throw new RunTimeException($e->getMessage());
@@ -98,8 +98,8 @@ class Gateway implements GatewayInterface
 	 */
 	public function disconnect($database = 'default')
 	{
-		if (isset($this->_connections[$database])) {
-			$this->_connections[$database] = null;
+		if (isset($this->connections[$database])) {
+			$this->connections[$database] = null;
 		}
 	}
 
@@ -115,7 +115,7 @@ class Gateway implements GatewayInterface
 		$this->connect($database);
 
 		try {
-			return $this->_connections[$database]->lastInsertId($name);
+			return $this->connections[$database]->lastInsertId($name);
 
 		} catch (PDOException $e) {
 			throw new RunTimeException($e->getMessage());
@@ -130,12 +130,12 @@ class Gateway implements GatewayInterface
 	 * @param  array  $driverOptions Default: array()
 	 * @return object $this
 	 */
-	private function _prepare($statement, $database = 'default', $driverOptions = array())
+	protected function prepare($statement, $database = 'default', $driverOptions = array())
 	{
 		$this->connect($database);
 
 		try {
-			$this->_statement = $this->_connections[$database]->prepare($statement, $driverOptions);
+			$this->statement = $this->connections[$database]->prepare($statement, $driverOptions);
 
 			return $this;
 
@@ -152,7 +152,7 @@ class Gateway implements GatewayInterface
 	 * @param  int    $dataType  Default: null
 	 * @return object $this
 	 */
-	private function _bindValue($parameter, $value, $dataType = null)
+	protected function bindValue($parameter, $value, $dataType = null)
 	{
 		try {
 			if (null === $dataType) {
@@ -167,7 +167,7 @@ class Gateway implements GatewayInterface
 				}
 			}
 
-			$this->_statement->bindValue($parameter, $value, $dataType);
+			$this->statement->bindValue($parameter, $value, $dataType);
 
 			return $this;
 
@@ -182,10 +182,10 @@ class Gateway implements GatewayInterface
 	 * @param  array  $inputParameters Default: null
 	 * @return object $this
 	 */
-	private function _execute(array $inputParameters = null)
+	protected function execute(array $inputParameters = null)
 	{
 		try {
-			$this->_statement->execute($inputParameters);
+			$this->statement->execute($inputParameters);
 
 			return $this;
 
@@ -202,18 +202,18 @@ class Gateway implements GatewayInterface
 	 * @param  array $ctorArgs      Default: array()
 	 * @return array
 	 */
-	private function _fetchAll($fetchStyle = PDO::FETCH_ASSOC, $fetchArgument = 0, array $ctorArgs = array())
+	protected function fetchAll($fetchStyle = PDO::FETCH_ASSOC, $fetchArgument = 0, array $ctorArgs = array())
 	{
 		try {
 			switch ($fetchStyle) {
 				case PDO::FETCH_COLUMN:
-					return $this->_statement->fetchAll($fetchStyle, $fetchArgument);
+					return $this->statement->fetchAll($fetchStyle, $fetchArgument);
 				case PDO::FETCH_FUNC:
-					return $this->_statement->fetchAll($fetchStyle, $fetchArgument);
+					return $this->statement->fetchAll($fetchStyle, $fetchArgument);
 				case PDO::FETCH_CLASS:
-					return $this->_statement->fetchAll($fetchStyle, $fetchArgument, $ctorArgs);
+					return $this->statement->fetchAll($fetchStyle, $fetchArgument, $ctorArgs);
 				default:
-					return $this->_statement->fetchAll($fetchStyle);
+					return $this->statement->fetchAll($fetchStyle);
 			}
 
 		} catch (PDOException $e) {
@@ -251,17 +251,17 @@ class Gateway implements GatewayInterface
 			$bindParams[] = '?';
 		}
 
-		$sql  = 'INSERT INTO ' . $this->_toolbox->sanitizeKey($params['table']);
-		$sql .= ' (' . implode(', ', array_map(array($this->_toolbox, 'sanitizeKey'), $columns)) . ')';
+		$sql  = 'INSERT INTO ' . $this->toolbox->sanitizeKey($params['table']);
+		$sql .= ' (' . implode(', ', array_map(array($this->toolbox, 'sanitizeKey'), $columns)) . ')';
 		$sql .= ' VALUES (' . implode(', ', $bindParams) . ')';
 
-		$this->_prepare($sql, $params['database']);
+		$this->prepare($sql, $params['database']);
 
 		foreach ($values as $valueNumber => $value) {
-			$this->_bindValue($this->_toolbox->sanitizeInt($valueNumber + 1), $value);
+			$this->bindValue($this->toolbox->sanitizeInt($valueNumber + 1), $value);
 		}
 
-		return $this->_execute();
+		return $this->execute();
 	}
 
 	/**
@@ -297,37 +297,37 @@ class Gateway implements GatewayInterface
 			$params['where'][$clauseNumber] = array_merge($defaultParams['where'][$clauseNumber], $params['where'][$clauseNumber]);
 		}
 
-		$sql  = 'SELECT ' . implode(', ', array_map(array($this->_toolbox, 'sanitizeKey'), $params['columns']));
-		$sql .= ' FROM ' . $this->_toolbox->sanitizeKey($params['table']);
+		$sql  = 'SELECT ' . implode(', ', array_map(array($this->toolbox, 'sanitizeKey'), $params['columns']));
+		$sql .= ' FROM ' . $this->toolbox->sanitizeKey($params['table']);
 
 		if ('' !== $params['where'][0]['value']) {
 			$sql .= ' WHERE ';
 
 			foreach ($params['where'] as $clauseNumber => $clause) {
-				$sql .= $clause['condition'] ? $this->_toolbox->sanitizeCondition($clause['condition']) . ' ' : '';
-			   	$sql .= $this->_toolbox->sanitizeKey($clause['column']) . ' ' . $this->_toolbox->sanitizeOperator($clause['operator']) . ' ?';
+				$sql .= $clause['condition'] ? $this->toolbox->sanitizeCondition($clause['condition']) . ' ' : '';
+			   	$sql .= $this->toolbox->sanitizeKey($clause['column']) . ' ' . $this->toolbox->sanitizeOperator($clause['operator']) . ' ?';
 			}
 		}
 
 		if ($params['orderby']) {
-			$sql   .= ' ORDER BY ' . $this->_toolbox->sanitizeKey($params['orderby']) . '  ' . $this->_toolbox->sanitizeKey($params['order']);
+			$sql   .= ' ORDER BY ' . $this->toolbox->sanitizeKey($params['orderby']) . '  ' . $this->toolbox->sanitizeKey($params['order']);
 		}
 
 		if ($params['limit']) {
-			$sql   .= ' LIMIT ' . $this->_toolbox->sanitizeInt($params['limit']);
+			$sql   .= ' LIMIT ' . $this->toolbox->sanitizeInt($params['limit']);
 		}
 
-		$this->_prepare($sql, $params['database']);
+		$this->prepare($sql, $params['database']);
 
 		if ('' !== $params['where'][0]['value']) {
 			foreach ($params['where'] as $clauseNumber => $clause) {
-				$this->_bindValue($this->_toolbox->sanitizeInt($clauseNumber + 1), $clause['value']);
+				$this->bindValue($this->toolbox->sanitizeInt($clauseNumber + 1), $clause['value']);
 			}
 		}
 
-		$this->_execute();
+		$this->execute();
 
-		return $this->_fetchAll();
+		return $this->fetchAll();
 	}
 
 	/**
@@ -360,13 +360,13 @@ class Gateway implements GatewayInterface
 			$params['where'][$clauseNumber] = array_merge($defaultParams['where'][$clauseNumber], $params['where'][$clauseNumber]);
 		}
 
-		$sql  = 'UPDATE ' . $this->_toolbox->sanitizeKey($params['table']);
+		$sql  = 'UPDATE ' . $this->toolbox->sanitizeKey($params['table']);
 		$sql .= ' SET ';
 
 		foreach ($params['data'] as $column => $value) {
 			$bindValues[] = $value;
 
-			$sql .= $this->_toolbox->sanitizeKey($column) . ' = ?';
+			$sql .= $this->toolbox->sanitizeKey($column) . ' = ?';
 			$sql .= count($bindValues) === count($params['data']) ? '' : ', ';
 		}
 
@@ -376,18 +376,18 @@ class Gateway implements GatewayInterface
 			foreach ($params['where'] as $clauseNumber => $clause) {
 				$bindValues[] = $clause['value'];
 
-				$sql .= $clause['condition'] ? $this->_toolbox->sanitizeCondition($clause['condition']) . ' ' : '';
-			   	$sql .= $this->_toolbox->sanitizeKey($clause['column']) . ' ' . $this->_toolbox->sanitizeOperator($clause['operator']) . ' ?';
+				$sql .= $clause['condition'] ? $this->toolbox->sanitizeCondition($clause['condition']) . ' ' : '';
+			   	$sql .= $this->toolbox->sanitizeKey($clause['column']) . ' ' . $this->toolbox->sanitizeOperator($clause['operator']) . ' ?';
 			}
 		}
 
-		$this->_prepare($sql, $params['database']);
+		$this->prepare($sql, $params['database']);
 
 		foreach ($bindValues as $valueNumber => $value) {
-			$this->_bindValue($this->_toolbox->sanitizeInt($valueNumber + 1), $value);
+			$this->bindValue($this->toolbox->sanitizeInt($valueNumber + 1), $value);
 		}
 
-		return $this->_execute();
+		return $this->execute();
 	}
 
 	/**
@@ -417,26 +417,26 @@ class Gateway implements GatewayInterface
 			$params['where'][$clauseNumber] = array_merge($defaultParams['where'][$clauseNumber], $params['where'][$clauseNumber]);
 		}
 
-		$sql = 'DELETE FROM ' . $this->_toolbox->sanitizeKey($params['table']);
+		$sql = 'DELETE FROM ' . $this->toolbox->sanitizeKey($params['table']);
 
 		if ('' !== $params['where'][0]['value']) {
 			$sql .= ' WHERE ';
 
 			foreach ($params['where'] as $clauseNumber => $clause) {
-				$sql .= $clause['condition'] ? $this->_toolbox->sanitizeCondition($clause['condition']) . ' ' : '';
-			   	$sql .= $this->_toolbox->sanitizeKey($clause['column']) . ' ' . $this->_toolbox->sanitizeOperator($clause['operator']) . ' ?';
+				$sql .= $clause['condition'] ? $this->toolbox->sanitizeCondition($clause['condition']) . ' ' : '';
+			   	$sql .= $this->toolbox->sanitizeKey($clause['column']) . ' ' . $this->toolbox->sanitizeOperator($clause['operator']) . ' ?';
 			}
 		}
 
-		$this->_prepare($sql, $params['database']);
+		$this->prepare($sql, $params['database']);
 
 		if ('' !== $params['where'][0]['value']) {
 			foreach ($params['where'] as $clauseNumber => $clause) {
-				$this->_bindValue($this->_toolbox->sanitizeInt($clauseNumber + 1), $clause['value']);
+				$this->bindValue($this->toolbox->sanitizeInt($clauseNumber + 1), $clause['value']);
 			}
 		}
 
-		return $this->_execute();
+		return $this->execute();
 	}
 }
 

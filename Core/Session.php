@@ -12,14 +12,14 @@ namespace Hedo\Core;
 class Session
 {
 	/**
-	 * @var object $_config
+	 * @var object $config
 	 */
-	private $_config;
+	protected $config;
 
 	/**
-	 * @var object $_toolbox
+	 * @var object $toolbox
 	 */
-	private $_toolbox;
+	protected $toolbox;
 
 	/**
 	 * Constructor.
@@ -29,7 +29,7 @@ class Session
 	 */
 	public function __construct(Config $config, Toolbox $toolbox)
 	{
-		$this->_init($config, $toolbox);
+		$this->init($config, $toolbox);
 	}
 
 	/**
@@ -38,10 +38,10 @@ class Session
 	 * @param object $config
 	 * @param object $toolbox
 	 */
-	private function _init(Config $config, Toolbox $toolbox)
+	protected function init(Config $config, Toolbox $toolbox)
 	{
-		$this->_config  = $config;
-		$this->_toolbox = $toolbox;
+		$this->config  = $config;
+		$this->toolbox = $toolbox;
 
 		$this->start();
 	}
@@ -92,7 +92,7 @@ class Session
 	 */
 	public function setToken($name, $salt = '', $key = '', $algo = 'sha256')
 	{
-		return $_SESSION[$name] = $this->_toolbox->generateToken($salt, $key, $algo);
+		return $_SESSION[$name] = $this->toolbox->generateToken($salt, $key, $algo);
 	}
 
 	/**
