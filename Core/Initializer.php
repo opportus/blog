@@ -79,7 +79,7 @@ class Initializer
 			return new Autoloader();
 		});
 		$container->set('Config', function () {
-			return new Config(require(CONFIG . '/dic.php'), require(CONFIG . '/db.php'), require(CONFIG . '/routes.php'), require(CONFIG . '/app.php'));
+			return new Config(require(CONFIG . '/dic.php'), require(CONFIG . '/namespaces.php'), require(CONFIG . '/db.php'), require(CONFIG . '/routes.php'), require(CONFIG . '/app.php'));
 		});
 		$container->set('Toolbox', function () use ($container) {
 			return new Toolbox($container->get('Config'));
