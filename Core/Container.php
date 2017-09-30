@@ -12,14 +12,14 @@ namespace Hedo\Core;
 class Container
 {
 	/**
-	 * @var array $_registry
+	 * @var array $registry
 	 */
-	private $_registry = array();
+	protected $registry = array();
 
 	/**
-	 * @var array $_instances
+	 * @var array $instances
 	 */
-	private $_instances = array();
+	protected $instances = array();
 
 	/**
 	 * Sets registry entry.
@@ -29,7 +29,7 @@ class Container
 	 */
 	public function set($alias, Callable $resolver)
 	{
-		$this->_registry[$alias] = $resolver;
+		$this->registry[$alias] = $resolver;
 	}
 
 	/**
@@ -40,11 +40,11 @@ class Container
 	 */
 	public function get($alias)
 	{
-		if (! isset($this->_instances[$alias])) {
-			$this->_instances[$alias] = $this->_registry[$alias]();
+		if (! isset($this->instances[$alias])) {
+			$this->instances[$alias] = $this->registry[$alias]();
 		}
 
-		return $this->_instances[$alias];
+		return $this->instances[$alias];
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Container
 	 */
 	public function has($alias)
 	{
-		return isset($this->_registry[$alias]) ? true : false;
+		return isset($this->registry[$alias]) ? true : false;
 	}
 }
 

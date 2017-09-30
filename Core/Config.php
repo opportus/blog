@@ -12,29 +12,29 @@ namespace Hedo\Core;
 class Config
 {
 	/**
-	 * @var array $_dic
+	 * @var array $dic
 	 */
-	private $_dic = array();
+	protected $dic = array();
 
 	/**
-	 * @var array $_namespaces
+	 * @var array $namespaces
 	 */
-	private $_namespaces = array();
+	protected $namespaces = array();
 
 	/**
-	 * @var array $_db
+	 * @var array $db
 	 */
-	private $_db = array();
+	protected $db = array();
 
 	/**
-	 * @var array $_routes
+	 * @var array $routes
 	 */
-	private $_routes = array();
+	protected $routes = array();
 
 	/**
-	 * @var array $_app
+	 * @var array $app
 	 */
-	private $_app = array();
+	protected $app = array();
 
 	/**
 	 * Constructor.
@@ -47,7 +47,7 @@ class Config
 	 */
 	public function __construct(array $dic, array $namespaces, array $db, array $routes, array $app)
 	{
-		$this->_init($dic, $namespaces, $db, $routes, $app);
+		$this->init($dic, $namespaces, $db, $routes, $app);
 	}
 
 	/**
@@ -59,88 +59,88 @@ class Config
 	 * @param array $routes
 	 * @param array $app
 	 */
-	private function _init(array $dic, array $namespaces, array $db, array $routes, array $app)
+	protected function init(array $dic, array $namespaces, array $db, array $routes, array $app)
 	{
-		$this->_dic        = $dic;
-		$this->_namespaces = $namespaces;
-		$this->_db         = $db;
-		$this->_routes     = $routes;
-		$this->_app        = $app;
+		$this->dic        = $dic;
+		$this->namespaces = $namespaces;
+		$this->db         = $db;
+		$this->routes     = $routes;
+		$this->app        = $app;
 	}
 
 	/**
 	 * Gets DIC configuration.
 	 *
 	 * @param  string $setting    Default: ''
-	 * @return array  $this->_dic
+	 * @return array  $this->dic
 	 */
 	public function getDic($setting = '')
 	{
-		if (isset($this->_dic[$setting])) {
-			return $this->_dic[$setting];
+		if (isset($this->dic[$setting])) {
+			return $this->dic[$setting];
 		}
 
-		return $this->_dic;
+		return $this->dic;
 	}
 
 	/**
 	 * Gets namespaces configuration.
 	 *
 	 * @param  string $setting           Default: ''
-	 * @return array  $this->_namespaces
+	 * @return array  $this->namespaces
 	 */
 	public function getNamespaces($setting = '')
 	{
-		if (isset($this->_namespaces[$setting])) {
-			return $this->_namespaces[$setting];
+		if (isset($this->namespaces[$setting])) {
+			return $this->namespaces[$setting];
 		}
 
-		return $this->_namespaces;
+		return $this->namespaces;
 	}
 
 	/**
 	 * Gets database configuration.
 	 *
 	 * @param  string $setting   Default: ''
-	 * @return array  $this->_db
+	 * @return array  $this->db
 	 */
 	public function getDb($setting = '')
 	{
-		if (isset($this->_db[$setting])) {
-			return $this->_db[$setting];
+		if (isset($this->db[$setting])) {
+			return $this->db[$setting];
 		}
 
-		return $this->_db;
+		return $this->db;
 	}
 
 	/**
 	 * Gets routes configuration.
 	 *
 	 * @param  string $setting       Default: ''
-	 * @return array  $this->_routes
+	 * @return array  $this->routes
 	 */
 	public function getRoutes($setting = '')
 	{
-		if (isset($this->_routes[$setting])) {
-			return $this->_routes[$setting];
+		if (isset($this->routes[$setting])) {
+			return $this->routes[$setting];
 		}
 
-		return $this->_routes;
+		return $this->routes;
 	}
 
 	/**
 	 * Gets app configuration.
 	 *
 	 * @param  string $setting    Default: ''
-	 * @return array  $this->_app
+	 * @return array  $this->app
 	 */
 	public function getApp($setting = '')
 	{
-		if (isset($this->_app[$setting])) {
-			return $this->_app[$setting];
+		if (isset($this->app[$setting])) {
+			return $this->app[$setting];
 		}
 
-		return $this->_app;
+		return $this->app;
 	}
 }
 

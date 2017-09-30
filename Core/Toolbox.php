@@ -16,9 +16,9 @@ use \Datetime;
 class Toolbox
 {
 	/**
-	 * @var object $_config
+	 * @var object $config
 	 */
-	private $_config;
+	protected $config;
 
 	/**
 	 * Constructor.
@@ -27,7 +27,7 @@ class Toolbox
 	 */
 	public function __construct(Config $config)
 	{
-		$this->_init($config);
+		$this->init($config);
 	}
 
 	/**
@@ -35,9 +35,9 @@ class Toolbox
 	 *
 	 * @param object $config
 	 */
-	private function _init(Config $config)
+	protected function init(Config $config)
 	{
-		$this->_config = $config;
+		$this->config = $config;
 	}
 
 	/**
@@ -194,20 +194,20 @@ class Toolbox
 						break;
 				}
 
-				$intlDatetimeFormatter = new \IntlDateFormatter($this->_config->getApp('locale'), $dateType, $timeType);
+				$intlDatetimeFormatter = new \IntlDateFormatter($this->config->getApp('locale'), $dateType, $timeType);
 
 				return ucwords($intlDatetimeFormatter->format($datetimeFormatter));
 
 			} else {
 				switch ($type) {
 					case 'datetime':
-						$format = $this->_config->getApp('defaultDateFormat') . ' ' . $this->_config->getApp('defaultTimeFormat');
+						$format = $this->config->getApp('defaultDateFormat') . ' ' . $this->config->getApp('defaultTimeFormat');
 						break;
 					case 'date':
-						$format = $this->_config->getApp('defaultDateFormat');
+						$format = $this->config->getApp('defaultDateFormat');
 						break;
 					case 'time':
-						$format = $this->_config->getApp('defaultTimeFormat');
+						$format = $this->config->getApp('defaultTimeFormat');
 						break;
 				}
 			}
@@ -294,7 +294,7 @@ class Toolbox
 	public function generateToken($salt = '', $key = '', $algo = 'sha256')
 	{
 		$salt = $salt ? $salt : bin2hex(random_bytes(32));
-		$key  = $key  ? $key  : $this->_config->getApp('secret');
+		$key  = $key  ? $key  : $this->config->getApp('secret');
 
 		return hash_hmac($algo, $salt, $key);
 	}

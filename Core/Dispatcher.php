@@ -14,39 +14,39 @@ use \Exception;
 class Dispatcher
 {
 	/**
-	 * @var object $_config
+	 * @var object $config
 	 */
-	private $_config;
+	protected $config;
 
 	/**
-	 * @var object $_toolbox
+	 * @var object $toolbox
 	 */
-	private $_toolbox;
+	protected $toolbox;
 
 	/**
-	 * @var object $_request
+	 * @var object $request
 	 */
-	private $_request;
+	protected $request;
 
 	/**
-	 * @var object $_response
+	 * @var object $response
 	 */
-	private $_response;
+	protected $response;
 
 	/**
-	 * @var object $_router
+	 * @var object $router
 	 */
-	private $_router;
+	protected $router;
 
 	/**
-	 * @var object $_container
+	 * @var object $container
 	 */
-	private $_container;
+	protected $container;
 
 	/**
-	 * @var object|bool $_controller
+	 * @var object|bool $controller
 	 */
-	private $_controller;
+	protected $controller;
 
 	/**
 	 * Constructor.
@@ -60,7 +60,7 @@ class Dispatcher
 	 */
 	public function __construct(Config $config, Toolbox $toolbox, Request $request, Response $response, Router $router, Container $container)
 	{
-		$this->_init($config, $toolbox, $request, $response, $router, $container);
+		$this->init($config, $toolbox, $request, $response, $router, $container);
 	}
 
 	/**
@@ -73,35 +73,35 @@ class Dispatcher
 	 * @param object $router
 	 * @param object $container
 	 */
-	private function _init(Config $config, Toolbox $toolbox, Request $request, Response $response, Router $router, Container $container)
+	protected function init(Config $config, Toolbox $toolbox, Request $request, Response $response, Router $router, Container $container)
 	{
-		$this->_config    = $config;
-		$this->_toolbox   = $toolbox;
-		$this->_request   = $request;
-		$this->_response  = $response;
-		$this->_router    = $router;
-		$this->_container = $container;
+		$this->config    = $config;
+		$this->toolbox   = $toolbox;
+		$this->request   = $request;
+		$this->response  = $response;
+		$this->router    = $router;
+		$this->container = $container;
 
-		$this->_dispatch();
+		$this->dispatch();
 	}
 
 	/**
 	 * Dispatches.
 	 */
-	private function _dispatch()
+	protected function dispatch()
 	{
 		try {
-			$this->_loadController();
+			$this->loadController();
 
-			call_user_func_array(array($this->_controller, $this->_router->getRoute('action')), $this->_router->getRoute('params'));
+			call_user_func_array(array($this->controller, $this->router->getRoute('action')), $this->router->getRoute('params'));
 
 		} catch (Exception $e) {
-			if ($this->_config->getApp('debug') >= 1) {
+			if ($this->config->getApp('debug') >= 1) {
 				error_log($e->getMessage());
 			}
 
-			$this->_response->setCode(500);
-			$this->_response->send();
+			$this->response->setCode(500);
+			$this->response->send();
 
 			die();
 		}
@@ -110,16 +110,16 @@ class Dispatcher
 	/**
 	 * Loads the controller.
 	 */
-	private function _loadController()
+	protected function loadController()
 	{
-		$controller = $this->_router->getRoute('controller');
-		$action     = $this->_router->getRoute('action');
+		$controller = $this->router->getRoute('controller');
+		$action     = $this->router->getRoute('action');
 
 		if (! class_exists($controller) || ! method_exists($controller, $action)) {
 			throw new Exception('Controller/Action not found ! Check your route and controller...');
 		}
 
-		$this->_controller = $this->_container->get($controller);
+		$this->controller = $this->container->get($controller);
 	}
 }
 

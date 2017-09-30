@@ -12,29 +12,29 @@ namespace Hedo\Core;
 class Response
 {
 	/**
-	 * @var object $_config
+	 * @var object $config
 	 */
-	private $_config;
+	protected $config;
 
 	/**
-	 * @var object $_toolbox
+	 * @var object $toolbox
 	 */
-	private $_toolbox;
+	protected $toolbox;
 
 	/**
-	 * @var string $_code
+	 * @var string $code
 	 */
-	private $_code;
+	protected $code;
 
 	/**
-	 * @var array $_headers
+	 * @var array $headers
 	 */
-	private $_headers;
+	protected $headers;
 
 	/**
-	 * @var string|null $_body
+	 * @var string|null $body
 	 */
-	private $_body;
+	protected $body;
 
 	/**
 	 * Constructor.
@@ -47,7 +47,7 @@ class Response
 	 */
 	public function __construct(Config $config, Toolbox $toolbox, $code = 200, $headers = array(), $body = null)
 	{
-		$this->_init($config, $toolbox, $code, $headers, $body);
+		$this->init($config, $toolbox, $code, $headers, $body);
 	}
 
 	/**
@@ -59,13 +59,13 @@ class Response
 	 * @param array       $headers
 	 * @param string|null $body
 	 */
-	private function _init(Config $config, Toolbox $toolbox, $code, $headers, $body)
+	protected function init(Config $config, Toolbox $toolbox, $code, $headers, $body)
 	{
-		$this->_config  = $config;
-		$this->_toolbox = $toolbox;
-		$this->_code    = $code;
-		$this->_headers = $headers;
-		$this->_body    = $body;
+		$this->config  = $config;
+		$this->toolbox = $toolbox;
+		$this->code    = $code;
+		$this->headers = $headers;
+		$this->body    = $body;
 	}
 
 	/**
@@ -75,7 +75,7 @@ class Response
 	 */
 	public function setCode($code)
 	{
-		$this->_code = (int) $code;
+		$this->code = (int) $code;
 	}
 
 	/**
@@ -87,10 +87,10 @@ class Response
 	public function setHeaders($headers, $replace = false)
 	{
 		if (false === $replace) {
-			$this->_headers = array_merge($this->_headers, (array) $headers);
+			$this->headers = array_merge($this->headers, (array) $headers);
 
 		} else {
-			$this->_headers = (array) $headers;
+			$this->headers = (array) $headers;
 		}
 	}
 
@@ -101,7 +101,7 @@ class Response
 	 */
 	public function setBody($body)
 	{
-		$this->_body = (string) $body;
+		$this->body = (string) $body;
 	}
 
 	/**
@@ -109,14 +109,14 @@ class Response
 	 */
 	public function send()
 	{
-		http_response_code($this->_code);
+		http_response_code($this->code);
 
-		foreach ($this->_headers as $header) {
+		foreach ($this->headers as $header) {
 			header($header);
 		}
 
-		if (isset($this->_body)) {
-			echo $this->_body;
+		if (isset($this->body)) {
+			echo $this->body;
 		}
 	}
 }
