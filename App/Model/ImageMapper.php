@@ -2,8 +2,8 @@
 
 namespace App\Model;
 
-use Core\Base\AbsractMapper;
-use Core\Base\MapperInterface;
+use Hedo\Core\Base\AbstractMapper;
+use Hedo\Core\Base\MapperInterface;
 
 /**
  * The image mapper...

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Core\Base\ControllerInterface;
+use Hedo\Core\Base\ControllerInterface;
 
 /**
  * The 404 controller...

@@ -2,8 +2,8 @@
 
 namespace App\Model;
 
-use Core\Base\AbstractModel;
-use Core\Base\ModelInterface;
+use Hedo\Core\Base\AbstractModel;
+use Hedo\Core\Base\ModelInterface;
 
 /**
  * The user domain model...

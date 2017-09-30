@@ -2,8 +2,8 @@
 
 namespace App\Model;
 
-use Core\Base\AbstractRepository;
-use Core\Base\RepositoryInterface;
+use Hedo\Core\Base\AbstractRepository;
+use Hedo\Core\Base\RepositoryInterface;
 
 /**
  * The image repository...

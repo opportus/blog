@@ -5,21 +5,18 @@
  *
  * Set here the DIC registry you want by default using the following syntax:
  *
- * 'alias' => function () {
- * 		return new App\MyClass($this->get('Dependency1'), 'dependency2');
+ * 'alias' => function () use (&$container) {
+ * 		return new App\MyClass($container->get('Dependency1'), 'dependency2');
  * }
  *
  * This way, you can redefine the instances to be loaded at core initialization.
  * For example, you can redefine the default data Gateway as follow:
  *
- * 'Gateway' => function () {
- *		return new App\MyAdaptaters\DataGateway($this->get('Config'), $this->get('Toolbox'));
+ * 'Gateway' => function () use (&$container) {
+ *		return new App\MyAdapters\DataGateway($container->get('Config'), $container->get('Toolbox'));
  * }
  *
  * The DIC will then inject your DataGateway in instances depending on the 'Gateway' alias.
- *
- * NOTES:
- * - You can use `$this` which refers to the DIC instance.
  *
  * @version 0.0.1
  * @package App\Config
@@ -28,44 +25,44 @@
 
 return array(
 
-	'App\Controller\_404Controller' => function () {
-		return new App\Controller\_404Controller($this->get('Config'), $this->get('Toolbox'), $this->get('Request'), $this->get('Response'), $this);
+	'App\Controller\_404Controller' => function () use (&$container) {
+		return new App\Controller\_404Controller($container->get('Config'), $container->get('Toolbox'), $container->get('Request'), $container->get('Response'), $container);
 	},
-	'App\Controller\HomeController' => function () {
-		return new App\Controller\HomeController($this->get('Config'), $this->get('Toolbox'), $this->get('Request'), $this->get('Response'), $this);
+	'App\Controller\HomeController' => function () use (&$container) {
+		return new App\Controller\HomeController($container->get('Config'), $container->get('Toolbox'), $container->get('Request'), $container->get('Response'), $container);
 	},
-	'App\Controller\BlogController' => function () {
-		return new App\Controller\BlogController($this->get('Config'), $this->get('Toolbox'), $this->get('Request'), $this->get('Response'), $this);
+	'App\Controller\BlogController' => function () use (&$container) {
+		return new App\Controller\BlogController($container->get('Config'), $container->get('Toolbox'), $container->get('Request'), $container->get('Response'), $container);
 	},
-	'App\Controller\PostController' => function () {
-		return new App\Controller\PostController($this->get('Config'), $this->get('Toolbox'), $this->get('Request'), $this->get('Response'), $this);
+	'App\Controller\PostController' => function () use (&$container) {
+		return new App\Controller\PostController($container->get('Config'), $container->get('Toolbox'), $container->get('Request'), $container->get('Response'), $container);
 	},
-	'App\Model\ImageMapper' => function () {
-		return new App\Model\ImageMapper($this->get('Gateway'), 'images');
+	'App\Model\ImageMapper' => function () use (&$container) {
+		return new App\Model\ImageMapper($container->get('Gateway'), 'images');
 	},
-	'App\Model\UserMapper' => function () {
-		return new App\Model\UserMapper($this->get('Gateway'), 'users');
+	'App\Model\UserMapper' => function () use (&$container) {
+		return new App\Model\UserMapper($container->get('Gateway'), 'users');
 	},
-	'App\Model\PostMapper' => function () {
-		return new App\Model\PostMapper($this->get('Gateway'), 'posts', array('UserMapper' => $this->get('App\Model\UserMapper')));
+	'App\Model\PostMapper' => function () use (&$container) {
+		return new App\Model\PostMapper($container->get('Gateway'), 'posts', array('UserMapper' => $container->get('App\Model\UserMapper')));
 	},
-	'App\Model\ImageRepository' => function () {
-		return new App\Model\ImageRepository($this, $this->get('App\Model\ImageMapper'));
+	'App\Model\ImageRepository' => function () use (&$container) {
+		return new App\Model\ImageRepository($container, $container->get('App\Model\ImageMapper'));
 	},
-	'App\Model\UserRepository' => function () {
-		return new App\Model\UserRepository($this, $this->get('App\Model\UserMapper'));
+	'App\Model\UserRepository' => function () use (&$container) {
+		return new App\Model\UserRepository($container, $container->get('App\Model\UserMapper'));
 	},
-	'App\Model\PostRepository' => function () {
-		return new App\Model\PostRepository($this, $this->get('App\Model\PostMapper'));
+	'App\Model\PostRepository' => function () use (&$container) {
+		return new App\Model\PostRepository($container, $container->get('App\Model\PostMapper'));
 	},
-	'App\Model\ImageModel' => function () {
-		return new App\Model\ImageModel($this->get('Toolbox'));
+	'App\Model\ImageModel' => function () use (&$container) {
+		return new App\Model\ImageModel($container->get('Toolbox'));
 	},
-	'App\Model\UserModel' => function () {
-		return new App\Model\UserModel($this->get('Toolbox'));
+	'App\Model\UserModel' => function () use (&$container) {
+		return new App\Model\UserModel($container->get('Toolbox'));
 	},
-	'App\Model\PostModel' => function () {
-		return new App\Model\PostModel($this->get('Toolbox'));
+	'App\Model\PostModel' => function () use (&$container) {
+		return new App\Model\PostModel($container->get('Toolbox'));
 	},
 );
 

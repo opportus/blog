@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use \Exception;
-use Core\Base\ControllerInterface;
+use Hedo\Core\Base\ControllerInterface;
 
 /**
  * The post controller...
