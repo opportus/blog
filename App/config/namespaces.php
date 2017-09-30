@@ -12,9 +12,6 @@
  * 		'path/to/my/other/controllers',
  * );
  *
- * NOTES:
- * - You can use `$this` which refers to the DIC instance.
- *
  * @version 0.0.1
  * @package App\Config
  * @author  Clément Cazaud <opportus@gmail.com>
@@ -24,13 +21,13 @@ return array(
 
 	// Defaults...
 	'App\Controller' => array(
-		CORE . '/App/Controller',
+		APP . '/Controller',
 	),
 	'App\Model' => array(
-		CORE . '/App/Model',
+		APP . '/Model',
 	),
 	'App\View' => array(
-		CORE . '/App/View',
+		APP . '/View',
 	)
 );
 

@@ -5,21 +5,18 @@
  *
  * Set here the DIC registry you want by default using the following syntax:
  *
- * 'alias' => function () {
- * 		return new App\MyClass($this->get('Dependency1'), 'dependency2');
+ * 'alias' => function () use (&$container) {
+ * 		return new App\MyClass($container->get('Dependency1'), 'dependency2');
  * }
  *
  * This way, you can redefine the instances to be loaded at core initialization.
  * For example, you can redefine the default data Gateway as follow:
  *
- * 'Gateway' => function () {
- *		return new App\MyAdaptaters\DataGateway($this->get('Config'), $this->get('Toolbox'));
+ * 'Gateway' => function () use (&$container) {
+ *		return new App\MyAdapters\DataGateway($container->get('Config'), $container->get('Toolbox'));
  * }
  *
  * The DIC will then inject your DataGateway in instances depending on the 'Gateway' alias.
- *
- * NOTES:
- * - You can use `$this` which refers to the DIC instance.
  *
  * @version 0.0.1
  * @package App\Config
@@ -27,8 +24,8 @@
  */
 
 return array(
-	//'App\Controller\HomeController' => function () {
-	//	return new App\Controller\HomeController($this->get('Config'), $this->get('Toolbox'), $this->get('Request'), $this->get('Response'), $this);
+	//'App\Controller\HomeController' => function () use (&$container) {
+	//	return new App\Controller\HomeController($container->get('Config'), $container->get('Toolbox'), $container->get('Request'), $container->get('Response'), $container);
 	//},
 );
 

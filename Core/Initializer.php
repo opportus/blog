@@ -28,9 +28,10 @@ class Initializer
 		$this->require();
 
 		$container = new Container();
-
 		$this->registerDependencies($container);
-		$this->registerNamespaces($container->get('Autoloader'));
+
+		$autoloader = $container->get('Autoloader');
+		$this->registerNamespaces($autoloader);
 
 		$container->get('Config');
 		$container->get('Toolbox');
@@ -54,6 +55,8 @@ class Initializer
 		define('APP',     ROOT . '/App');
 		define('CONFIG',  APP  . '/config');
 		define('WEBROOT', APP  . '/webroot');
+
+		define('CORE_NAMESPACE', 'Hedo\Core');
 	}
 
 	/**
@@ -63,22 +66,6 @@ class Initializer
 	{
 		require_once(CORE . '/Container.php');
 		require_once(CORE . '/Autoloader.php');
-	}
-
-	/**
-	 * Registers namespaces.
-	 *
-	 * @param object $autoloader
-	 */
-	protected function registerNamespaces($autoloader)
-	{
-		$autoloader->registerNamespace('Hedo\Core', CORE);
-
-		foreach (require(CONFIG . '/namespaces.php') as $namespace => $dirs) {
-			foreach ($dirs as $dir) {
-				$autoloader->registerNamespace($namespace, $dir);
-			}
-		}
 	}
 
 	/**
@@ -94,30 +81,46 @@ class Initializer
 		$container->set('Config', function () {
 			return new Config(require(CONFIG . '/dic.php'), require(CONFIG . '/db.php'), require(CONFIG . '/routes.php'), require(CONFIG . '/app.php'));
 		});
-		$container->set('Toolbox', function () {
+		$container->set('Toolbox', function () use ($container) {
 			return new Toolbox($container->get('Config'));
 		});
-		$container->set('Gateway', function () {
+		$container->set('Gateway', function () use ($container) {
 			return new Gateway($container->get('Config'), $container->get('Toolbox'));
 		});
-		$container->set('Session', function () {
+		$container->set('Session', function () use ($container) {
 			return new Session($container->get('Config'), $container->get('Toolbox'));
 		});
-		$container->set('Request', function () {
+		$container->set('Request', function () use ($container) {
 			return new Request($container->get('Config'), $container->get('Toolbox'), $container->get('Session'));
 		});
-		$container->set('Response', function () {
+		$container->set('Response', function () use ($container) {
 			return new Response($container->get('Config'), $container->get('Toolbox'));
 		});
-		$container->set('Router', function () {
+		$container->set('Router', function () use ($container) {
 			return new Router($container->get('Config'), $container->get('Toolbox'), $container->get('Request'));
 		});
-		$container->set('Dispatcher', function () {
+		$container->set('Dispatcher', function () use ($container) {
 			return new Dispatcher($container->get('Config'), $container->get('Toolbox'), $container->get('Request'), $container->get('Response'), $container->get('Router'), $container);
 		});
 
 		foreach (require(CONFIG . '/dic.php') as $alias => $resolver) {
 			$container->set($alias, $resolver);
+		}
+	}
+
+	/**
+	 * Registers namespaces.
+	 *
+	 * @param object $autoloader
+	 */
+	protected function registerNamespaces($autoloader)
+	{
+		$autoloader->registerNamespace(CORE_NAMESPACE, CORE);
+
+		foreach (require(CONFIG . '/namespaces.php') as $namespace => $dirs) {
+			foreach ($dirs as $dir) {
+				$autoloader->registerNamespace($namespace, $dir);
+			}
 		}
 	}
 }

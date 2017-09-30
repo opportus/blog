@@ -21,13 +21,13 @@ class Autoloader
 	 */
 	public function __construct()
 	{
-		$this->register();
+		$this->registerAutoload();
 	}
 
 	/**
 	 * Registers SPL autoload callback.
 	 */
-	protected function register()
+	protected function registerAutoload()
 	{
 		spl_autoload_register(array($this, 'loadClass'));
 	}
@@ -71,7 +71,7 @@ class Autoloader
 		}
 
 		foreach ($this->namespaces[$namespace] as $dir) {
-			$file = $dir . str_replace('\\', '/', $class) . 'php';
+			$file = $dir . str_replace('\\', '/', $class) . '.php';
 
 			if ($this->requireFile($file)) {
 				return $file;
