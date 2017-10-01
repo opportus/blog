@@ -28,6 +28,11 @@ abstract class AbstractController implements ControllerInterface
 	protected $toolbox;
 
 	/**
+	 * @var object $session
+	 */
+	protected $session;
+
+	/**
 	 * @var object $request
 	 */
 	protected $request;
@@ -47,13 +52,14 @@ abstract class AbstractController implements ControllerInterface
 	 *
 	 * @param object $config
 	 * @param object $toolbox
+	 * @param object $session
 	 * @param object $request
 	 * @param object $response
 	 * @param object $container
 	 */
-	public function __construct(Config $config, Toolbox $toolbox, Request $request, Response $response, Container $container)
+	public function __construct(Config $config, Toolbox $toolbox, Session $session, Request $request, Response $response, Container $container)
 	{
-		$this->init($config, $toolbox, $request, $response, $container);
+		$this->init($config, $toolbox, $session, $request, $response, $container);
 	}
 
 	/**
@@ -61,14 +67,16 @@ abstract class AbstractController implements ControllerInterface
 	 *
 	 * @param object $config
 	 * @param object $toolbox
+	 * @param object $session
 	 * @param object $request
 	 * @param object $response
 	 * @param object $container
 	 */
-	protected function init(Config $config, Toolbox $toolbox, Request $request, Response $response, Container $container)
+	protected function init(Config $config, Toolbox $toolbox, Session $session, Request $request, Response $response, Container $container)
 	{
 		$this->config    = $config;
 		$this->toolbox   = $toolbox;
+		$this->session   = $session;
 		$this->request   = $request;
 		$this->response  = $response;
 		$this->container = $container;

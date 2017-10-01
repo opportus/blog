@@ -24,6 +24,11 @@ class Dispatcher
 	protected $toolbox;
 
 	/**
+	 * @var object $session
+	 */
+	protected $session;
+
+	/**
 	 * @var object $request
 	 */
 	protected $request;
@@ -53,14 +58,15 @@ class Dispatcher
 	 *
 	 * @param object $config
 	 * @param object $toolbox
+	 * @param object $session
 	 * @param object $request
 	 * @param object $response
 	 * @param object $router
 	 * @param object $container
 	 */
-	public function __construct(Config $config, Toolbox $toolbox, Request $request, Response $response, Router $router, Container $container)
+	public function __construct(Config $config, Toolbox $toolbox, Session $session, Request $request, Response $response, Router $router, Container $container)
 	{
-		$this->init($config, $toolbox, $request, $response, $router, $container);
+		$this->init($config, $toolbox, $session, $request, $response, $router, $container);
 	}
 
 	/**
@@ -68,15 +74,17 @@ class Dispatcher
 	 *
 	 * @param object $config
 	 * @param object $toolbox
+	 * @param object $session
 	 * @param object $request
 	 * @param object $response
 	 * @param object $router
 	 * @param object $container
 	 */
-	protected function init(Config $config, Toolbox $toolbox, Request $request, Response $response, Router $router, Container $container)
+	protected function init(Config $config, Toolbox $toolbox, Session $session, Request $request, Response $response, Router $router, Container $container)
 	{
 		$this->config    = $config;
 		$this->toolbox   = $toolbox;
+		$this->session   = $session;
 		$this->request   = $request;
 		$this->response  = $response;
 		$this->router    = $router;
@@ -100,8 +108,7 @@ class Dispatcher
 				error_log($e->getMessage());
 			}
 
-			$this->response->setCode(500);
-			$this->response->send();
+			$this->response->withStatus(500)->send();
 
 			die();
 		}
