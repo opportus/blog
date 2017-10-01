@@ -34,9 +34,9 @@ class Router
 	/**
 	 * Constructor.
 	 *
-	 * @param object $config
-	 * @param pbject $toolbox
-	 * @param object $request
+	 * @param Config  $config
+	 * @param Toolbox $toolbox
+	 * @param Request $request
 	 */
 	public function __construct(Config $config, Toolbox $toolbox, Request $request)
 	{
@@ -46,9 +46,9 @@ class Router
 	/**
 	 * Initializes the router.
 	 *
-	 * @param object $config
-	 * @param pbject $toolbox
-	 * @param object $request
+	 * @param Config  $config
+	 * @param Toolbox $toolbox
+	 * @param Request $request
 	 */
 	protected function init(Config $config, Toolbox $toolbox, Request $request)
 	{

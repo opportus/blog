@@ -63,6 +63,7 @@ Hedo is compliant to:
  - PSR1
  - PSR2
  - PSR4
+ - PSR7
  - PSR11
 
 ### Phylosophy

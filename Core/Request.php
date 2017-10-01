@@ -2,6 +2,11 @@
 
 namespace Hedo\Core;
 
+use PSR\Http\Message\RequestInterface;
+use PSR\Http\Message\StreamInterface;
+use PSR\Http\Message\UriInterface;
+use \InvalidArgumentException;
+
 /**
  * The request...
  *
@@ -9,74 +14,196 @@ namespace Hedo\Core;
  * @package Core
  * @author  Clément Cazaud <opportus@gmail.com>
  */
-class Request
+class Request implements RequestInterface
 {
-	/**
-	 * @var object $config
-	 */
-	protected $config;
+	use MessageTrait;
 
 	/**
-	 * @var object $toolbox
+	 * @var string $protocolVersion
 	 */
-	protected $toolbox;
+	protected $protocolVersion;
 
 	/**
-	 * @var object $session
+	 * @var string $method
 	 */
-	protected $session;
+	protected $method;
 
 	/**
-	 * @var string $uri
+	 * @var array $headers
 	 */
-	protected $uri = '';
+	protected $headers;
+
+	/**
+	 * @var StreamInterface $body
+	 */
+	protected $body;
+
+	/**
+	 * @var UriInterface $uri
+	 */
+	protected $uri;
+
+	/**
+	 * @var string $requestTarget
+	 */
+	protected $requestTarget;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param object $config
-	 * @param object $toolbox
-	 * @param object $session
+	 * @param string          $protocolVersion
+	 * @param string          $method
+	 * @param array           $headers
+	 * @param StreamInterface $body
+	 * @param UriInterface    $uri
+	 * @param string          $requestTarget   Default:null
 	 */
-	public function __construct(Config $config, Toolbox $toolbox, Session $session)
+	public __construct(string $protocolVersion, string $method, array $headers, StreamInterface $body, UriInterface $uri, string $requestTarget = null)
 	{
-		$this->init($config, $toolbox, $session);
+		$this->init($protocolVersion, $method, $headers, $body, $uri, $requestTarget);
 	}
 
 	/**
-	 * Initializes the session.
+	 * Initializes the request.
 	 *
-	 * @param object $config
-	 * @param object $toolbox
-	 * @param object $session
+	 * @param string          $protocolVersion
+	 * @param string          $method
+	 * @param array           $headers
+	 * @param StreamInterface $body
+	 * @param UriInterface    $uri
+	 * @param string          $requestTarget   Default:null
 	 */
-	protected function init(Config $config, Toolbox $toolbox, Session $session)
+	protected init(string $protocolVersion, string $method, array $headers, StreamInterface $body, UriInterface $uri, string $requestTarget = null)
 	{
-		$this->config  = $config;
-		$this->toolbox = $toolbox;
-		$this->session = $session;
+		$this->protocolVersion = $protocolVersion;
+		$this->method          = $method;
 
-		$this->uri     = $_SERVER['REQUEST_URI'];
+		foreach ($headers as $header => $value) {
+			$this->headers[$header] = (array) $value;
+		}
+
+		$this->body          = $body;
+		$this->uri           = $uri;
+		$this->requestTarget = is_null($requestTarget) ? $this->getRequestTarget() : $requestTarget;
+
+		if (! $this->getHeader('Host') && $host = $this->uri->getHost()) {
+			$this->headers['Host'] = (array) $host;
+		}
 	}
 
 	/**
-	 * Gets session.
+	 * Gets the message's request target.
 	 *
-	 * @return object $this->session
+	 * @return string
 	 */
-	public function getSession()
+	public function getRequestTarget()
 	{
-		return $this->session;
+		if (isset($this->requestTarget)) {
+			return $this->requestTarget;
+
+		} elseif (is_null($this->uri)) {
+			return '/';
+		}
+
+		$path  = $this->uri->getPath();
+		$query = $this->uri->getQuery();
+
+		$target  = $path ? $path : '/';
+		$target .= $query ? '?' . $query : $target;
+
+		return $target;
 	}
 
 	/**
-	 * Gets uri.
+	 * Returns an instance with the specific request-target.
 	 *
-	 * @return string $this->uri
+	 * @param  mixed            $requestTarget
+	 * @return RequestInterface
+	 */
+	public function withRequestTarget($requestTarget)
+	{
+		$clone = clone $this;
+		$clone->requestTarget = $requestTarget;
+
+		return $clone;
+	}
+
+	/**
+	 * Gets the HTTP method of the request.
+	 *
+	 * @return string
+	 */
+	public function getMethod()
+	{
+		return $this->method;
+	}
+
+	/**
+	 * Returns an instance with the provided HTTP method.
+	 *
+	 * @param  string           $method
+	 * @return RequestInterface
+	 * @throws \InvalidArgumentException for invalid HTTP methods
+	 */
+	public function withMethod(string $method)
+	{
+		switch ($method) {
+			case 'GET':
+			case 'HEAD':
+			case 'POST':
+			case 'PUT':
+			case 'DELETE':
+			case 'CONNECT':
+			case 'OPTIONS':
+			case 'TRACE':
+			case 'PATCH':
+				break;
+			default:
+				throw new InvalidArgumentException('Invalid HTTP method.');
+
+		}
+
+		$clone = clone $this;
+		$clone->method = $method;
+
+		return $clone;
+	}
+
+	/**
+	 * Gets the URI instance.
+	 *
+	 * @return UriInterface
 	 */
 	public function getUri()
 	{
 		return $this->uri;
+	}
+
+	/**
+	 * Returns an instance with the provided URI.
+	 *
+	 * @param  UriInterface     $uri
+	 * @param  bool             $preserveHost Default:false
+	 * @return RequestInterface
+	 */
+	public function withUri(UriInterface $uri, $preserveHost = false)
+	{
+		$hostUri = $uri->getHost();
+
+		$clone = clone $this;
+		$clone->uri = $uri;
+
+		if (false === $preserveHost && $hostUri) {
+			$clone->headers['Host'] = (array) $hostUri;
+		}
+
+		if (true === $preserveHost) {
+			if (! $clone->getHeader('Host') && $hostUri) {
+				$clone->headers['Host'] = (array) $hostUri;
+			}
+		}
+
+		return $clone;
 	}
 }
 
