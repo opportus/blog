@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
+use Hedo\Base\ControllerInterface;
+
 use \Exception;
-use Hedo\Core\Base\ControllerInterface;
 
 /**
  * The post controller...

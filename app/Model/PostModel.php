@@ -2,8 +2,8 @@
 
 namespace App\Model;
 
-use Hedo\Core\Base\AbstractModel;
-use Hedo\Core\Base\ModelInterface;
+use Hedo\Base\AbstractModel;
+use Hedo\Base\ModelInterface;
 
 /**
  * The post domain model...

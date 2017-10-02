@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Hedo\Core\Base\AbstractController;
+use Hedo\Base\AbstractController;
 
 /**
  * The app controller...

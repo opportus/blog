@@ -2,8 +2,8 @@
 
 namespace App\Model;
 
-use Hedo\Core\Base\AbstractMapper;
-use Hedo\Core\Base\MapperInterface;
+use Hedo\Base\AbstractMapper;
+use Hedo\Base\MapperInterface;
 
 /**
  * The user mapper...
