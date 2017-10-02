@@ -14,7 +14,7 @@ use \InvalidArgumentException;
  * @package Http
  * @author  Clément Cazaud <opportus@gmail.com>
  */
-abstract class Message implements MessageInterface
+abstract class AbstractMessage implements MessageInterface
 {
 	/**
 	 * Retrieves the HTTP protocol version as a string.

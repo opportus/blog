@@ -98,7 +98,7 @@ abstract class AbstractController implements ControllerInterface
 		extract($data);
 
 		ob_start();
-		require_once(APP . '/View/' . $view . '.php');
+		require_once(APP_DIR . '/View/' . $view . '.php');
 		$view = ob_get_clean();
 
 		return $view;

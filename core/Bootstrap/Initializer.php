@@ -65,7 +65,7 @@ class Initializer
 	 */
 	protected function define()
 	{
-		define('ROOT_DIR', dirname(dirname(__FILE__)));
+		define('ROOT_DIR', dirname(dirname(dirname(__FILE__))));
 
 		define('CORE_DIR',        ROOT_DIR . '/core');
 		define('ABSTRACTION_DIR', CORE_DIR . '/Abstraction');
