@@ -2,7 +2,7 @@
 
 namespace Hedo\Core;
 
-use PSR\Http\Message\StreamInterface;
+use Psr\Http\Message\StreamInterface;
 use \RuntimeException;
 
 /**
@@ -29,7 +29,7 @@ class Stream implements StreamInterface
 	 *
 	 * @param resource $resource
 	 */
-	public __construct(resource $resource)
+	public function __construct($resource)
 	{
 		$this->init($resource);
 	}
@@ -39,7 +39,7 @@ class Stream implements StreamInterface
 	 *
 	 * @param resource $resource
 	 */
-	protected function init(resource $resource)
+	protected function init($resource)
 	{
 		$this->data = $resource;
 		$this->meta = stream_get_meta_data($this->data);
@@ -142,7 +142,7 @@ class Stream implements StreamInterface
 	 * @param int $whence Default:SEEK_SET
 	 * @throws \RuntimeException on failure
 	 */
-	public function seek(integer $offset, integer $whence = SEEK_SET)
+	public function seek($offset, $whence = SEEK_SET)
 	{
 		if (! $this->isSeekable()) {
 			throw new RuntimeException('The stream is not seekable.');
@@ -179,7 +179,7 @@ class Stream implements StreamInterface
 	 * @return int
 	 * @throws \RuntimeException on failure
 	 */
-	public function write(string $string)
+	public function write($string)
 	{
 		if (! $this->isWritable()) {
 			throw new RuntimeException('The stream is not writable');
@@ -208,7 +208,7 @@ class Stream implements StreamInterface
 	 * @return string
 	 * @throws \RuntimeException on failure
 	 */
-	public function read(integer $length)
+	public function read($length)
 	{
 		if (! $this->isReadable()) {		
 			throw new RuntimeException('The stream is not readable.');

@@ -173,7 +173,7 @@ class Initializer
 	protected function registerNamespaces($autoloader)
 	{
 		$autoloader->registerNamespace(CORE_NAMESPACE, CORE);
-		$autoloader->registerNamespace('PSR\Http\Message', CORE . '/Vendor/PSR/http-message');
+		$autoloader->registerNamespace('Psr\Http\Message', CORE . '/Vendor/PSR/http-message');
 
 		foreach (require(CONFIG . '/namespaces.php') as $namespace => $dirs) {
 			foreach ($dirs as $dir) {

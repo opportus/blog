@@ -2,8 +2,8 @@
 
 namespace Hedo\Core;
 
-use PSR\Http\Message\MessageInterface;
-use PSR\Http\Message\StreamInterface;
+use Psr\Http\Message\MessageInterface;
+use Psr\Http\Message\StreamInterface;
 use \InvalidArgumentException;
 
 /**
@@ -13,7 +13,7 @@ use \InvalidArgumentException;
  * @package Core
  * @author  Clément Cazaud <opportus@gmail.com>
  */
-trait MessageTrait implements MessageInterface
+trait MessageTrait
 {
 	/**
 	 * Retrieves the HTTP protocol version as a string.
@@ -22,7 +22,7 @@ trait MessageTrait implements MessageInterface
 	 */
 	public function getProtocolVersion()
 	{
-		return $this->protocol;
+		return $this->protocolVersion;
 	}
 
 	/**
@@ -34,7 +34,7 @@ trait MessageTrait implements MessageInterface
 	public function withProtocolVersion($version)
 	{
 		$clone = clone $this;
-		$clone->protocol = $version;
+		$clone->protocolVersion = $version;
 
 		return $clone;
 	}
@@ -102,11 +102,11 @@ trait MessageTrait implements MessageInterface
 	public function withHeader($name, $value)
 	{
 		if (! is_string($name)) {
-			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ '() accepts only string as first argument.');	
+			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument.');	
 		}
 
 		if (! is_string($value) && ! is_array($value)) {
-			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ '() accepts only string or array as second argument.');
+			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string or array as second argument.');
 		}
 
 		$clone = clone $this;
@@ -134,11 +134,11 @@ trait MessageTrait implements MessageInterface
 	public function withAddedHeader($name, $value)
 	{
 		if (! is_string($name)) {
-			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ '() accepts only string as first argument.');	
+			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument.');	
 		}
 
 		if (! is_string($value) && ! is_array($value)) {
-			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ '() accepts only string or array as second argument.');
+			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string or array as second argument.');
 		}
 
 		$clone = clone $this;

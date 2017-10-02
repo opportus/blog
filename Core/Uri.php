@@ -2,7 +2,7 @@
 
 namespace Hedo\Core;
 
-use PSR\Http\Message\UriInterface;
+use Psr\Http\Message\UriInterface;
 use \InvalidArgumentException;
 
 /**
