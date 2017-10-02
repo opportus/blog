@@ -4,6 +4,7 @@ namespace Hedo\Core\Base;
 
 use Hedo\Core\Config;
 use Hedo\Core\Toolbox;
+use Hedo\Core\Session;
 use Hedo\Core\Request;
 use Hedo\Core\Response;
 use Hedo\Core\Container;
