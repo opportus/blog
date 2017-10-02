@@ -191,14 +191,14 @@ class Response implements ResponseInterface
 	{
 		http_response_code($this->getStatusCode());
 
-		foreach ($this->getHeaders as $header => $values) {
+		foreach ($this->getHeaders() as $header => $values) {
 			foreach ($values as $value) {
 				header(sprintf('%s: %s', $header, $value), false);
 			}
 		}
 
-		if ($body = $this->getBody()->read()) {
-			echo $body;
+		if ($this->getBody()->getSize()) {
+			echo $this->getBody();
 		}
 	}
 }

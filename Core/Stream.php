@@ -54,7 +54,7 @@ class Stream implements StreamInterface
 	{
 		try {
 			if ($this->isSeekable()) {
-				$this->rewind;
+				$this->rewind();
 			}
 
 			return $this->getContents();
@@ -169,7 +169,26 @@ class Stream implements StreamInterface
 	 */
 	public function isWritable()
 	{
-		return is_writable($this->meta['uri']);
+		$hash = array_flip(array(
+			'r',
+			'w+',
+			'r+',
+			'x+',
+			'c+',
+			'rb',
+			'w+b',
+			'r+b',
+			'x+b',
+			'c+b',
+			'rt',
+			'w+t',
+			'r+t',
+			'x+t',
+			'c+t',
+			'a+',
+		));
+
+		return isset($hash[$this->meta['mode']]);
 	}
 
 	/**
@@ -198,7 +217,27 @@ class Stream implements StreamInterface
 	 */
 	public function isReadable()
 	{
-		return is_readable($this->meta['uri']);
+		$hash = array_flip(array(
+			'w',
+			'w+',
+			'rw',
+			'r+',
+			'x+',
+			'c+',
+			'wb',
+			'w+b',
+			'r+b',
+			'x+b',
+			'c+b',
+			'w+t',
+			'r+t',
+			'x+t',
+			'c+t',
+			'a',
+			'a+',
+		));
+
+		return isset($hash[$this->meta['mode']]);
 	}
 
 	/**
