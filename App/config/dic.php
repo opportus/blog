@@ -26,16 +26,44 @@
 return array(
 
 	'App\Controller\_404Controller' => function () use (&$container) {
-		return new App\Controller\_404Controller($container->get('Config'), $container->get('Toolbox'), $container->get('Request'), $container->get('Response'), $container);
+		return new App\Controller\_404Controller(
+			$container->get('Config'),
+			$container->get('Toolbox'),
+			$container->get('Session'),
+			$container->get('Request'),
+			$container->get('Response'),
+			$container
+		);
 	},
 	'App\Controller\HomeController' => function () use (&$container) {
-		return new App\Controller\HomeController($container->get('Config'), $container->get('Toolbox'), $container->get('Request'), $container->get('Response'), $container);
+		return new App\Controller\HomeController(
+			$container->get('Config'),
+			$container->get('Toolbox'),
+			$container->get('Session'),
+			$container->get('Request'),
+			$container->get('Response'),
+			$container
+		);
 	},
 	'App\Controller\BlogController' => function () use (&$container) {
-		return new App\Controller\BlogController($container->get('Config'), $container->get('Toolbox'), $container->get('Request'), $container->get('Response'), $container);
+		return new App\Controller\BlogController(
+			$container->get('Config'),
+			$container->get('Toolbox'),
+			$container->get('Session'),
+			$container->get('Request'),
+			$container->get('Response'),
+			$container
+		);
 	},
 	'App\Controller\PostController' => function () use (&$container) {
-		return new App\Controller\PostController($container->get('Config'), $container->get('Toolbox'), $container->get('Request'), $container->get('Response'), $container);
+		return new App\Controller\PostController(
+			$container->get('Config'),
+			$container->get('Toolbox'),
+			$container->get('Session'),
+			$container->get('Request'),
+			$container->get('Response'),
+			$container
+		);
 	},
 	'App\Model\ImageMapper' => function () use (&$container) {
 		return new App\Model\ImageMapper($container->get('Gateway'), 'images');

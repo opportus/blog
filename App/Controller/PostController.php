@@ -23,7 +23,8 @@ final class PostController extends AppController implements ControllerInterface
 	{
 		if ($post = $this->container->get('App\Model\PostRepository')->get((int) $id)) {
 			$user = $this->container->get('App\Model\UserRepository')->get($post->getAuthor());
-			$body = $this->render('post', array(
+			$body = $this->response->getBody();
+			$body->write($this->render('post', array(
 				'title'              => $post->getTitle(),
 				'description'        => $post->getExcerpt(),
 				'author'             => $user->getFirstName() . ' ' . $user->getSecondName(),
@@ -36,10 +37,9 @@ final class PostController extends AppController implements ControllerInterface
 				'imageTitle'         => $post->getImage() !== null ? $this->container->get('App\Model\ImageRepository')->get($post->getImage())->getTitle() : '',
 				'menuItems'          => $this->config->getApp('frontMenuItems'),
 				'menuItemsRightHand' => $this->config->getApp('frontMenuItemsRightHand'),
-			));
+			)));
 
-			$this->response->setBody($body);
-			$this->response->send();
+			$this->response->withBody($body)->send();
 
 			return;
 		}
@@ -60,11 +60,12 @@ final class PostController extends AppController implements ControllerInterface
 			}
 		}
 
-		$sessionToken = $this->request->getSession()->setToken('postEditToken');
+		$sessionToken = $this->session->setToken('postEditToken');
 
-		$body = $this->render('post-edit', array(
-			'failureMessage'     => $this->request->getSession()->get('postEditFailureMessage'),
-			'successMessage'     => $this->request->getSession()->get('postEditSuccessMessage'),
+		$body = $this->response->getBody();
+		$body->write($this->render('post-edit', array(
+			'failureMessage'     => $this->session->get('postEditFailureMessage'),
+			'successMessage'     => $this->session->get('postEditSuccessMessage'),
 
 			'title'              => isset($post) ? 'Editing ' . $post->getTitle() : 'Editing New Post',
 			'description'        => 'Post edition',
@@ -82,13 +83,12 @@ final class PostController extends AppController implements ControllerInterface
 
 			'menuItems'          => $this->config->getApp('backMenuItems'),
 			'menuItemsRightHand' => $this->config->getApp('backMenuItemsRightHand'),
-		));
+		)));
 
-		$this->request->getSession()->unset('postEditFailureMessage');
-		$this->request->getSession()->unset('postEditSuccessMessage');
+		$this->session->unset('postEditFailureMessage');
+		$this->session->unset('postEditSuccessMessage');
 
-		$this->response->setBody($body);
-		$this->response->send();
+		$this->response->withBody($body)->send();
 	}
 
 	/**
@@ -98,8 +98,8 @@ final class PostController extends AppController implements ControllerInterface
 	 */
 	public function save($id)
 	{
-		if (! isset($_POST['token']) || ! $this->toolbox->checkToken($_POST['token'], $this->toolbox->generateToken('PostController/edit', $this->request->getSession()->get('postEditToken')))) {
-			$this->request->getSession()->destroy();
+		if (! isset($_POST['token']) || ! $this->toolbox->checkToken($_POST['token'], $this->toolbox->generateToken('PostController/edit', $this->session->get('postEditToken')))) {
+			$this->session->destroy();
 
 			throw new Exception('Invalid token for IP: ' . $_SERVER['REMOTE_ADDR']);
 		}
@@ -134,7 +134,7 @@ final class PostController extends AppController implements ControllerInterface
 				$id      = $repository->add($post);
 				$message = 'Your post has succesfully been saved';
 
-				$this->request->getSession()->set('postEditSuccessMessage', $message);
+				$this->session->set('postEditSuccessMessage', $message);
 
 			} else {
 				$message = implode(' - ', $errors);
@@ -145,11 +145,10 @@ final class PostController extends AppController implements ControllerInterface
 		} catch (Exception $e) {
 			$message = $e->getMessage();
 
-			$this->request->getSession()->set('postEditFailureMessage', $message);
+			$this->session->set('postEditFailureMessage', $message);
 
 		} finally {
-			$this->response->setHeaders('Location: ' . $this->config->getApp('url') . '/cockpit/post/edit/' . $id);
-			$this->response->send();
+			$this->response->withHeader('Location: ' . $this->config->getApp('url') . '/cockpit/post/edit/' . $id)->send();
 
 			exit;
 		}
@@ -162,8 +161,8 @@ final class PostController extends AppController implements ControllerInterface
 	 */
 	public function delete($id)
 	{
-		if (! isset($_POST['token']) || ! $this->toolbox->checkToken($_POST['token'], $this->toolbox->generateToken('PostController/edit', $this->request->getSession()->get('postEditToken')))) {
-			$this->request->getSession()->destroy();
+		if (! isset($_POST['token']) || ! $this->toolbox->checkToken($_POST['token'], $this->toolbox->generateToken('PostController/edit', $this->session->get('postEditToken')))) {
+			$this->session->destroy();
 
 			throw new Exception('Invalid token for IP: ' . $_SERVER['REMOTE_ADDR']);
 		}
@@ -172,7 +171,7 @@ final class PostController extends AppController implements ControllerInterface
 			if ($this->container->get('App\Model\PostRepository')->delete((int) $id)) {
 				$message = 'Your post has succesfully been deleted';
 
-				$this->request->getSession()->set('postEditSuccessMessage', $message);
+				$this->session->set('postEditSuccessMessage', $message);
 
 			} else {
 				$message = 'Your post couldn\`t be deleted...';
@@ -183,11 +182,10 @@ final class PostController extends AppController implements ControllerInterface
 		} catch (Exception $e) {
 			$message = $e->getMessage();
 
-			$this->request->getSession()->set('postEditFailureMessage', $message);
+			$this->session->set('postEditFailureMessage', $message);
 
 		} finally {
-			$this->response->setHeaders('Location: ' . $this->config->getApp('url') . '/cockpit/post/edit/');
-			$this->response->send();
+			$this->response->withHeader('Location: ' . $this->config->getApp('url') . '/cockpit/post/edit/')->send();
 
 			exit;
 		}
