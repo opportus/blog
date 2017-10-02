@@ -2,8 +2,8 @@
 
 namespace Hedo\Core;
 
-use PSR\Http\Message\ResponseInterface;
-use PSR\Http\Message\StreamInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 use \InvalidArgumentException;
 
 /**
@@ -51,7 +51,7 @@ class Response implements ResponseInterface
 	 * @param StreamInterface $body
 	 * @param string          $reasonPhrase    Default:null
 	 */
-	public function __construct(string $protocolVersion, integer $statusCode, array $headers, StreamInterface $body, string $reasonPhrase = null)
+	public function __construct(string $protocolVersion, int $statusCode, array $headers, StreamInterface $body, string $reasonPhrase = null)
 	{
 		$this->init($protocolVersion, $statusCode, $headers, $body, $reasonPhrase);
 	}
@@ -65,7 +65,7 @@ class Response implements ResponseInterface
 	 * @param StreamInterface $body
 	 * @param string          $reasonPhrase    Default:null
 	 */
-	protected function init(string $protocolVersion, integer $statusCode, array $headers, StreamInterface $body, string $reasonPhrase = null)
+	protected function init(string $protocolVersion, int $statusCode, array $headers, StreamInterface $body, string $reasonPhrase = null)
 	{
 		$this->protocolVersion = $protocolVersion;
 		$this->statusCode      = $statusCode;
@@ -99,7 +99,7 @@ class Response implements ResponseInterface
 	public function withStatus($code, $reasonPhrase = '')
 	{
 		if (! preg_match('/^[1-5][0-9]{2}$/', $code) && ! is_int($code)) {
-			throw new InvalidArgumentException('Invalid status code.')
+			throw new InvalidArgumentException('Invalid status code.');
 		}
 
 		$clone = clone $this;

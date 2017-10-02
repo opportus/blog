@@ -2,9 +2,9 @@
 
 namespace Hedo\Core;
 
-use PSR\Http\Message\RequestInterface;
-use PSR\Http\Message\StreamInterface;
-use PSR\Http\Message\UriInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
 use \InvalidArgumentException;
 
 /**
@@ -58,7 +58,7 @@ class Request implements RequestInterface
 	 * @param UriInterface    $uri
 	 * @param string          $requestTarget   Default:null
 	 */
-	public __construct(string $protocolVersion, string $method, array $headers, StreamInterface $body, UriInterface $uri, string $requestTarget = null)
+	public function __construct(string $protocolVersion, string $method, array $headers, StreamInterface $body, UriInterface $uri, string $requestTarget = null)
 	{
 		$this->init($protocolVersion, $method, $headers, $body, $uri, $requestTarget);
 	}
@@ -73,7 +73,7 @@ class Request implements RequestInterface
 	 * @param UriInterface    $uri
 	 * @param string          $requestTarget   Default:null
 	 */
-	protected init(string $protocolVersion, string $method, array $headers, StreamInterface $body, UriInterface $uri, string $requestTarget = null)
+	protected function init(string $protocolVersion, string $method, array $headers, StreamInterface $body, UriInterface $uri, string $requestTarget = null)
 	{
 		$this->protocolVersion = $protocolVersion;
 		$this->method          = $method;
@@ -145,7 +145,7 @@ class Request implements RequestInterface
 	 * @return RequestInterface
 	 * @throws \InvalidArgumentException for invalid HTTP methods
 	 */
-	public function withMethod(string $method)
+	public function withMethod($method)
 	{
 		switch ($method) {
 			case 'GET':
