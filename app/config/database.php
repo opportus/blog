@@ -1,10 +1,9 @@
 <?php
 
 /**
- * The databases configuration...
+ * Register your databases credentials here using the following array structure...
  *
  * @version 0.0.1
- * @package App\Config
  * @author  Clément Cazaud <opportus@gmail.com>
  */
 
@@ -14,13 +13,11 @@ return array(
 		'dbName'    => '',
 		'dbUser'    => '',
 		'dbPass'    => '',
-
-		// The options of your default database connection...
 		'dbOptions' => array(
 			'PDO:ATTR_PERSISTENT' => false,
 		)
 	),
 
-	// Add here your other databases credentials (if any)...
+	// Add here your other databases (if any)...
 );
 

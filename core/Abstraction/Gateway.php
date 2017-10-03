@@ -73,7 +73,7 @@ class Gateway implements GatewayInterface
 		}
 
 		try {
-			$credentials = $this->config->getDb($database);
+			$credentials = $this->config->get('database', $database);
 
 			$pdo = new PDO(
 				'mysql:host=' . $credentials['dbHost'] . ';dbname=' . $credentials['dbName'],

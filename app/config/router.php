@@ -1,10 +1,9 @@
 <?php
 
 /**
- * The routes configuration...
+ * Register your routes here using the given array structure...
  *
  * @version 0.0.1
- * @package App\Config
  * @author  Clément Cazaud <opportus@gmail.com>
  */
 

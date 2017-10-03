@@ -68,7 +68,7 @@ class Router
 	 */
 	protected function setRoute()
 	{
-		foreach ($this->config->getRoutes() as $route => $settings) {
+		foreach ($this->config->get('router') as $route => $settings) {
 			if (preg_match($route, $this->request->getUri(), $matches)) {
 				$this->route['controller'] = isset($settings['controller']) ? $settings['controller'] : '';
 				$this->route['action']     = isset($settings['action']) ? $settings['action'] : '';

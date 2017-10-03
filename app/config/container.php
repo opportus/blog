@@ -1,30 +1,14 @@
 <?php
 
 /**
- * The Dependency Injection Container configuration...
+ * Register your dependencies here using the given array structure...
  *
- * Set here the DIC registry you want by default using the following syntax:
- *
- * 'alias' => function () use (&$container) {
- * 		return new App\MyClass($container->get('Dependency1'), 'dependency2');
- * }
- *
- * This way, you can redefine the instances to be loaded at core initialization.
- * For example, you can redefine the default data Gateway as follow:
- *
- * 'Gateway' => function () use (&$container) {
- *		return new App\MyAdapters\DataGateway($container->get('Config'), $container->get('Toolbox'));
- * }
- *
- * The DIC will then inject your DataGateway in instances depending on the 'Gateway' alias.
- *
+ * @see     Hedo\Bootstrap\Intializer::registerDependencies()
  * @version 0.0.1
- * @package App\Config
  * @author  Clément Cazaud <opportus@gmail.com>
  */
 
 return array(
-
 	'App\Controller\_404Controller' => function () use (&$container) {
 		return new App\Controller\_404Controller(
 			$container->get('Config'),

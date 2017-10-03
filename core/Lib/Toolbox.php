@@ -196,20 +196,20 @@ class Toolbox
 						break;
 				}
 
-				$intlDatetimeFormatter = new \IntlDateFormatter($this->config->getApp('locale'), $dateType, $timeType);
+				$intlDatetimeFormatter = new \IntlDateFormatter($this->config->get('locale', 'locale'), $dateType, $timeType);
 
 				return ucwords($intlDatetimeFormatter->format($datetimeFormatter));
 
 			} else {
 				switch ($type) {
 					case 'datetime':
-						$format = $this->config->getApp('defaultDateFormat') . ' ' . $this->config->getApp('defaultTimeFormat');
+						$format = $this->config->get('locale', 'defaultDateFormat') . ' ' . $this->config->get('locale', 'defaultTimeFormat');
 						break;
 					case 'date':
-						$format = $this->config->getApp('defaultDateFormat');
+						$format = $this->config->get('locale', 'defaultDateFormat');
 						break;
 					case 'time':
-						$format = $this->config->getApp('defaultTimeFormat');
+						$format = $this->config->get('locale', 'defaultTimeFormat');
 						break;
 				}
 			}
@@ -296,7 +296,7 @@ class Toolbox
 	public function generateToken($salt = '', $key = '', $algo = 'sha256')
 	{
 		$salt = $salt ? $salt : bin2hex(random_bytes(32));
-		$key  = $key  ? $key  : $this->config->getApp('secret');
+		$key  = $key  ? $key  : $this->config->get('security', 'secret');
 
 		return hash_hmac($algo, $salt, $key);
 	}
