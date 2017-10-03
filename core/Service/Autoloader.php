@@ -18,9 +18,28 @@ class Autoloader
 
 	/**
 	 * Constructor.
+	 *
+	 * @param array $namespaces
 	 */
-	public function __construct()
+	public function __construct(array $namespaces)
 	{
+		$this->init($namespaces);
+	}
+
+	/**
+	 * Initializes autoloader.
+	 *
+	 * @param array $namespaces
+	 */
+	protected function init(array $namespaces)
+	{
+		foreach ($namespaces as $namespace => $dirs)
+		{
+			foreach ($dirs as $dir) {
+				$this->registerNamespace($namespace, $dir);
+			}
+		}
+
 		$this->registerAutoload();
 	}
 

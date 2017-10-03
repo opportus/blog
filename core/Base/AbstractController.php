@@ -3,11 +3,10 @@
 namespace Hedo\Base;
 
 use Hedo\Abstraction\Config;
-use Hedo\Lib\Toolbox;
-use Hedo\Abstraction\Session;
 use Hedo\Http\Request;
 use Hedo\Http\Response;
-use Hedo\Service\Container;
+use Hedo\Abstraction\Session;
+use Hedo\Lib\Toolbox;
 
 /**
  * The base controller...
@@ -44,11 +43,6 @@ abstract class AbstractController implements ControllerInterface
 	protected $response;
 
 	/**
-	 * @var object $container
-	 */
-	protected $container;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param object $config
@@ -56,11 +50,10 @@ abstract class AbstractController implements ControllerInterface
 	 * @param object $session
 	 * @param object $request
 	 * @param object $response
-	 * @param object $container
 	 */
-	public function __construct(Config $config, Toolbox $toolbox, Session $session, Request $request, Response $response, Container $container)
+	public function __construct(Config $config, Toolbox $toolbox, Session $session, Request $request, Response $response)
 	{
-		$this->init($config, $toolbox, $session, $request, $response, $container);
+		$this->init($config, $toolbox, $session, $request, $response);
 	}
 
 	/**
@@ -71,16 +64,14 @@ abstract class AbstractController implements ControllerInterface
 	 * @param object $session
 	 * @param object $request
 	 * @param object $response
-	 * @param object $container
 	 */
-	protected function init(Config $config, Toolbox $toolbox, Session $session, Request $request, Response $response, Container $container)
+	protected function init(Config $config, Toolbox $toolbox, Session $session, Request $request, Response $response)
 	{
 		$this->config    = $config;
 		$this->toolbox   = $toolbox;
 		$this->session   = $session;
 		$this->request   = $request;
 		$this->response  = $response;
-		$this->container = $container;
 	}
 
 	/**
@@ -98,7 +89,7 @@ abstract class AbstractController implements ControllerInterface
 		extract($data);
 
 		ob_start();
-		require_once(APP_DIR . '/View/' . $view . '.php');
+		require_once($view);
 		$view = ob_get_clean();
 
 		return $view;

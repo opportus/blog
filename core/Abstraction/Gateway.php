@@ -2,12 +2,13 @@
 
 namespace Hedo\Abstraction;
 
-use \PDO;
-use \Exception;
-use \PDOException;
-use \RunTimeException;
 use Hedo\Base\GatewayInterface;
 use Hedo\Lib\Toolbox;
+
+use \Exception;
+use \PDO;
+use \PDOException;
+use \RunTimeException;
 
 /**
  * The default data gateway depending on PDO_MYSQL...

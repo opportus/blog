@@ -2,18 +2,18 @@
 
 namespace Hedo\Bootstrap;
 
+use Hedo\Service\Autoloader;
 use Hedo\Abstraction\Config;
-use Hedo\Abstraction\Session;
+use Hedo\Service\Container;
 use Hedo\Abstraction\Gateway;
-use Hedo\Http\Stream;
-use Hedo\Http\Uri;
 use Hedo\Http\Request;
 use Hedo\Http\Response;
+use Hedo\Abstraction\Session;
+use Hedo\Http\Stream;
 //use Hedo\Http\ServerRequest;
-//use Hedo\Http\UploadedFile;
 use Hedo\Lib\Toolbox;
-use Hedo\Service\Container;
-use Hedo\Service\Autoloader;
+//use Hedo\Http\UploadedFile;
+use Hedo\Http\Uri;
 
 /**
  * The initializer...
@@ -43,9 +43,7 @@ class Initializer
 		$container = new Container();
 		$this->registerDependencies($container);
 
-		$autoloader = $container->get('Autoloader');
-		$this->registerNamespaces($autoloader);
-
+		$container->get('Autoloader');
 		$container->get('Config');
 		$container->get('Toolbox');
 		$container->get('Gateway');
@@ -57,7 +55,7 @@ class Initializer
 		//$container->get('ServerRequest');
 		//$container->get('UploadedFile');
 		$container->get('Router');
-		$container->get('Dispatcher');
+		$container->get('Composer');
 	}
 
 	/**
@@ -65,8 +63,7 @@ class Initializer
 	 */
 	protected function define()
 	{
-		define('ROOT_DIR', dirname(dirname(dirname(__FILE__))));
-
+		define('ROOT_DIR',        dirname(dirname(dirname(__FILE__))));
 		define('CORE_DIR',        ROOT_DIR . '/core');
 		define('ABSTRACTION_DIR', CORE_DIR . '/Abstraction');
 		define('BASE_DIR',        CORE_DIR . '/Base');
@@ -74,10 +71,9 @@ class Initializer
 		define('HTTP_DIR',        CORE_DIR . '/Http');
 		define('LIB_DIR',         CORE_DIR . '/Lib');
 		define('SERVICE_DIR',     CORE_DIR . '/Service');
-
-		define('APP_DIR',     ROOT_DIR . '/app');
-		define('CONFIG_DIR',  APP_DIR  . '/config');
-		define('WEBROOT_DIR', APP_DIR  . '/webroot');
+		define('APP_DIR',         ROOT_DIR . '/app');
+		define('CONFIG_DIR',      APP_DIR  . '/config');
+		define('WEBROOT_DIR',     APP_DIR  . '/webroot');
 
 		define('ABSTRACTION_NS', 'Hedo\Abstraction');
 		define('BASE_NS',        'Hedo\Base');
@@ -104,7 +100,17 @@ class Initializer
 	protected function registerDependencies($container)
 	{
 		$container->set('Autoloader', function () {
-			return new Autoloader();
+			return new Autoloader(
+				array(
+					ABSTRACTION_NS     => array(ABSTRACTION_DIR),
+					BASE_NS            => array(BASE_DIR),
+					BOOTSTRAP_NS       => array(BOOTSTRAP_DIR, APP_DIR),
+					HTTP_NS            => array(HTTP_DIR),
+					LIB_NS             => array(LIB_DIR),
+					SERVICE_NS         => array(SERVICE_DIR),
+					'Psr\Http\Message' => array(CORE_DIR . '/vendors/psr/http-message'),
+				)
+			);
 		});
 
 		$container->set('Config', function () {
@@ -115,7 +121,6 @@ class Initializer
 					CONFIG_DIR . '/database.php',
 					CONFIG_DIR . '/locale.php',
 					CONFIG_DIR . '/logger.php',
-					CONFIG_DIR . '/namespace.php',
 					CONFIG_DIR . '/router.php',
 					CONFIG_DIR . '/security.php',
 				)
@@ -189,42 +194,14 @@ class Initializer
 			);
 		});
 
-		$container->set('Dispatcher', function () use ($container) {
-			return new Dispatcher(
-				$container->get('Config'),
-				$container->get('Toolbox'),
-				$container->get('Session'),
-				$container->get('Request'),
-				$container->get('Response'),
-				$container->get('Router'),
+		$container->set('Composer', function () use ($container) {
+			return new Composer(
 				$container
 			);
 		});
 
 		foreach (require(CONFIG_DIR . '/container.php') as $alias => $resolver) {
 			$container->set($alias, $resolver);
-		}
-	}
-
-	/**
-	 * Registers namespaces.
-	 *
-	 * @param object $autoloader
-	 */
-	protected function registerNamespaces($autoloader)
-	{
-		$autoloader->registerNamespace(ABSTRACTION_NS, ABSTRACTION_DIR);
-		$autoloader->registerNamespace(BASE_NS, BASE_DIR);
-		$autoloader->registerNamespace(BOOTSTRAP_NS, BOOTSTRAP_DIR);
-		$autoloader->registerNamespace(HTTP_NS, HTTP_DIR);
-		$autoloader->registerNamespace(LIB_NS, LIB_DIR);
-		$autoloader->registerNamespace(SERVICE_NS, SERVICE_DIR);
-		$autoloader->registerNamespace('Psr\Http\Message', CORE_DIR . '/vendors/psr/http-message');
-
-		foreach (require(CONFIG_DIR . '/namespace.php') as $namespace => $dirs) {
-			foreach ($dirs as $dir) {
-				$autoloader->registerNamespace($namespace, $dir);
-			}
 		}
 	}
 }
