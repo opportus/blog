@@ -33,7 +33,7 @@ final class BlogController extends AppController implements ControllerInterface
 		}
 
 		$body = $this->response->getBody();
-		$body->write($this->render('blog', array(
+		$body->write($this->render(APP_DIR . '/View/blog.php', array(
 			'title'              => 'Blog',
 			'description'        => 'My Blog',
 			'author'             => '',

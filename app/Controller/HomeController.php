@@ -21,7 +21,7 @@ final class HomeController extends AppController implements ControllerInterface
 		$sessionToken = $this->session->setToken('contactFormToken');
 
 		$body = $this->response->getBody();
-		$body->write($this->render('home', array(
+		$body->write($this->render(APP_DIR . '/View/home.php', array(
 			'title'              => '',
 			'description'        => '',
 			'author'             => '',
@@ -96,9 +96,7 @@ final class HomeController extends AppController implements ControllerInterface
 		$this->session->set('contactFormEmail', $email);
 		$this->session->set('contactFormName', $name);
 		$this->session->set('contactFormMessage', $message);
-		$this->response->withBody(
-			$this->response->getBody->write($body)
-		)->send();
+		$this->response->send();
 
 		exit;
 	}

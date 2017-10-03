@@ -25,7 +25,7 @@ final class PostController extends AppController implements ControllerInterface
 		if ($post = $this->container->get('App\Model\PostRepository')->get((int) $id)) {
 			$user = $this->container->get('App\Model\UserRepository')->get($post->getAuthor());
 			$body = $this->response->getBody();
-			$body->write($this->render('post', array(
+			$body->write($this->render(APP_DIR . '/View/post.php', array(
 				'title'              => $post->getTitle(),
 				'description'        => $post->getExcerpt(),
 				'author'             => $user->getFirstName() . ' ' . $user->getSecondName(),
@@ -64,7 +64,7 @@ final class PostController extends AppController implements ControllerInterface
 		$sessionToken = $this->session->setToken('postEditToken');
 
 		$body = $this->response->getBody();
-		$body->write($this->render('post-edit', array(
+		$body->write($this->render(APP_DIR . '/View/post-edit.php', array(
 			'failureMessage'     => $this->session->get('postEditFailureMessage'),
 			'successMessage'     => $this->session->get('postEditSuccessMessage'),
 

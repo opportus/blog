@@ -19,7 +19,7 @@ abstract class AppController extends AbstractController
 	protected function action404()
 	{
 		$body = $this->response->getBody();
-		$body->write($this->render('_404', array(
+		$body->write($this->render(APP_DIR . '/View/_404.php', array(
 			'title'              => '404 Page Not Found',
 			'description'        => '404 page not found',
 			'author'             => '',
