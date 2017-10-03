@@ -104,6 +104,8 @@ class Response extends AbstractMessage implements ResponseInterface
 		$clone = clone $this;
 		$clone->statusCode = $code;
 		$clone->reasonPhrase = $reasonPhrase ? (string) $reasonPhrase : $clone->getReasonPhrase();
+
+		return $clone;
 	}
 
 	/**
