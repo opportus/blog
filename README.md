@@ -1,6 +1,6 @@
 ## About Hedo
 
-Hedo is (at least at this time) a very minimalistic and basic framework I've written as a school project but that I plan to maintain and develop as I use it for my personnal projects.<br />
+Hedo is (at least at this time) a lightweight framework I've written as a school project but that I plan to maintain and develop as I use it for my personnal projects.<br />
 
 ### The View System
 
