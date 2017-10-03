@@ -34,7 +34,10 @@ class Config
 	protected function init(array $files)
 	{
 		foreach ($files as $file) {
-			$this->set($file, null, require($file));
+			$setting = substr($file, 0, strpos($file, '.php'));
+			$setting = substr($setting, strrpos($setting, '/') + 1);
+
+			$this->set($setting, null, require($file));
 		}
 	}
 
@@ -42,10 +45,10 @@ class Config
 	 * Sets settings.
 	 *
 	 * @param  string $setting
-	 * @param  string $key
+	 * @param  string $key     Default:null
 	 * @param  mixed  $value
 	 */
-	public function set(string $setting, string $key, $value)
+	public function set(string $setting, string $key = null, $value)
 	{
 		if ($key) {
 			$this->settings[$setting][$key] = $value;
