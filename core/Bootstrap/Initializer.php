@@ -155,7 +155,14 @@ class Initializer
 
 		$container->set('Uri', function () use ($container) {
 			return new Uri(
-				$_SERVER['REQUEST_URI']
+				$_SERVER['REQUEST_SCHEME'],
+				isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '',
+				isset($_SERVER['PHP_AUTH_USER_PW']) ? $_SERVER['PHP_AUTH_USER_PW'] : '',
+				$_SERVER['HTTP_HOST'],
+				(int) $_SERVER['SERVER_PORT'],
+				current(explode('?', $_SERVER['REQUEST_URI'])),
+				$_SERVER['QUERY_STRING'],
+				''
 			);
 		});
 

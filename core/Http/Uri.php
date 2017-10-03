@@ -68,33 +68,47 @@ class Uri implements UriInterface
 	/**
 	 * Constructor.
 	 *
-	 * @param string $uri
+	 * @param string $scheme
+	 * @param string $user
+	 * @param string $pass
+	 * @param string $host
+	 * @param int    $port
+	 * @param string $path
+	 * @param string $query
+	 * @param string $fragment
 	 */
-	public function __construct(string $uri)
+	public function __construct(string $scheme, string $user, string $pass, string $host, int $port, string $path, string $query, string $fragment)
 	{
-		$this->init($uri);
+		$this->init($scheme, $user, $pass, $host, $port, $path, $query, $fragment);
 	}
 
 	/**
 	 * Initializes the URI.
-	 *
-	 * @param string $uri
+	 **
+	 * @param string $scheme
+	 * @param string $user
+	 * @param string $pass
+	 * @param string $host
+	 * @param int    $port
+	 * @param string $path
+	 * @param string $query
+	 * @param string $fragment
 	 */
-	protected function init(string $uri)
-	{	
-		$components = parse_url($uri);
-
-		if ($components === false) {
-			throw new InvalidArgumentException('The URI injected in ' . __CLASS__ . ' is malformed.');
-		}
-
-		foreach ($components as $component => $value) {
-			$normalize         = 'normalize' . ucfirst($component);
-			$this->component  = $this->$normalize($value);
-		}
-
+	protected function init(string $scheme, string $user, string $pass, string $host, int $port, string $path, string $query, string $fragment)
+	{
+		$this->scheme    = $this->normalizeScheme($scheme);
+		$this->user      = $this->normalizeUser($user);
+		$this->pass      = $this->normalizePass($pass);
+		$this->host      = $this->normalizeHost($host);
+		$this->port      = $this->normalizePort($port);
+		$this->path      = $this->normalizePath($path);
+		$this->query     = $this->normalizeQuery($query);
+		$this->fragment  = $this->normalizeFragment($fragment);
 		$this->userInfo  = $this->normalizeUserInfo($this->user, $this->pass);
 		$this->authority = $this->normalizeAuthority($this->host, $this->user, $this->pass, $this->port);
+
+		echo $this;
+		var_dump($this);
 	}
 
 	/**
@@ -351,7 +365,7 @@ class Uri implements UriInterface
 	public function normalizeScheme($scheme)
 	{
 		if (! is_string($scheme)) {
-			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument.');	
+			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument');	
 		}
 
 		return strtolower($scheme);
@@ -367,7 +381,7 @@ class Uri implements UriInterface
 	public function normalizeUser($user)
 	{
 		if (! is_string($user)) {
-			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument.');	
+			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument');	
 		}
 
 		return $user;
@@ -383,7 +397,7 @@ class Uri implements UriInterface
 	public function normalizePass($pass)
 	{
 		if (! is_string($pass)) {
-			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument.');	
+			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument');	
 		}
 
 		return $pass;
@@ -399,7 +413,7 @@ class Uri implements UriInterface
 	public function normalizeHost($host)
 	{
 		if (! is_string($host)) {
-			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument.');	
+			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument');
 		}
 
 		return strtolower($host);
@@ -415,7 +429,7 @@ class Uri implements UriInterface
 	public function normalizePort($port)
 	{
 		if ((! is_int($port) && ! is_null($port)) || ($port < 1 && $port > 0xFFFF)) {
-			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only integer in range from 1 to 0xFFFF or null as first argument.');
+			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only integer in range from 1 to 0xFFFF or null as first argument');
 		}
 
 		$scheme = $this->getScheme();
@@ -488,7 +502,7 @@ class Uri implements UriInterface
 	public function normalizePath($path)
 	{
 		if (! is_string($path)) {
-			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument.');	
+			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument');	
 		}
 
 		return preg_replace_callback(
@@ -510,7 +524,7 @@ class Uri implements UriInterface
 	public function normalizeQuery($query)
 	{
 		if (! is_string($query)) {
-			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument.');	
+			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument');	
 		}
 
 		return preg_replace_callback(
@@ -532,7 +546,7 @@ class Uri implements UriInterface
 	public function normalizeFragment($fragment)
 	{
 		if (! is_string($fragment)) {
-			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument.');	
+			throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . '() accepts only string as first argument');	
 		}
 
 		return preg_replace_callback(
@@ -615,7 +629,6 @@ class Uri implements UriInterface
 			}
 		}
 
-		$string .= $path ? $path : $path;
 		$string .= $query ? '?' . $query : $query;
 		$string .= $fragment ? '#' . $fragment : $fragment;
 
