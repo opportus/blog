@@ -106,42 +106,54 @@ class Initializer
 		$container->set('Autoloader', function () {
 			return new Autoloader();
 		});
+
 		$container->set('Config', function () {
 			return new Config(
-				require(CONFIG_DIR . '/dic.php'),
-				require(CONFIG_DIR . '/namespaces.php'),
-				require(CONFIG_DIR . '/db.php'),
-				require(CONFIG_DIR . '/routes.php'),
-				require(CONFIG_DIR . '/app.php')
+				array(
+					CONFIG_DIR . '/app.php',
+					CONFIG_DIR . '/container.php',
+					CONFIG_DIR . '/database.php',
+					CONFIG_DIR . '/locale.php',
+					CONFIG_DIR . '/logger.php',
+					CONFIG_DIR . '/namespace.php',
+					CONFIG_DIR . '/router.php',
+					CONFIG_DIR . '/security.php',
+				)
 			);
 		});
+
 		$container->set('Toolbox', function () use ($container) {
 			return new Toolbox(
 				$container->get('Config')
 			);
 		});
+
 		$container->set('Gateway', function () use ($container) {
 			return new Gateway(
 				$container->get('Config'),
 				$container->get('Toolbox')
 			);
 		});
+
 		$container->set('Session', function () use ($container) {
 			return new Session(
 				$container->get('Config'),
 				$container->get('Toolbox')
 			);
 		});
+
 		$container->set('Stream', function () use ($container) {
 			return new Stream(
 				fopen('php://temp', 'r+')
 			);
 		});
+
 		$container->set('Uri', function () use ($container) {
 			return new Uri(
 				$_SERVER['REQUEST_URI']
 			);
 		});
+
 		$container->set('Request', function () use ($container) {
 			return new Request(
 				$_SERVER['SERVER_PROTOCOL'],
@@ -151,6 +163,7 @@ class Initializer
 				$container->get('Uri')
 			);
 		});
+
 		$container->set('Response', function () use ($container) {
 			return new Response(
 				$container->get('Request')->getProtocolVersion(),
@@ -159,12 +172,15 @@ class Initializer
 				$container->get('Request')->getBody()
 			);
 		});
+
 		//$container->set('ServerRequest', function () {
 		//	return new ServerRequest();
 		//});
+
 		//$container->set('UploadedFile', function () {
 		//	return new UploadedFile();
 		//});
+
 		$container->set('Router', function () use ($container) {
 			return new Router(
 				$container->get('Config'),
@@ -172,6 +188,7 @@ class Initializer
 				$container->get('Request')
 			);
 		});
+
 		$container->set('Dispatcher', function () use ($container) {
 			return new Dispatcher(
 				$container->get('Config'),
@@ -184,7 +201,7 @@ class Initializer
 			);
 		});
 
-		foreach (require(CONFIG_DIR . '/dic.php') as $alias => $resolver) {
+		foreach (require(CONFIG_DIR . '/container.php') as $alias => $resolver) {
 			$container->set($alias, $resolver);
 		}
 	}
@@ -204,7 +221,7 @@ class Initializer
 		$autoloader->registerNamespace(SERVICE_NS, SERVICE_DIR);
 		$autoloader->registerNamespace('Psr\Http\Message', CORE_DIR . '/vendors/psr/http-message');
 
-		foreach (require(CONFIG_DIR . '/namespaces.php') as $namespace => $dirs) {
+		foreach (require(CONFIG_DIR . '/namespace.php') as $namespace => $dirs) {
 			foreach ($dirs as $dir) {
 				$autoloader->registerNamespace($namespace, $dir);
 			}

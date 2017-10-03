@@ -111,7 +111,7 @@ class Dispatcher
 			call_user_func_array(array($this->controller, $this->router->getRoute('action')), $this->router->getRoute('params'));
 
 		} catch (Exception $e) {
-			if ($this->config->getApp('debug') >= 1) {
+			if ($this->config->get('logger', 'debug') >= 1) {
 				error_log($e->getMessage());
 			}
 

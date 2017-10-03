@@ -12,135 +12,68 @@ namespace Hedo\Abstraction;
 class Config
 {
 	/**
-	 * @var array $dic
+	 * @var array $settings
 	 */
-	protected $dic = array();
-
-	/**
-	 * @var array $namespaces
-	 */
-	protected $namespaces = array();
-
-	/**
-	 * @var array $db
-	 */
-	protected $db = array();
-
-	/**
-	 * @var array $routes
-	 */
-	protected $routes = array();
-
-	/**
-	 * @var array $app
-	 */
-	protected $app = array();
+	protected $settings;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param array $dic
-	 * @param array $namespaces
-	 * @param array $db
-	 * @param array $routes
-	 * @param array $app
+	 * @param array $files
 	 */
-	public function __construct(array $dic, array $namespaces, array $db, array $routes, array $app)
+	public function __construct(array $files)
 	{
-		$this->init($dic, $namespaces, $db, $routes, $app);
+		$this->init($files);
 	}
 
 	/**
 	 * Initializes the config.
 	 *
-	 * @param array $dic
-	 * @param array $namespaces
-	 * @param array $db
-	 * @param array $routes
-	 * @param array $app
+	 * @param array $files
 	 */
-	protected function init(array $dic, array $namespaces, array $db, array $routes, array $app)
+	protected function init(array $files)
 	{
-		$this->dic        = $dic;
-		$this->namespaces = $namespaces;
-		$this->db         = $db;
-		$this->routes     = $routes;
-		$this->app        = $app;
+		foreach ($files as $file) {
+			$this->set($file, null, require($file));
+		}
 	}
 
 	/**
-	 * Gets DIC configuration.
+	 * Sets settings.
 	 *
-	 * @param  string $setting    Default: ''
-	 * @return array  $this->dic
+	 * @param  string $setting
+	 * @param  string $key
+	 * @param  mixed  $value
 	 */
-	public function getDic($setting = '')
+	public function set(string $setting, string $key, $value)
 	{
-		if (isset($this->dic[$setting])) {
-			return $this->dic[$setting];
-		}
+		if ($key) {
+			$this->settings[$setting][$key] = $value;
 
-		return $this->dic;
+		} else {
+			$this->settings[$setting] = (array) $value;
+		}
 	}
 
 	/**
-	 * Gets namespaces configuration.
+	 * Gets settings.
 	 *
-	 * @param  string $setting           Default: ''
-	 * @return array  $this->namespaces
+	 * @param  string $setting
+	 * @param  string $key     Default:null
+	 * @return mixed
 	 */
-	public function getNamespaces($setting = '')
+	public function get(string $setting, string $key = null)
 	{
-		if (isset($this->namespaces[$setting])) {
-			return $this->namespaces[$setting];
+		if ($key !== null) {
+			if (isset($this->settings[$setting][$key])) {
+				return $this->settings[$setting][$key];
+			}
+
+		} elseif (isset($this->settings[$setting]) {
+			return $this->settings[$setting];
 		}
 
-		return $this->namespaces;
-	}
-
-	/**
-	 * Gets database configuration.
-	 *
-	 * @param  string $setting   Default: ''
-	 * @return array  $this->db
-	 */
-	public function getDb($setting = '')
-	{
-		if (isset($this->db[$setting])) {
-			return $this->db[$setting];
-		}
-
-		return $this->db;
-	}
-
-	/**
-	 * Gets routes configuration.
-	 *
-	 * @param  string $setting       Default: ''
-	 * @return array  $this->routes
-	 */
-	public function getRoutes($setting = '')
-	{
-		if (isset($this->routes[$setting])) {
-			return $this->routes[$setting];
-		}
-
-		return $this->routes;
-	}
-
-	/**
-	 * Gets app configuration.
-	 *
-	 * @param  string $setting    Default: ''
-	 * @return array  $this->app
-	 */
-	public function getApp($setting = '')
-	{
-		if (isset($this->app[$setting])) {
-			return $this->app[$setting];
-		}
-
-		return $this->app;
+		return false;
 	}
 }
 

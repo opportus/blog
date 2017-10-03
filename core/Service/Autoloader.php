@@ -25,6 +25,31 @@ class Autoloader
 	}
 
 	/**
+	 * Registers a namespace for a directory.
+	 *
+	 * @param string $namespace
+	 * @param string $dir
+	 * @param bool   $prepend
+	 */
+	public function registerNamespace($namespace, $dir, $prepend = false)
+	{
+		// Normalizes params...
+		$namespace = trim($namespace, '\\') . '\\';
+		$dir       = rtrim($dir, '/') . '/';
+
+		if (isset($this->namespaces[$namespace]) === false) {
+			$this->namespaces[$namespace] = array();
+		}
+
+		if ($prepend) {
+			array_unshift($this->namespaces[$namespace], $dir);
+
+		} else {
+			array_push($this->namespaces[$namespace], $dir);
+		}
+	}
+
+	/**
 	 * Registers SPL autoload callback.
 	 */
 	protected function registerAutoload()
@@ -96,31 +121,6 @@ class Autoloader
 		}
 
 		return false;
-	}
-
-	/**
-	 * Registers a namespace for a directory.
-	 *
-	 * @param string $namespace
-	 * @param string $dir
-	 * @param bool   $prepend
-	 */
-	public function registerNamespace($namespace, $dir, $prepend = false)
-	{
-		// Normalizes params...
-		$namespace = trim($namespace, '\\') . '\\';
-		$dir       = rtrim($dir, '/') . '/';
-
-		if (isset($this->namespaces[$namespace]) === false) {
-			$this->namespaces[$namespace] = array();
-		}
-
-		if ($prepend) {
-			array_unshift($this->namespaces[$namespace], $dir);
-
-		} else {
-			array_push($this->namespaces[$namespace], $dir);
-		}
 	}
 }
 
