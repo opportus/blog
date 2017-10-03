@@ -3,6 +3,7 @@
 namespace Hedo\Base;
 
 use Hedo\Abstraction\Gateway;
+
 use \InvalidArgumentException;
 
 /**
