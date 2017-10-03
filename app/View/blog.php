@@ -18,7 +18,7 @@
 	<!-- Posts -->
 	<?php foreach ($posts as $post): ?>
 		<article>
-			<a href="<?php echo $toolbox->sanitizeUrl($config->getApp('url') . '/post/' . $post['id']); ?>" style="color:inherit;text-decoration:none;">
+			<a href="<?php echo $toolbox->sanitizeUrl($config->get('app', 'url') . '/post/' . $post['id']); ?>" style="color:inherit;text-decoration:none;">
 				<!-- Title -->
 				<h2><?php echo $toolbox->sanitizeString($post['title']); ?></h2>
 				<!-- Date/Time -->

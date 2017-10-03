@@ -36,8 +36,8 @@ final class PostController extends AppController implements ControllerInterface
 				'imageUrl'           => $post->getImage() !== null ? $this->container->get('App\Model\ImageRepository')->get($post->getImage())->getUrl() : '',
 				'imageAlt'           => $post->getImage() !== null ? $this->container->get('App\Model\ImageRepository')->get($post->getImage())->getAlt() : '',
 				'imageTitle'         => $post->getImage() !== null ? $this->container->get('App\Model\ImageRepository')->get($post->getImage())->getTitle() : '',
-				'menuItems'          => $this->config->getApp('frontMenuItems'),
-				'menuItemsRightHand' => $this->config->getApp('frontMenuItemsRightHand'),
+				'menuItems'          => $this->config->get('app', 'frontMenuItems'),
+				'menuItemsRightHand' => $this->config->get('app', 'frontMenuItemsRightHand'),
 			)));
 
 			$this->response->withBody($body)->send();
@@ -82,8 +82,8 @@ final class PostController extends AppController implements ControllerInterface
 
 			'token'              => $this->toolbox->generateToken('PostController/edit', $sessionToken),
 
-			'menuItems'          => $this->config->getApp('backMenuItems'),
-			'menuItemsRightHand' => $this->config->getApp('backMenuItemsRightHand'),
+			'menuItems'          => $this->config->get('app', 'backMenuItems'),
+			'menuItemsRightHand' => $this->config->get('app', 'backMenuItemsRightHand'),
 		)));
 
 		$this->session->unset('postEditFailureMessage');
@@ -149,7 +149,7 @@ final class PostController extends AppController implements ControllerInterface
 			$this->session->set('postEditFailureMessage', $message);
 
 		} finally {
-			$this->response->withHeader('Location: ' . $this->config->getApp('url') . '/cockpit/post/edit/' . $id)->send();
+			$this->response->withHeader('Location: ' . $this->config->get('app', 'url') . '/cockpit/post/edit/' . $id)->send();
 
 			exit;
 		}
@@ -186,7 +186,7 @@ final class PostController extends AppController implements ControllerInterface
 			$this->session->set('postEditFailureMessage', $message);
 
 		} finally {
-			$this->response->withHeader('Location: ' . $this->config->getApp('url') . '/cockpit/post/edit/')->send();
+			$this->response->withHeader('Location: ' . $this->config->get('app', 'url') . '/cockpit/post/edit/')->send();
 
 			exit;
 		}

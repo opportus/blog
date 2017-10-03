@@ -27,7 +27,7 @@
 			<?php echo $toolbox->sanitizeString($successNotif); ?>
 		</div>
 	<?php endif;?>
-	<form method="post" action="<?php echo $toolbox->sanitizeUrl($config->getApp('url') . '/contact/'); ?>">
+	<form method="post" action="<?php echo $toolbox->sanitizeUrl($config->get('app', 'url') . '/contact/'); ?>">
 		<div class="form-group row">
 			<div class="col-md-6">
 				<input id="email" name="email" class="form-control" type="email" placeholder="Your email..." value="<?php echo $toolbox->sanitizeString($email); ?>" required>

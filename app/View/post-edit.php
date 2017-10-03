@@ -20,7 +20,7 @@
 	<?php endif;?>
 	<?php if ('' !== $postId) : ?>
 	<div>
-		<a class="btn btn-default" href="<?php echo $toolbox->sanitizeUrl($config->getApp('url') . '/post/' . $postId); ?>">View the Post</a>
+		<a class="btn btn-default" href="<?php echo $toolbox->sanitizeUrl($config->get('app', 'url') . '/post/' . $postId); ?>">View the Post</a>
 	</div>
 	<?php endif; ?>
 	<header>
@@ -56,9 +56,9 @@
 		</div>
 		<div>
 			<input id="token" name="token" type="hidden" value="<?php echo $token; ?>">
-			<button type="submit" class="btn btn-default" formaction="<?php echo $toolbox->sanitizeUrl($config->getApp('url') . '/cockpit/post/save/' . $postId); ?>">Save</button>
+			<button type="submit" class="btn btn-default" formaction="<?php echo $toolbox->sanitizeUrl($config->get('app', 'url') . '/cockpit/post/save/' . $postId); ?>">Save</button>
 			<?php if ($postId) : ?>
-				<button type="submit" class="btn btn-danger" formaction="<?php echo $toolbox->sanitizeUrl($config->getApp('url') . '/cockpit/post/delete/' . $postId); ?>">Delete</button>
+				<button type="submit" class="btn btn-danger" formaction="<?php echo $toolbox->sanitizeUrl($config->get('app', 'url') . '/cockpit/post/delete/' . $postId); ?>">Delete</button>
 			<?php endif; ?>
 		</div>
 	</form>

@@ -38,8 +38,8 @@ final class BlogController extends AppController implements ControllerInterface
 			'description'        => 'My Blog',
 			'author'             => '',
 			'posts'              => $posts,
-			'menuItems'          => $this->config->getApp('frontMenuItems'),
-			'menuItemsRightHand' => $this->config->getApp('frontMenuItemsRightHand'),
+			'menuItems'          => $this->config->get('app', 'frontMenuItems'),
+			'menuItemsRightHand' => $this->config->get('app', 'frontMenuItemsRightHand'),
 		)));
 
 		$this->response->withBody($body)->send();

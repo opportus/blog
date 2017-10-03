@@ -11,7 +11,7 @@
 <!-- Post Content -->
 <div>
 	<!-- Edit Button -->
-	<div><a class="btn btn-default" href="<?php echo $toolbox->sanitizeUrl($config->getApp('url') . '/cockpit/post/edit/' . $id); ?>">Edit post</a></div>
+	<div><a class="btn btn-default" href="<?php echo $toolbox->sanitizeUrl($config->get('app', 'url') . '/cockpit/post/edit/' . $id); ?>">Edit post</a></div>
 	<!-- Title -->
 	<header class="page-header">
 		<h1><?php echo $toolbox->sanitizeString($title); ?></h1>

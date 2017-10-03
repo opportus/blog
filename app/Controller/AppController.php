@@ -23,8 +23,8 @@ abstract class AppController extends AbstractController
 			'title'              => '404 Page Not Found',
 			'description'        => '404 page not found',
 			'author'             => '',
-			'menuItems'          => $this->config->getApp('frontMenuItems'),
-			'menuItemsRightHand' => $this->config->getApp('frontMenuItemsRightHand'),
+			'menuItems'          => $this->config->get('app', 'frontMenuItems'),
+			'menuItemsRightHand' => $this->config->get('app', 'frontMenuItemsRightHand'),
 		)));
 
 		$this->response->withStatus(404)->withBody($body)->send();

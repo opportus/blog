@@ -32,8 +32,8 @@ final class HomeController extends AppController implements ControllerInterface
 			'message'            => $this->session->get('contactFormMessage'),
 			'token'              => $this->toolbox->generateToken('HomeController/view', $sessionToken),
 
-			'menuItems'          => $this->config->getApp('frontMenuItems'),
-			'menuItemsRightHand' => $this->config->getApp('frontMenuItemsRightHand'),
+			'menuItems'          => $this->config->get('app', 'frontMenuItems'),
+			'menuItemsRightHand' => $this->config->get('app', 'frontMenuItemsRightHand'),
 		)));
 
 		$this->response->withBody($body)->send();
@@ -77,8 +77,8 @@ final class HomeController extends AppController implements ControllerInterface
 			$this->session->set('contactFormFailureNotification', implode(' - ', $errors));
 			
 		} else {
-			$to       = $this->config->getApp('adminEmail');
-			$subject  = 'Mail From ' . $this->config->getApp('name') . ' Contact Form';
+			$to       = $this->config->get('app', 'adminEmail');
+			$subject  = 'Mail From ' . $this->config->get('app', 'name') . ' Contact Form';
 			$headers  = 'From: "' . $name . '"<' . $email . ">\r\n";
 			$headers .= 'Reply-to: "' . $name . '"<' . $email . ">\r\n";
 			$headers .= 'MIME-Version: 1.0' . "\r\n";

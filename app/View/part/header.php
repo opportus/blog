@@ -47,11 +47,11 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="<?php echo $toolbox->sanitizeUrl($config->getApp('url')); ?>">
+					<a class="navbar-brand" href="<?php echo $toolbox->sanitizeUrl($config->get('app', 'url')); ?>">
 						<?php if (isset($logo)) : ?>
 							<img class="navbar-brand" src="<?php echo $toolbox->sanitizeUrl($logo['url']); ?>" title="<?php echo $toolbox->sanitizeString($logo['title']); ?>" alt="<?php echo $toolbox->sanitizeString($logo['alt']); ?>" style="<?php echo $toolbox->sanitizeString($logo['style']); ?>">
 						<?php else : ?>
-							<?php echo $toolbox->sanitizeString($config->getApp('name')); ?>
+							<?php echo $toolbox->sanitizeString($config->get('app', 'name')); ?>
 						<?php endif;?>
 					</a>
 				</div>
