@@ -72,7 +72,7 @@ class Config
 				return $this->settings[$setting][$key];
 			}
 
-		} elseif (isset($this->settings[$setting]) {
+		} elseif (isset($this->settings[$setting])) {
 			return $this->settings[$setting];
 		}
 
