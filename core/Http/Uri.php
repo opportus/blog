@@ -106,8 +106,6 @@ class Uri implements UriInterface
 		$this->fragment  = $this->normalizeFragment($fragment);
 		$this->userInfo  = $this->normalizeUserInfo($this->user, $this->pass);
 		$this->authority = $this->normalizeAuthority($this->host, $this->user, $this->pass, $this->port);
-
-		echo $this;
 	}
 
 	/**
