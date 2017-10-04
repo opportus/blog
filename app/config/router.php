@@ -40,5 +40,15 @@ return array(
 		'controller' => 'App\Controller\_404Controller',
 		'action'     => 'view',
 	),
+	/**
+	 * ----------------------
+	 *    PATH  |  ENDPOINT
+	 * ---------|------------
+	 * '#^/?$#' => array(
+	 *
+ 	 *     'controller' => 'App\AppController',
+	 *     'action'     => 'view'
+	 * )
+	 */
 );
 

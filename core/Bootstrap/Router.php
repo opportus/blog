@@ -31,9 +31,14 @@ class Router
 	protected $request;
 
 	/**
-	 * @var array $route
+	 * @var array $routes
 	 */
-	protected $route = array();
+	protected $routes = array();
+
+	/**
+	 * @var array $endpoint
+	 */
+	protected $endpoint;
 
 	/**
 	 * Constructor.
@@ -60,39 +65,64 @@ class Router
 		$this->toolbox = $toolbox;
 		$this->request = $request;
 
-		$this->setRoute();
+		foreach ($this->config->get('router') as $path => $endpoint) {
+			$this->registerRoute($path, $endpoint);
+		}
+
+		$this->resolveRoute();
 	}
 
 	/**
-	 * Sets the route.
+	 * Registers the route.
+	 *
+	 * @param string $path
+	 * @param array  $endpoint
 	 */
-	protected function setRoute()
+	public function registerRoute(string $path, array $endpoint)
 	{
-		foreach ($this->config->get('router') as $route => $settings) {
-			if (preg_match($route, $this->request->getUri()->getPath(), $matches)) {
-				$this->route['controller'] = isset($settings['controller']) ? $settings['controller'] : '';
-				$this->route['action']     = isset($settings['action']) ? $settings['action'] : '';
-				$this->route['params']     = isset($matches[1]) ? explode('/', trim($matches[1], '/')) : array('');
+		$this->routes[$path] = $endpoint;
+	}
+
+
+	/**
+	 * Resolves the route.
+	 *
+	 * @return array $this->endpoint
+	 */
+	public function resolveRoute()
+	{
+		foreach ($this->routes as $path => $endpoint) {
+			if (preg_match($path, $this->request->getUri()->getPath(), $matches)) {
+				$this->endpoint['controller'] = $endpoint['controller'];
+				$this->endpoint['action']     = $endpoint['action'];
+				$this->endpoint['params']     = isset($matches[1]) ? explode('/', trim($matches[1], '/')) : array('');
 
 				break;
 			}
 		}
+
+		return $this->endpoint;
 	}
 	
 	/**
-	 * Gets the route.
+	 * Gets the endpoint.
 	 *
-	 * @param  string       $segment 3 possibilities: 'controller', 'action', 'params'
-	 * @return string|array
+	 * @param  string $endpoint
+	 * @return mixed
 	 */
-	public function getRoute($segment = '')
+	public function getEndpoint(string $endpoint = '')
 	{
-		if (isset($this->route[$segment])) {
-			return $this->route[$segment];
-		} elseif ('' === $segment) {
-			return $this->route;
-		} else {
-			return '';
+		$endpoint = strtolower($endpoint);
+
+		switch ($endpoint) {
+			case '':
+				return $this->endpoint;
+			case 'controller':
+			case 'action':
+			case 'params':
+				return $this->endpoint[$endpoint];
+			default:
+				return false;
 		}
 	}
 }
