@@ -10,7 +10,7 @@
 return array(
 	/**
 	 * ----------------------
-	 *   ROUTE  |  RESOLVER
+	 *    PATH  |  ENDPOINT
 	 * ---------|------------
 	 * '#^/?$#' => array(
 	 *

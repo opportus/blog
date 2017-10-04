@@ -37,38 +37,54 @@ class AbstractComposer implements ComposerInterface
 	{
 		$this->container = $container;
 
-		$this->setControl();
+		$this->registerDependencies($this->container);
+		$this->registerNamespaces($this->container->get('Autoloader'));
+		$this->registerRoutes($this->container->get('Router'));
+
+		$this->dispatch();
 	}
 
 	/**
-	 * Sets control.
+	 * Registers dependencies.
+	 *
+	 * @param Container $container
 	 */
-	protected function setControl()
-	{
-		$this->dispatch();
-	}
+	protected function registerDependencies(Container $container) {}
+
+	/**
+	 * Registers namespaces.
+	 *
+	 * @param Autoloader $autoloader
+	 */
+	protected function registerNamespaces(Autoloader $autoloader) {}
+
+	/**
+	 * Registers routes.
+	 *
+	 * @param Router $router
+	 */
+	protected function registerRoutes(Router $router) {}
 
 	/**
 	 * Dispatches.
 	 */
 	protected function dispatch()
 	{
-		$controller = $this->container->get('Router')->getRoute('controller');
-		$action     = $this->container->get('Router')->getRoute('action');
-
+		$endpoint = $this->container->get('Router')->resolveRoute();
+		
 		try {
-			if (! class_exists($controller) || ! method_exists($controller, $action)) {
-				throw new Exception('Controller/Action not found ! Check your route and controller...');
+			if (! class_exists($endpoint['controller']) || ! method_exists($endpoint['controller'], $endpoint['action'])) {
+				throw new Exception('Controller/Action not found! Check your routes and endpoints...');
 			}
 
-			$controller = $this->container->get($controller);
+			$controller = $this->container->get($endpoint['controller']);
 
 			call_user_func_array(
 				array(
 					$controller,
-					$this->container->get('Router')->getRoute('action')
+					$endpoint['action']
 				),
-				$this->container->get('Router')->getRoute('params')
+				$endpoint['params']
 			);
 
 		} catch (Exception $e) {
