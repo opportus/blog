@@ -2,7 +2,9 @@
 
 namespace Hedo\Base;
 
+use Hedo\Service\Autoloader;
 use Hedo\Service\Container;
+use Hedo\Bootstrap\Router;
 
 /**
  * The abstract composer...

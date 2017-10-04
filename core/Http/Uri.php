@@ -108,7 +108,6 @@ class Uri implements UriInterface
 		$this->authority = $this->normalizeAuthority($this->host, $this->user, $this->pass, $this->port);
 
 		echo $this;
-		var_dump($this);
 	}
 
 	/**

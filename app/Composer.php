@@ -1,8 +1,11 @@
 <?php
 
-namespace Hedo\Bootstrap;
+namespace Hedo\App;
 
 use Hedo\Base\AbstractComposer;
+use Hedo\Service\Container;
+use Hedo\Service\Autoloader;
+use Hedo\Bootstrap\Router;
 
 /**
  * The composer...

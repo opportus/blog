@@ -89,7 +89,7 @@ class Router
 	 *
 	 * @return array $this->endpoint
 	 */
-	protected function resolveRoute()
+	public function resolveRoute()
 	{
 		foreach ($this->routes as $path => $endpoint) {
 			if (preg_match($path, $this->request->getUri()->getPath(), $matches)) {

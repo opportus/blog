@@ -3,6 +3,7 @@
 namespace Hedo\Bootstrap;
 
 use Hedo\Service\Autoloader;
+use Hedo\App\Composer;
 use Hedo\Abstraction\Config;
 use Hedo\Service\Container;
 use Hedo\Abstraction\Gateway;
@@ -76,6 +77,7 @@ class Initializer
 		define('WEBROOT_DIR',     APP_DIR  . '/webroot');
 
 		define('ABSTRACTION_NS', 'Hedo\Abstraction');
+		define('APP_NS',         'Hedo\App');
 		define('BASE_NS',        'Hedo\Base');
 		define('BOOTSTRAP_NS',   'Hedo\Bootstrap');
 		define('HTTP_NS',        'Hedo\Http');
@@ -103,8 +105,9 @@ class Initializer
 			return new Autoloader(
 				array(
 					ABSTRACTION_NS     => array(ABSTRACTION_DIR),
+					APP_NS             => array(APP_DIR),
 					BASE_NS            => array(BASE_DIR),
-					BOOTSTRAP_NS       => array(BOOTSTRAP_DIR, APP_DIR),
+					BOOTSTRAP_NS       => array(BOOTSTRAP_DIR),
 					HTTP_NS            => array(HTTP_DIR),
 					LIB_NS             => array(LIB_DIR),
 					SERVICE_NS         => array(SERVICE_DIR),
