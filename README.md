@@ -1,10 +1,9 @@
 ## About Hedo
 
-Hedo is (at least at this time) a lightweight framework I've written as a school project but that I plan to maintain and develop as I use it for my personnal projects.<br />
+Hedo is a simple, lightweight and flexible framework I've written as a school project but that I maintain and develop as I use it for my personnal projects.<br />
 
 ### The View System
 
-Architecture purists would argue that it's MVP and not MVC, however, I find it much more natural and straightforward to implement and use the views this way...<br />
 You implement your views as dumb HTML templates. Then in your controller...
 
 ```php
@@ -23,10 +22,11 @@ class MyController extends Core\Base\AbstractController
 
 Its basic ORM implements:
 
- - Data gateway pattern
- - Data mapper pattern
- - Repository pattern
- - Domain model pattern
+ - Data gateway
+ - Data mapper
+ - Repository
+ - Model factory
+ - Domain model
 
 ### PSR
 
