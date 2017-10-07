@@ -249,14 +249,14 @@ abstract class AbstractComposer
 		$settings  = array();
 
 		foreach (scandir(MODULE_DIR) as $module) {
-			if ($module === '.' || $module === '..' || is_file($module)) {
+			if ($module === '.' || $module === '..' || is_file(MODULE_DIR . '/' . $module)) {
 				continue;
 			}
 
 			$moduleConfigDir = MODULE_DIR . '/' . $module . '/config';
 
 			foreach (scandir($moduleConfigDir) as $file) {
-				if ($file === '.' || $file === '..' || is_dir($file)) {
+				if ($file === '.' || $file === '..' || is_dir($moduleConfigDir . '/' . $file)) {
 					continue;
 				}
 
