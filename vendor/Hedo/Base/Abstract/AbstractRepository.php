@@ -130,7 +130,7 @@ abstract class AbstractRepository implements RepositoryInterface
 	 * Adds the model.
 	 *
 	 * @param  AbstractModel $model
-	 * @return int           $model->id
+	 * @return int|null      $model->id
 	 */
 	public function add(AbstractModel $model)
 	{

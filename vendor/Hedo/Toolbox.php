@@ -166,12 +166,12 @@ class Toolbox
 	/**
 	 * Formats/Sanitizes datetime.
 	 *
-	 * @param  string $datetime
-	 * @param  string $format   Default: ''
-	 * @param  string $type     Default: 'datetime' Possible values: 'datetime', 'date', 'time'
+	 * @param  string $datetime Default:''
+	 * @param  string $format   Default:''
+	 * @param  string $type     Default:'datetime' Possible values: 'datetime', 'date', 'time'
 	 * @return string
 	 */
-	public function formatDatetime($datetime, $format = '', $type = 'datetime')
+	public function formatDatetime($datetime = '', $format = '', $type = 'datetime')
 	{
 		$datetimeFormatter = new DateTime($datetime);
 
@@ -196,20 +196,20 @@ class Toolbox
 						break;
 				}
 
-				$intlDatetimeFormatter = new \IntlDateFormatter($this->config->get('app', 'locale', 'locale'), $dateType, $timeType);
+				$intlDatetimeFormatter = new \IntlDateFormatter($this->config->get('App', 'locale', 'locale'), $dateType, $timeType);
 
 				return ucwords($intlDatetimeFormatter->format($datetimeFormatter));
 
 			} else {
 				switch ($type) {
 					case 'datetime':
-						$format = $this->config->get('app', 'locale', 'defaultDateFormat') . ' ' . $this->config->get('app', 'locale', 'defaultTimeFormat');
+						$format = $this->config->get('App', 'locale', 'defaultDateFormat') . ' ' . $this->config->get('app', 'locale', 'defaultTimeFormat');
 						break;
 					case 'date':
-						$format = $this->config->get('app', 'locale', 'defaultDateFormat');
+						$format = $this->config->get('App', 'locale', 'defaultDateFormat');
 						break;
 					case 'time':
-						$format = $this->config->get('app', 'locale', 'defaultTimeFormat');
+						$format = $this->config->get('App', 'locale', 'defaultTimeFormat');
 						break;
 				}
 			}
