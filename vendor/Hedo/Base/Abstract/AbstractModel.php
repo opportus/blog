@@ -46,7 +46,7 @@ abstract class AbstractModel implements ModelInterface
 	 * Hydrates the model with the passed data.
 	 *
 	 * @param  array $data
-	 * @return mixed
+	 * @return array
 	 */
 	public function hydrate(array $data)
 	{
@@ -69,7 +69,7 @@ abstract class AbstractModel implements ModelInterface
 			}
 		}
 
-		return $errors ? $errors : false;
+		return $errors;
 	}
 
 	/**

@@ -95,7 +95,7 @@ abstract class AbstractMapper implements MapperInterface
 	{
 		$params['table'] = $this->table;
 
-		return $this->filterRawData($this->gateway->read($params));
+		return $this->convertColumnToProperty($this->gateway->read($params));
 	}
 
 	/**
@@ -125,21 +125,26 @@ abstract class AbstractMapper implements MapperInterface
 	}
 
 	/**
-	 * Filters raw data.
+	 * Converts table's column name based on model's property naming convention.
 	 *
-	 * @param  array $rawData
-	 * @return array $data
+	 * @param  array $resultSet
+	 * @return array $convertedResultSet
 	 */
-	protected function filterRawData($rawData)
+	protected function convertColumnToProperty($resultSet)
 	{
-		$data = array();
+		$convertedResultSet = array();
+		$modelData          = array();
 
-		foreach ($rawData as $field => $value) {
-			$property = lcfirst(str_replace('_', '', ucwords($field, '_')));
-			$data[$property] = $value;
+		foreach ($resultSet as $key => $result) {
+			foreach ($result as $column => $value) {
+				$modelProperty = lcfirst(str_replace('_', '', ucwords($column, '_')));
+				$modelData[$modelProperty] = $value;
+			}
+
+			$convertedResultSet[$key] = $modelData;
 		}
 
-		return $data;
+		return $convertedResultSet;
 	}
 }
 
