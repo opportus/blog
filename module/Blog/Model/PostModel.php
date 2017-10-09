@@ -102,7 +102,7 @@ class PostModel extends AbstractModel implements ModelInterface
 	 */
 	public function setAuthor($author)
 	{
-		if ($this->toolbox->validateString($author)) {
+		if ('' !== $author && $this->toolbox->validateString($author)) {
 			$this->author = $this->toolbox->sanitizeString($author);
 			return true;
 
@@ -119,7 +119,7 @@ class PostModel extends AbstractModel implements ModelInterface
 	 */
 	public function setCreatedAt($createdAt)
 	{
-		if ($this->toolbox->validateDatetime($createdAt, 'Y-m-d H:i:s')) {
+		if ('' !== $createdAt && $this->toolbox->validateDatetime($createdAt, 'Y-m-d H:i:s')) {
 			$this->createdAt = $this->toolbox->formatDatetime($createdAt, 'Y-m-d H:i:s');
 			return true;
 
@@ -182,7 +182,8 @@ class PostModel extends AbstractModel implements ModelInterface
 	/**
 	 * Sanitizes/Sets content.
 	 *
-	 * @param string $content
+	 * @param  string $content
+	 * @return bool
 	 */
 	public function setContent($content)
 	{

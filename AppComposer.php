@@ -33,7 +33,7 @@ class AppComposer extends AbstractComposer
 		$this->init();
 
 		// Your stuff...
-
+		
 		$this->run();
 	}
 

@@ -9,7 +9,7 @@ return array(
 	'url' => 'http://clemc.me',
 
 	// The name of your app...
-	'name' => 'ClemC',
+	'name' => 'CLEMC.ME',
 
 	// The email address of the admin to which send the contact form's message...
 	'adminEmail' => 'opportus@gmail.com',

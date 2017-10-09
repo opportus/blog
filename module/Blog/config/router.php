@@ -33,6 +33,10 @@ return array(
 		'controller' => 'OC\Blog\Controller\PostController',
 		'action'     => 'delete',
 	),
+	'#^/oc/blog/(.+)$#i' => array(
+		'controller' => 'OC\Blog\Controller\AssetController',
+		'action'     => 'get',
+	),
 	'#^/(.+)#i' => array(
 		'controller' => 'OC\Blog\Controller\_404Controller',
 		'action'     => 'view',

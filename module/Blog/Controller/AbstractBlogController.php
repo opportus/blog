@@ -20,12 +20,47 @@ abstract class AbstractBlogController extends AbstractController implements Cont
 	protected function action404()
 	{
 		$body = $this->response->getBody();
-		$body->write($this->render(MODULE_DIR . '/blog/View/_404.php', array(
+		$body->write($this->render(MODULE_DIR . '/Blog/View/_404.php', array(
 			'title'              => '404 Page Not Found',
 			'description'        => '404 page not found',
 			'author'             => '',
-			'menuItems'          => $this->config->get('Blog', 'blog', 'menuItems'),
-			'menuItemsRightHand' => $this->config->get('Blog', 'blog', 'menuItemsRightHand'),
+			'menuItems'          => array(
+				array(
+					'name'  => 'ABOUT',
+					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#about'),
+					'title' => '',
+					'class' => '',
+					'style' => '',
+				),
+				array(
+					'name'  => 'PROJECTS',
+					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#projects'),
+					'title' => '',
+					'class' => '',
+					'style' => '',
+				),
+				array(
+					'name'  => 'CONTACT',
+					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#contact'),
+					'title' => '',
+					'class' => '',
+					'style' => '',
+				),
+				array(
+					'name'  => 'BLOG',
+					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/blog/'),
+					'title' => '',
+					'class' => '',
+					'style' => '',
+				),
+				array(
+					'name'  => 'WRITE',
+					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/cockpit/post/edit/'),
+					'title' => '',
+					'class' => '',
+					'style' => '',
+				),
+			),
 		)));
 
 		$this->response->withStatus(404)->withBody($body)->send();

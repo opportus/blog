@@ -23,17 +23,53 @@ final class HomeController extends AbstractBlogController implements ControllerI
 
 		$body = $this->response->getBody();
 		$body->write($this->render(MODULE_DIR . '/Blog/View/home.php', array(
-			'title'              => '',
-			'description'        => '',
-			'author'             => '',
+			'title'              => 'Clément Cazaud',
+			'description'        => 'Application Developer available for hire',
+			'author'             => 'Clément Cazaud',
+
 			'failureNotif'       => $this->session->get('contactFormFailureNotification'),
 			'successNotif'       => $this->session->get('contactFormSuccessNotification'),
 			'email'              => $this->session->get('contactFormEmail'),
 			'name'               => $this->session->get('contactFormName'),
 			'message'            => $this->session->get('contactFormMessage'),
 			'token'              => $this->toolbox->generateToken('ContactFormToken', $sessionToken),
-			'menuItems'          => $this->config->get('Blog', 'blog', 'menuItems'),
-			'menuItemsRightHand' => $this->config->get('Blog', 'blog', 'menuItemsRightHand'),
+			'menuItems'          => array(
+				array(
+					'name'  => 'ABOUT',
+					'link'  => '#about',
+					'title' => '',
+					'class' => 'scrollTo',
+					'style' => '',
+				),
+				array(
+					'name'  => 'PROJECTS',
+					'link'  => '#projects',
+					'title' => '',
+					'class' => 'scrollTo',
+					'style' => '',
+				),
+				array(
+					'name'  => 'CONTACT',
+					'link'  => '#contact',
+					'title' => '',
+					'class' => 'scrollTo',
+					'style' => '',
+				),
+				array(
+					'name'  => 'BLOG',
+					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/blog/'),
+					'title' => '',
+					'class' => '',
+					'style' => '',
+				),
+				array(
+					'name'  => 'WRITE',
+					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/cockpit/post/edit/'),
+					'title' => '',
+					'class' => '',
+					'style' => '',
+				),
+			),
 		)));
 
 		$this->response->withBody($body)->send();

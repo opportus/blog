@@ -33,8 +33,43 @@ final class PostController extends AbstractBlogController implements ControllerI
 				'excerpt'            => $post->getExcerpt(),
 				'content'            => $post->getContent(),
 				'id'                 => $post->getId(),
-				'menuItems'          => $this->config->get('Blog', 'blog', 'menuItems'),
-				'menuItemsRightHand' => $this->config->get('Blog', 'blog', 'menuItemsRightHand'),
+				'menuItems'          => array(
+					array(
+						'name'  => 'ABOUT',
+						'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#about'),
+						'title' => '',
+						'class' => '',
+						'style' => '',
+					),
+					array(
+						'name'  => 'PROJECTS',
+						'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#projects'),
+						'title' => '',
+						'class' => '',
+						'style' => '',
+					),
+					array(
+						'name'  => 'CONTACT',
+						'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#contact'),
+						'title' => '',
+						'class' => '',
+						'style' => '',
+					),
+					array(
+						'name'  => 'BLOG',
+						'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/blog/'),
+						'title' => '',
+						'class' => '',
+						'style' => '',
+					),
+					array(
+						'name'  => 'WRITE',
+						'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/cockpit/post/edit/'),
+						'title' => '',
+						'class' => '',
+						'style' => '',
+					),
+				),
 			)));
 
 			$this->response->withBody($body)->send();
@@ -61,6 +96,7 @@ final class PostController extends AbstractBlogController implements ControllerI
 		} else {
 			$post = $this->factories['postFactory']->create();
 		}
+
 		if ($this->session->get('postEditFailureMessage')) {
 			$post->setTitle($this->session->get('postEditTitle'));
 			$post->setSlug($this->session->get('postEditSlug'));
@@ -86,8 +122,43 @@ final class PostController extends AbstractBlogController implements ControllerI
 			'postTitle'          => is_null($post->getTitle()) ? '' : $post->getTitle(),
 			'postExcerpt'        => is_null($post->getExcerpt()) ? '' : $post->getExcerpt(),
 			'postContent'        => is_null($post->getContent()) ? '' : $post->getContent(),
-			'menuItems'          => $this->config->get('Blog', 'blog', 'menuItems'),
-			'menuItemsRightHand' => $this->config->get('Blog', 'blog', 'menuItemsRightHand'),
+			'menuItems'          => array(
+				array(
+					'name'  => 'ABOUT',
+					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#about'),
+					'title' => '',
+					'class' => '',
+					'style' => '',
+				),
+				array(
+					'name'  => 'PROJECTS',
+					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#projects'),
+					'title' => '',
+					'class' => '',
+					'style' => '',
+				),
+				array(
+					'name'  => 'CONTACT',
+					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#contact'),
+					'title' => '',
+					'class' => '',
+					'style' => '',
+				),
+				array(
+					'name'  => 'BLOG',
+					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/blog/'),
+					'title' => '',
+					'class' => '',
+					'style' => '',
+				),
+				array(
+					'name'  => 'WRITE',
+					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/cockpit/post/edit/'),
+					'title' => '',
+					'class' => '',
+					'style' => '',
+				),
+			),
 
 			'token'              => $this->toolbox->generateToken('postEditToken', $sessionToken),
 
@@ -117,32 +188,35 @@ final class PostController extends AbstractBlogController implements ControllerI
 			throw new Exception('Invalid token for IP: ' . $_SERVER['REMOTE_ADDR']);
 		}
 
-		$repository = $this->repositories['postRepository'];
-		$data       = array();
-		$errors     = array();
+		$repository     = $this->repositories['postRepository'];
+		$requiredFields = array('title', 'slug', 'author');
+		$errors         = array();
+		$data           = array();
 
 		switch ($id) {
 			case '' :
 				$post = $this->factories['postFactory']->create();
+				$data['createdAt'] = $this->toolbox->formatDatetime('', 'Y-m-d H:i:s');
 				break;
 			default :
 				$post = $repository->get((int) $id);
+				$data['updatedAt'] = $this->toolbox->formatDatetime('', 'Y-m-d H:i:s');
 				break;
 		}
 
 		foreach ($_POST as $key => $value) {
 			if (strpos($key, 'post') === 0) {
-				$property = lcfirst(str_replace('post', '', $key));
+				$property        = lcfirst(str_replace('post', '', $key));
 				$data[$property] = $value;
 			}
 		}
 
-		$errors = $post->hydrate($data);
+		$errors = array_diff($requiredFields, array_keys($data)) + $post->hydrate($data);
 
 		try {
-			$id = $repository->add($post);
-
 			if (! $errors) {
+				$id = $repository->add($post);
+
 				$message = 'Your post has succesfully been saved';
 
 				$this->session->set('postEditSuccessMessage', $message);

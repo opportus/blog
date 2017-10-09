@@ -57,6 +57,15 @@ return array(
 			$container->get('Hedo\Response')
 		);
 	},
+	'OC\Blog\Controller\AssetController' => function () use (&$container) {
+		return new OC\Blog\Controller\AssetController(
+			$container->get('Hedo\Config'),
+			$container->get('Hedo\Toolbox'),
+			$container->get('Hedo\Session'),
+			$container->get('Hedo\Request'),
+			$container->get('Hedo\Response')
+		);
+	},
 	'OC\Blog\Controller\_404Controller' => function () use (&$container) {
 		return new OC\Blog\Controller\_404Controller(
 			$container->get('Hedo\Config'),
