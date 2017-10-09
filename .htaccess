@@ -1,2 +1,2 @@
 RewriteEngine ON
-RewriteRule (.*) App/webroot/$1 [L]
+RewriteRule (.*) webroot/$1 [L]
