@@ -10,9 +10,9 @@
 return array(
 	'default' => array(
 		'dbHost'    => 'localhost',
-		'dbName'    => 'clemc',
-		'dbUser'    => 'clemc',
-		'dbPass'    => 'DnmCK301',
+		'dbName'    => '',
+		'dbUser'    => '',
+		'dbPass'    => '',
 		'dbOptions' => array(
 			'PDO:ATTR_PERSISTENT' => false,
 		)

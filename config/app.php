@@ -6,12 +6,12 @@
 
 return array(
 	// The url of your app...
-	'url' => 'http://clemc.me',
+	'url' => '',
 
 	// The name of your app...
-	'name' => 'CLEMC.ME',
+	'name' => '',
 
 	// The email address of the admin to which send the contact form's message...
-	'adminEmail' => 'opportus@gmail.com',
+	'adminEmail' => '',
 );
 
