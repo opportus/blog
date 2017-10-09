@@ -45,10 +45,8 @@ final class AssetController extends AbstractBlogController implements Controller
 				
 			}
 
-			$body = $this->response->getBody();
-			$body->write(file_get_contents($file));
-
-			$this->response->withHeader('Content-Type', 'text/css')->withBody($body)->send();
+			$this->response->withHeader('Content-Type', $contentType)->send();
+			readfile($file);
 
 			return;
 		}
