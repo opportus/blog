@@ -1,3 +1,2 @@
-App/webroot/img
-App/webroot/js
-App/webroot/css
+config/app.php
+config/database.php
