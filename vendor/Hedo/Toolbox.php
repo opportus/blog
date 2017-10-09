@@ -326,7 +326,7 @@ class Toolbox
 	 */
 	public function validateEmail($email)
 	{
-		return filter_var($email, FILTER_VALIDATE_EMAIL);
+		return $this->sanitizeEmail($email) === $email;
 	}
 
 	/**
@@ -337,7 +337,7 @@ class Toolbox
 	 */
 	public function validateUrl($url)
 	{
-		return filter_var($url, FILTER_VALIDATE_URL);
+		return $this->sanitizeUrl($url) === $url;
 	}
 
 	/**
