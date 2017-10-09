@@ -237,7 +237,7 @@ class Toolbox
 			} else {
 				switch ($type) {
 					case 'datetime':
-						$format = $this->config->get('App', 'locale', 'defaultDateFormat') . ' ' . $this->config->get('app', 'locale', 'defaultTimeFormat');
+						$format = $this->config->get('App', 'locale', 'defaultDateFormat') . ' ' . $this->config->get('App', 'locale', 'defaultTimeFormat');
 						break;
 					case 'date':
 						$format = $this->config->get('App', 'locale', 'defaultDateFormat');
