@@ -10,7 +10,7 @@ use \Datetime;
  * The toolbox...
  *
  * @version 0.0.1
- * @package Lib
+ * @package Hedo
  * @author  Clément Cazaud <opportus@gmail.com>
  *
  * @todo Implement more tools...
@@ -54,7 +54,7 @@ class Toolbox
 	}
 
 	/**
-	 * Sanitizes strings.
+	 * Sanitizes string.
 	 *
 	 * @param  string $string
 	 * @return string
@@ -65,7 +65,7 @@ class Toolbox
 	}
 
 	/**
-	 * Sanitizes SQL query strings.
+	 * Sanitize key.
 	 *
 	 * @param  string $key
 	 * @return string $key
@@ -79,7 +79,7 @@ class Toolbox
 	}
 
 	/**
-	 * Sanitizes SQL query comparison operators.
+	 * Sanitizes SQL query comparison operator.
 	 *
 	 * @param  string $operator
 	 * @return string $operator
@@ -111,7 +111,7 @@ class Toolbox
 	}
 
 	/**
-	 * Sanitizes SQL query conditions.
+	 * Sanitizes SQL query condition operator.
 	 *
 	 * @param  string $condition
 	 * @return string $condition
@@ -121,6 +121,7 @@ class Toolbox
 		$conditionWl = array(
 			'AND',
 			'OR',
+			'NOT',
 		);
 
 		if (! in_array( $condition, $conditionWl)) {
@@ -131,7 +132,7 @@ class Toolbox
 	}
 
 	/**
-	 * Sanitizes integers.
+	 * Sanitizes integer.
 	 *
 	 * @param  int $int
 	 * @return int $int
@@ -139,6 +140,39 @@ class Toolbox
 	public function sanitizeInt($int)
 	{
 		return (int) $int;
+	}
+
+	/**
+	 * Sanitizes float.
+	 *
+	 * @param  float $float
+	 * @return float $float
+	 */
+	public function sanitizeFloat($float)
+	{
+		return (float) $float;
+	}
+
+	/**
+	 * Sanitizes stringed integer.
+	 *
+	 * @param  string $int
+	 * @return string $int
+	 */
+	public function sanitizeStringedInteger($int)
+	{
+		return filter_var($int, FILTER_SANITIZE_NUMBER_INT);
+	}
+
+	/**
+	 * Sanitizes stringed float.
+	 *
+	 * @param  string $float
+	 * @return string $float
+	 */
+	public function sanitizeStringedFloat($float)
+	{
+		return filter_var($float, FILTER_SANITIZE_NUMBER_FLOAT);
 	}
 
 	/**
@@ -249,6 +283,39 @@ class Toolbox
 	public function validateInt($int)
 	{
 		return $this->sanitizeInt($int) === $int;
+	}
+
+	/**
+	 * Validates float.
+	 *
+	 * @param  float $float
+	 * @return bool
+	 */
+	public function validateFloat($float)
+	{
+		return $this->sanitizeFloat($float) === $float;
+	}
+
+	/**
+	 * Validates stringed integer.
+	 *
+	 * @param  string $int
+	 * @return bool
+	 */
+	public function validateStringedInteger($int)
+	{
+		return $this->sanitizeStringedInteger($int) === $int;
+	}
+
+	/**
+	 * Validates stringed float.
+	 *
+	 * @param  string  $float
+	 * @return bool
+	 */
+	public function validateStringedFloat($float)
+	{
+		return $this->sanitizeStringedFloat($float) === $float;
 	}
 
 	/**
