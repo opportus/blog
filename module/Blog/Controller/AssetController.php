@@ -27,6 +27,9 @@ final class AssetController extends AbstractBlogController implements Controller
 		if (is_file($file)) {
 			$fileExtension = substr($file, strrpos($file, '.') + 1);
 			switch ($fileExtension) {
+				case 'ico':
+					$contentType = 'image/x-icon';
+					break;
 				case 'png':
 					$contentType = 'image/png';
 					break;

@@ -5,6 +5,8 @@ namespace OC\Blog\Controller;
 use Hedo\Base\AbstractController;
 use Hedo\Base\ControllerInterface;
 
+use \Exception;
+
 /**
  * The homepage controller...
  *
@@ -25,13 +27,7 @@ final class HomeController extends AbstractBlogController implements ControllerI
 		$body->write($this->render(MODULE_DIR . '/Blog/View/home.php', array(
 			'title'              => 'Clément Cazaud',
 			'description'        => 'Application Developer available for hire',
-			'author'             => 'Clément Cazaud',
-
-			'failureNotif'       => $this->session->get('contactFormFailureNotification'),
-			'successNotif'       => $this->session->get('contactFormSuccessNotification'),
-			'email'              => $this->session->get('contactFormEmail'),
-			'name'               => $this->session->get('contactFormName'),
-			'message'            => $this->session->get('contactFormMessage'),
+			'author'             => 'Clément CAZAUD',
 			'token'              => $this->toolbox->generateToken('ContactFormToken', $sessionToken),
 			'menuItems'          => array(
 				array(
@@ -73,12 +69,6 @@ final class HomeController extends AbstractBlogController implements ControllerI
 		)));
 
 		$this->response->withBody($body)->send();
-
-		$this->session->unset('contactFormEmail');
-		$this->session->unset('contactFormName');
-		$this->session->unset('contactFormMessage');
-		$this->session->unset('contactFormFailureNotification');
-		$this->session->unset('contactFormSuccessNotification');
 	}
 
 	/**
@@ -97,22 +87,25 @@ final class HomeController extends AbstractBlogController implements ControllerI
 		$message = $_POST['message'];
 		$errors  = array();
 
-		if (! preg_match('/^[a-z0-9_.-]+@[a-z0-9_.-]{2,}\.[a-z]{2,4}$/', $email)) {
-			$errors[] = 'Invalid Email';
+		if (empty($email)) {
+			$errors['email'] = 'Required email';
+
+		} elseif (! preg_match('/^[a-z0-9_.-]+@[a-z0-9_.-]{2,}\.[a-z]{2,4}$/', $email)) {
+			$errors['email'] = 'Invalid email';
 		}
 
 		if (! preg_match('/^[\p{L}\s]{0,50}$/u', $name)) {
-			$errors[] = 'Invalid Name';
+			$errors['name'] = 'Invalid name';
 		}
 
-		if (! preg_match('/^[\p{L}\s1-9"\'\(\)\:\;\,\.\?\!\+\-\@\=\°\~\*\/\\\$\€\£\µ\%]{0,50}$/u', $message)) {
-			$errors[] = 'Invalid Message';
+		if (empty($message)) {
+			$errors['message'] = 'Required message';
+
+		} elseif (! preg_match('/^[\p{L}\s1-9"\'\(\)\:\;\,\.\?\!\+\-\@\=\°\~\*\/\\\$\€\£\µ\%]{0,50}$/u', $message)) {
+			$errors['message'] = 'Invalid message';
 		}
 
-		if ($errors) {
-			$this->session->set('contactFormFailureNotification', implode(' - ', $errors));
-			
-		} else {
+		if (empty($errors)) {
 			$to       = $this->config->get('App', 'app', 'adminEmail');
 			$subject  = 'Mail From ' . $this->config->get('App', 'app', 'name') . ' Contact Form';
 			$headers  = 'From: "' . $name . '"<' . $email . ">\r\n";
@@ -121,18 +114,32 @@ final class HomeController extends AbstractBlogController implements ControllerI
 			$headers .= 'Content-type: text/plain; charset="utf8"' . "\r\n";
 			$headers .= 'Content-Transfer-Encoding: 8bit' . "\r\n";
 
-			if (mail($to, $subject, $message, $headers)) {
-				$this->session->set('contactFormSuccessNotification', 'Your message has successfully been sent. We\'ll reply to you ASAP.');
-
-			} else {
-				$this->session->set('contactFormFailureNotification', 'Your message has not been sent. Please try again.');
+			if (! mail($to, $subject, $message, $headers)) {
+				$errors['sending'] = 'Your message has not been sent. Please try again.';
 			}
 		}
 
-		$this->session->set('contactFormEmail', $email);
-		$this->session->set('contactFormName', $name);
-		$this->session->set('contactFormMessage', $message);
-		$this->response->withAddedHeader('Location', $this->config->get('App', 'app', 'url'))->send();
+
+		if (empty($errors)) {
+			$notif = 'I\'ll read your message soon, thanks !.';
+
+		} else {
+			$notif = implode(' - ', $errors);
+		}
+
+		$notif .= '...';
+
+		$ajaxResponse = json_encode(array(
+			'status'   => empty($errors),
+			'notif'    => $notif,
+			'errors'   => $errors,
+			'redirect' => false,
+			'refresh'  => false
+		));
+
+		$body = $this->response->getBody();
+		$body->write($ajaxResponse);
+		$this->response->withHeader('Content-Type', 'application/json')->withBody($body)->send();
 
 		exit;
 	}

@@ -16,6 +16,8 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<!-- Smooth Scroll -->
 		<script src="<?php echo $toolbox->sanitizeUrl($config->get('App', 'app', 'url')); ?>/oc/blog/js/smooth-scroll.js"></script>
+		<!-- Form AJAX -->
+		<script src="<?php echo $toolbox->sanitizeUrl($config->get('App', 'app', 'url')); ?>/oc/blog/js/form-ajax.js"></script>
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>

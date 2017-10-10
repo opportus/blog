@@ -146,28 +146,19 @@
 			</div>
 			<div class="row my">	
 				<div class="col-lg-8 col-lg-offset-2">
-					<?php if ('' !== $failureNotif) : ?>
-						<div class="alert alert-danger">
-							<?php echo $toolbox->sanitizeString($failureNotif); ?>
-						</div>
-					<?php elseif ('' !== $successNotif) :?>
-						<div class="alert alert-success">
-							<?php echo $toolbox->sanitizeString($successNotif); ?>
-						</div>
-					<?php endif;?>
-					<form method="post" action="<?php echo $toolbox->sanitizeUrl($config->get('App', 'app', 'url') . '/contact/'); ?>" role="form">
+					<form id="contact-form" role="form">
 						<div class="form-group">
-							<input id="name" name="name" class="form-control" type="text" placeholder="Your name..." value="<?php echo $toolbox->sanitizeString($name); ?>">
+							<input id="name" name="name" class="form-control" type="text" placeholder="Your name..." value="" />
 							<br>
 						</div>
 						<div class="form-group">
-							<input id="email" name="email" class="form-control" type="email" placeholder="Your email..." value="<?php echo $toolbox->sanitizeString($email); ?>" required>
+							<input id="email" name="email" class="form-control" type="email" placeholder="Your email..." value="" />
 							<br>
 						</div>
-						<textarea id="message" name="message" class="form-control" rows="6" placeholder="Your message..." required><?php echo $toolbox->sanitizeString($message); ?></textarea>
+						<textarea id="message" name="message" class="form-control" rows="6" placeholder="Your message..."></textarea>
 						<br>
 						<input id="token" name="token" type="hidden" value="<?php echo $toolbox->sanitizeString($token); ?>">
-						<button type="submit" class="btn btn-default">SEND</button>
+						<button id="contact-form-send" class="form-send btn btn-default" ajaxaction="<?php echo $toolbox->sanitizeUrl($config->get('App', 'app', 'url') . '/contact/'); ?>">SEND</button>
 					</form>    			
 				</div><!-- /.col-lg-8 -->
 			</div><!-- /.row -->

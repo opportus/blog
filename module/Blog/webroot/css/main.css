@@ -238,6 +238,21 @@ bt {
 	border: 1px solid #1abc9c;
 }
 
+#form-notif {
+	float: right;
+	padding-top: 5px;
+}
+
+.form-notif-success .fa {
+	color: #4BB543;
+	margin-right: 5px;
+}
+
+.form-notif-failure .fa {
+	color: #cc0000;
+	margin-right: 3px;
+}
+
 /* ================== PORTFOLIO IMAGES HOVER EFFECT ================== */
 /* Effects also are controled by hover.zoom.js */
 .zoom { 
