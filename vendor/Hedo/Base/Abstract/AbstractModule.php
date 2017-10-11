@@ -2,12 +2,6 @@
 
 namespace Hedo\Base;
 
-use Hedo\Config;
-use Hedo\Request;
-use Hedo\Response;
-use Hedo\Session;
-use Hedo\Toolbox;
-
 /**
  * The base module...
  *
