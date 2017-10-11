@@ -15,9 +15,9 @@ interface ControllerInterface
 	 * Renders the view.
 	 *
 	 * @param  string $view
-	 * @param  array  $data
+	 * @param  array  $vars
 	 * @return string $view
 	 */
-	public function render($view, array $data);
+	public function render(string $view, array $vars);
 }
 
