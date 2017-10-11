@@ -1,5 +1,6 @@
 <?php
 
+require_once('vendor/autoload.php');
 require_once('vendor/Hedo/Base/Abstract/AbstractComposer.php');
 
 use Hedo\Base\AbstractComposer;
@@ -33,7 +34,7 @@ class AppComposer extends AbstractComposer
 		$this->init();
 
 		// Your stuff...
-		
+
 		$this->run();
 	}
 

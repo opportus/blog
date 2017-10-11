@@ -8,8 +8,13 @@
 					<header>
 						<img src="<?php echo $toolbox->sanitizeUrl($config->get('App', 'app', 'url') . '/oc/blog/img/avatar.png'); ?>" alt="Clément Cazaud - Developer">
 						<h1><?php echo $toolbox->sanitizeString($title); ?></h1>
-						<p><?php echo $toolbox->sanitizeString($description); ?></h1>
 					</header>
+					<div class="row">
+						<div class="col-lg-8 col-lg-offset-2 centered">
+							<p><?php echo $toolbox->sanitizeString($description); ?></h1>
+							<p><a class="btn btn-outline-primary btn-lg" href="https://drive.google.com/file/d/0B7-2vSRbrpwXWlk5MW1kVmRHSUE/view?usp=sharing" target="_blank"><i class="fa fa-download" role="button"></i>Download my CV</a></p>
+						</div>
+					</div>
 				</div><!-- /.col-lg-8 -->
 			</div><!-- /.row -->
 		</section>
@@ -35,7 +40,6 @@
 						Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam elementum semper nibh, vel molestie tortor dapibus et.</p>
 					<p>Praesent lobortis diam et nisl gravida scelerisque. Praesent suscipit elementum neque et feugiat. Vivamus malesuada varius porttitor.<br />
 						Fusce pulvinar ac purus sed malesuada. Morbi laoreet turpis est, ac euismod lorem aliquet vel.</p>
-					<a class="btn btn-outline-primary btn-lg" href="https://drive.google.com/file/d/0B7-2vSRbrpwXWlk5MW1kVmRHSUE/view?usp=sharing" target="_blank"><i class="fa fa-download" role="button"></i>Download my CV</a>
 				</section>
 			</div><!-- /.col-lg-6 -->
 			<div class="col-lg-6 mb">

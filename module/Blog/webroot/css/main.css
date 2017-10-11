@@ -239,8 +239,7 @@ bt {
 }
 
 #form-notif {
-	float: right;
-	padding-top: 5px;
+	margin-bottom: 15px;
 }
 
 .form-notif-success .fa {
@@ -250,7 +249,7 @@ bt {
 
 .form-notif-failure .fa {
 	color: #cc0000;
-	margin-right: 3px;
+	margin-right: 5px;
 }
 
 /* ================== PORTFOLIO IMAGES HOVER EFFECT ================== */

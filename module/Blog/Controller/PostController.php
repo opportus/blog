@@ -5,6 +5,16 @@ namespace OC\Blog\Controller;
 use Hedo\Base\AbstractController;
 use Hedo\Base\ControllerInterface;
 
+use Hedo\Config;
+use Hedo\Response;
+use Hedo\Session;
+use Hedo\Toolbox;
+
+use OC\Blog\Model\PostRepository;
+use OC\Blog\Model\PostFactory;
+
+use \Parsedown;
+
 use \Exception;
 
 /**
@@ -14,8 +24,81 @@ use \Exception;
  * @package OC\Blog\Controller
  * @author  Clément Cazaud <opportus@gmail.com>
  */
-final class PostController extends AbstractBlogController implements ControllerInterface
+class PostController extends AbstractBlogController implements ControllerInterface
 {
+	/**
+	 * @var Config $config
+	 */
+	protected $config;
+
+	/**
+	 * @var Toolbox $toolbox
+	 */
+	protected $toolbox;
+
+	/**
+	 * @var Session $session
+	 */
+	protected $session;
+
+	/**
+	 * @var Response $response
+	 */
+	protected $response;
+
+	/**
+	 * @var PostRepository $postRepository
+	 */
+	protected $postRepository;
+
+	/**
+	 * @var PostFactory $postFactory
+	 */
+	protected $postFactory;
+
+	/**
+	 * @var Parsedown $parsedown
+	 */
+	protected $parsedown;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param Config         $config
+	 * @param Toolbox        $toolbox
+	 * @param Session        $session
+	 * @param Response       $response
+	 * @param PostRepository $postRepository
+	 * @param PostFactory    $postFactory
+	 * @param Parsedown      $parsedown
+	 */
+	public function __construct(Config $config, Toolbox $toolbox, Session $session, Response $response, PostRepository $postRepository, PostFactory $postFactory, Parsedown $parsedown)
+	{
+		$this->init($config, $toolbox, $session, $response, $postRepository, $postFactory, $parsedown);
+	}
+
+	/**
+	 * Initializes the controller.
+	 *
+	 * @param Config         $config
+	 * @param Toolbox        $toolbox
+	 * @param Session        $session
+	 * @param Response       $response
+	 * @param PostRepository $postRepository
+	 * @param PostFactory    $postFactory
+	 * @param Parsedown      $parsedown
+	 */
+	protected function init(Config $config, Toolbox $toolbox, Session $session, Response $response, PostRepository $postRepository, PostFactory $postFactory, Parsedown $parsedown)
+	{
+		$this->config         = $config;
+		$this->toolbox        = $toolbox;
+		$this->session        = $session;
+		$this->response       = $response;
+		$this->postRepository = $postRepository;
+		$this->postFactory    = $postFactory;
+		$this->parsedown      = $parsedown;
+	}
+
 	/**
 	 * Renders the view.
 	 *
@@ -23,48 +106,53 @@ final class PostController extends AbstractBlogController implements ControllerI
 	 */
 	public function view($id)
 	{
-		if ($post = $this->repositories['postRepository']->get((int) $id)) {
+		if ($post = $this->postRepository->get((int) $id)) {
 			$body = $this->response->getBody();
 			$body->write($this->render(MODULE_DIR . '/Blog/View/post.php', array(
-				'title'              => $post->getTitle(),
-				'description'        => $post->getExcerpt(),
-				'author'             => $post->getAuthor(),
-				'datetime'           => $post->getUpdatedAt() !== null ? $this->toolbox->formatDatetime($post->getUpdatedAt()) : $this->toolbox->formatDatetime($post->getCreatedAt()),
-				'excerpt'            => $post->getExcerpt(),
-				'content'            => $post->getContent(),
-				'id'                 => $post->getId(),
-				'menuItems'          => array(
+				'config'      => $this->config,
+				'toolbox'     => $this->toolbox,
+				'parsedown'   => $this->parsedown,       
+				
+				'title'       => $post->getTitle(),
+				'description' => $post->getExcerpt(),
+				'author'      => $post->getAuthor(),
+				'datetime'    => $post->getUpdatedAt() !== null ? $this->toolbox->formatDatetime($post->getUpdatedAt()) : $this->toolbox->formatDatetime($post->getCreatedAt()),
+				'excerpt'     => $post->getExcerpt(),
+				'content'     => $post->getContent(),
+				'id'          => $post->getId(),
+
+				'menuItems'   => array(
 					array(
 						'name'  => 'ABOUT',
-						'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#about'),
+						'link'  => $this->config->get('App', 'app', 'url') . '/#about',
 						'title' => '',
 						'class' => '',
 						'style' => '',
 					),
 					array(
 						'name'  => 'PROJECTS',
-						'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#projects'),
+						'link'  => $this->config->get('App', 'app', 'url') . '/#projects',
 						'title' => '',
 						'class' => '',
 						'style' => '',
 					),
 					array(
 						'name'  => 'CONTACT',
-						'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#contact'),
+						'link'  => $this->config->get('App', 'app', 'url') . '/#contact',
 						'title' => '',
 						'class' => '',
 						'style' => '',
 					),
 					array(
 						'name'  => 'BLOG',
-						'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/blog/'),
+						'link'  => $this->config->get('App', 'app', 'url') . '/blog/',
 						'title' => '',
 						'class' => '',
 						'style' => '',
 					),
 					array(
 						'name'  => 'WRITE',
-						'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/cockpit/post/edit/'),
+						'link'  => $this->config->get('App', 'app', 'url') . '/cockpit/post/edit/',
 						'title' => '',
 						'class' => '',
 						'style' => '',
@@ -89,61 +177,65 @@ final class PostController extends AbstractBlogController implements ControllerI
 	{
 
 		if ($id) {
-			if (! $post = $this->repositories['postRepository']->get((int) $id)) {
+			if (! $post = $this->postRepository->get((int) $id)) {
 				$this->action404();
 			}
 
 		} else {
-			$post = $this->factories['postFactory']->create();
+			$post = $this->postFactory->create();
 		}
 
 		$sessionToken = $this->session->setToken('postEditToken');
 
 		$body = $this->response->getBody();
 		$body->write($this->render(MODULE_DIR . '/Blog/View/post-edit.php', array(
-			'title'              => is_null($post->getTitle()) ? 'Editing New Post' : 'Editing ' . $post->getTitle(),
-			'description'        => 'Post edition',
-			'author'             => is_null($post->getAuthor()) ? '' : $post->getAuthor(),
+			'config'      => $this->config,
+			'toolbox'     => $this->toolbox,
 
-			'postId'             => is_null($post->getId()) ? '' : $post->getId(),
-			'postSlug'           => is_null($post->getSlug()) ? '' : $post->getSlug(),
-			'postAuthor'         => is_null($post->getAuthor()) ? '' : $post->getAuthor(),
-			'postTitle'          => is_null($post->getTitle()) ? '' : $post->getTitle(),
-			'postExcerpt'        => is_null($post->getExcerpt()) ? '' : $post->getExcerpt(),
-			'postContent'        => is_null($post->getContent()) ? '' : $post->getContent(),
-			'token'              => $this->toolbox->generateToken('postEditToken', $sessionToken),
-			'menuItems'          => array(
+			'title'       => is_null($post->getTitle()) ? 'Editing New Post' : 'Editing ' . $post->getTitle(),
+			'description' => 'Post edition',
+			'author'      => is_null($post->getAuthor()) ? '' : $post->getAuthor(),
+
+			'postId'      => is_null($post->getId()) ? '' : $post->getId(),
+			'postSlug'    => is_null($post->getSlug()) ? '' : $post->getSlug(),
+			'postAuthor'  => is_null($post->getAuthor()) ? '' : $post->getAuthor(),
+			'postTitle'   => is_null($post->getTitle()) ? '' : $post->getTitle(),
+			'postExcerpt' => is_null($post->getExcerpt()) ? '' : $post->getExcerpt(),
+			'postContent' => is_null($post->getContent()) ? '' : $post->getContent(),
+			'token'       => $this->toolbox->generateToken('postEditToken', $sessionToken),
+
+			'menuItems'   => array(
 				array(
 					'name'  => 'ABOUT',
-					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#about'),
+					'link'  => $this->config->get('App', 'app', 'url') . '/#about',
 					'title' => '',
 					'class' => '',
 					'style' => '',
 				),
 				array(
 					'name'  => 'PROJECTS',
-					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#projects'),
+					'link'  => $this->config->get('App', 'app', 'url') . '/#projects',
 					'title' => '',
 					'class' => '',
 					'style' => '',
 				),
 				array(
 					'name'  => 'CONTACT',
-					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/#contact'),
+					'link'  => $this->config->get('App', 'app', 'url') . '/#contact',
 					'title' => '',
 					'class' => '',
 					'style' => '',
 				),
 				array(
 					'name'  => 'BLOG',
-					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/blog/'),
+					'link'  => $this->config->get('App', 'app', 'url') . '/blog/',
 					'title' => '',
 					'class' => '',
 					'style' => '',
 				),
 				array(
 					'name'  => 'WRITE',
-					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/cockpit/post/edit/'),
+					'link'  => $this->config->get('App', 'app', 'url') . '/cockpit/post/edit/',
 					'title' => '',
 					'class' => '',
 					'style' => '',
@@ -168,14 +260,14 @@ final class PostController extends AbstractBlogController implements ControllerI
 			throw new Exception('Invalid token for IP: ' . $_SERVER['REMOTE_ADDR']);
 		}
 
-		$repository     = $this->repositories['postRepository'];
+		$repository     = $this->postRepository;
 		$requiredFields = array('title', 'slug', 'author', 'excerpt', 'content');
 		$errors         = array();
 		$data           = array();
 
 		switch ($id) {
 			case '' :
-				$post = $this->factories['postFactory']->create();
+				$post = $this->postFactory->create();
 				$post->setCreatedAt($this->toolbox->formatDatetime('', 'Y-m-d H:i:s'));
 				break;
 			default :
@@ -252,7 +344,7 @@ final class PostController extends AbstractBlogController implements ControllerI
 		$notif = '';
 
 		try {
-			$this->repositories['postRepository']->delete((int) $id);
+			$this->postRepository->delete((int) $id);
 
 		} catch (Exception $e) {
 			$notif = 'Your post couldn\`t be deleted...';

@@ -5,6 +5,9 @@ namespace OC\Blog\Controller;
 use Hedo\Base\AbstractController;
 use Hedo\Base\ControllerInterface;
 
+use Hedo\Config;
+use Hedo\Response;
+
 /**
  * The asset controller...
  *
@@ -12,8 +15,41 @@ use Hedo\Base\ControllerInterface;
  * @package OC\Blog\Controller
  * @author  Clément Cazaud <opportus@gmail.com>
  */
-final class AssetController extends AbstractBlogController implements ControllerInterface
+class AssetController extends AbstractBlogController implements ControllerInterface
 {
+	/**
+	 * @var Config $config
+	 */
+	protected $config;
+
+	/**
+	 * @var Response $response
+	 */
+	protected $response;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param Config   $config
+	 * @param Response $response
+	 */
+	public function __construct(Config $config, Response $response)
+	{
+		$this->init($config, $response);
+	}
+
+	/**
+	 * Initializes the asset controller.
+	 *
+	 * @param Config   $config
+	 * @param Response $response
+	 */
+	protected function init(Config $config, Response $response)
+	{
+		$this->config   = $config;
+		$this->response = $response;
+	}
+
 	/**
 	 * Gets asset.
 	 *

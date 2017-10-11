@@ -58,6 +58,9 @@
 						<li>
 							<a href="https://github.com/opportus/" target="_blank" title="Follow me on GitHub"><i class="fa fa-github" aria-hidden="true"></i></a>
 						</li>
+						<li>
+							<a href="https://stackexchange.com/users/6322768" target="_blank" title="Follow me on StackExchange"><i class="fa fa-stack-overflow" aria-hidden="true"></i></a>
+						</li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>

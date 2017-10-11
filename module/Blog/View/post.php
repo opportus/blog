@@ -22,7 +22,7 @@
 				<!-- Post Excerpt -->
 				<p><?php echo $toolbox->sanitizeString($excerpt); ?></p>
 				<!-- Post Content -->
-				<p><?php echo $toolbox->escHtml($content); ?></p>
+				<p><?php echo $parsedown->text($content); ?></p>
 				<br>
 				<!-- Post Tags -->
 				<!-- <p><bt>TAGS: <a href="#">Wordpress</a> - <a href="#">Web Design</a></bt></p> -->

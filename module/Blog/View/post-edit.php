@@ -31,6 +31,7 @@
 					</div>
 					<div class="form-group">
 						<label for="content">Content</label>
+						<small id="contentHelpInline" class="text-muted"> Use <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">MarkDown syntax</a> to format your content</small>
 						<textarea id="content" name="content" class="form-control" value="<?php echo $toolbox->sanitizeString($postContent); ?>" rows="20"><?php echo $toolbox->sanitizeString($postContent); ?></textarea>
 					</div>
 					<input id="token" name="token" type="hidden" value="<?php echo $token; ?>">

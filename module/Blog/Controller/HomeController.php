@@ -5,6 +5,11 @@ namespace OC\Blog\Controller;
 use Hedo\Base\AbstractController;
 use Hedo\Base\ControllerInterface;
 
+use Hedo\Config;
+use Hedo\Response;
+use Hedo\Session;
+use Hedo\Toolbox;
+
 use \Exception;
 
 /**
@@ -14,8 +19,57 @@ use \Exception;
  * @package OC\Blog\Controller
  * @author  Clément Cazaud <opportus@gmail.com>
  */
-final class HomeController extends AbstractBlogController implements ControllerInterface
+class HomeController extends AbstractBlogController implements ControllerInterface
 {
+	/**
+	 * @var Config $config
+	 */
+	protected $config;
+
+	/**
+	 * @var Toolbox $toolbox
+	 */
+	protected $toolbox;
+
+	/**
+	 * @var Session $session
+	 */
+	protected $session;
+
+	/**
+	 * @var Response $response
+	 */
+	protected $response;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param Config   $config
+	 * @param Toolbox  $toolbox
+	 * @param Session  $session
+	 * @param Response $response
+	 */
+	public function __construct(Config $config, Toolbox $toolbox, Session $session, Response $response)
+	{
+		$this->init($config, $toolbox, $session, $response);
+	}
+
+	/**
+	 * Initializes the blog controller.
+	 *
+	 * @param Config   $config
+	 * @param Toolbox  $toolbox
+	 * @param Session  $session
+	 * @param Response $response
+	 */
+	protected function init(Config $config, Toolbox $toolbox, Session $session, Response $response)
+	{
+		$this->config   = $config;
+		$this->toolbox  = $toolbox;
+		$this->session  = $session;
+		$this->response = $response;
+	}
+
 	/**
 	 * Renders the view.
 	 */
@@ -25,11 +79,16 @@ final class HomeController extends AbstractBlogController implements ControllerI
 
 		$body = $this->response->getBody();
 		$body->write($this->render(MODULE_DIR . '/Blog/View/home.php', array(
-			'title'              => 'Clément Cazaud',
-			'description'        => 'Application Developer available for hire',
-			'author'             => 'Clément CAZAUD',
-			'token'              => $this->toolbox->generateToken('ContactFormToken', $sessionToken),
-			'menuItems'          => array(
+			'config'      => $this->config,
+			'toolbox'     => $this->toolbox,
+
+			'title'       => 'Clément Cazaud',
+			'description' => 'Application Developer available for hire',
+			'author'      => 'Clément CAZAUD',
+
+			'token'       => $this->toolbox->generateToken('ContactFormToken', $sessionToken),
+
+			'menuItems'   => array(
 				array(
 					'name'  => 'ABOUT',
 					'link'  => '#about',
@@ -53,14 +112,14 @@ final class HomeController extends AbstractBlogController implements ControllerI
 				),
 				array(
 					'name'  => 'BLOG',
-					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/blog/'),
+					'link'  => $this->config->get('App', 'app', 'url') . '/blog/',
 					'title' => '',
 					'class' => '',
 					'style' => '',
 				),
 				array(
 					'name'  => 'WRITE',
-					'link'  => $this->toolbox->sanitizeUrl($this->config->get('App', 'app', 'url') . '/cockpit/post/edit/'),
+					'link'  => $this->config->get('App', 'app', 'url') . '/cockpit/post/edit/',
 					'title' => '',
 					'class' => '',
 					'style' => '',
