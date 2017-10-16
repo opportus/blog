@@ -1,0 +1,36 @@
+{
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "git@github.com:opportus/container.git"
+		},
+		{
+			"type": "vcs",
+			"url": "git@github.com:opportus/orm.git"
+		},
+		{
+			"type": "vcs",
+			"url": "git@github.com:opportus/http-message.git"
+		},
+		{
+			"type": "vcs",
+			"url": "git@github.com:opportus/router.git"
+		},
+		{
+			"type": "vcs",
+			"url": "git@github.com:opportus/session.git"
+		}
+	],
+    "require": {
+		"php": ">=7.0.0",
+		"opportus/container": "dev-master",
+		"opportus/orm": "dev-master",
+		"opportus/http-message": "dev-master",
+		"opportus/router": "dev-master",
+		"opportus/session": "dev-master",
+		"erusev/parsedown": "^1.6"
+    },
+	"autoload": {
+		"psr-4": {"Opportus\\Blog\\": "src/Controller"}
+	}
+}
