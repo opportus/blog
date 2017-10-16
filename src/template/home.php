@@ -76,6 +76,12 @@
 							<span class="sr-only">90% Complete</span>
 						</div>
 					</div>
+					JS/JQuery
+					<div class="progress">
+						<div class="progress-bar progress-bar-theme" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="50" style="width: 50%;">
+							<span class="sr-only">50% Complete</span>
+						</div>
+					</div>
 					SEO
 					<div class="progress">
 						<div class="progress-bar progress-bar-theme" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%;">
