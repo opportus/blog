@@ -8,9 +8,9 @@ A simple little blog system written as a school project...
 - Composer
 - Git
 
-Download the [installer script](https://github.com/opportus/installer.git) script:
+Download the [installer script](https://github.com/opportus/installer.git):
 
-`curl https://raw.githubusercontent.com/opportus/installer/master/installer.sh >> installer.sh`
+`curl https://gist.githubusercontent.com/opportus/3452f63e692897a40eabd7b27bf9aa2d/raw/b12d2a1ff8d13249c961e97d9992af2db4689e8b/installer.sh >> installer.sh`
 
 Then run:
 
