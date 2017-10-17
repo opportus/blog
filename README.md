@@ -8,15 +8,17 @@ A simple little blog system written as a school project...
 - Composer
 - Git
 
-Download the [installer script](https://github.com/opportus/installer.git):
+From your terminal, download the [installer script](https://gist.github.com/opportus/87b1fd0f12a501cb81130edbd79b4392) with for example:
 
 ```shell
-curl https://gist.githubusercontent.com/opportus/3452f63e692897a40eabd7b27bf9aa2d/raw/b12d2a1ff8d13249c961e97d9992af2db4689e8b/installer.sh >> installer.sh`
+curl https://gist.githubusercontent.com/opportus/87b1fd0f12a501cb81130edbd79b4392/raw/427a998bcd1eac4764f8809f6d48d34528408461/installer.sh >> installer.sh
 ```
 
 Then run:
 
-`./installer.sh`
+```shell
+./installer.sh
+```
 
 Then simply answer the questions the intaller will prompt to you...
 
