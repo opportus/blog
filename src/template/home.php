@@ -64,7 +64,7 @@
 							<span class="sr-only">20% Complete</span>
 						</div>
 					</div>
-					WordPress
+					WordPress/WooCommerce
 					<div class="progress">
 						<div class="progress-bar progress-bar-theme" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%;">
 							<span class="sr-only">90% Complete</span>
@@ -76,7 +76,7 @@
 							<span class="sr-only">90% Complete</span>
 						</div>
 					</div>
-					JS/JQuery
+					JavaScript/JQuery
 					<div class="progress">
 						<div class="progress-bar progress-bar-theme" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="50" style="width: 50%;">
 							<span class="sr-only">50% Complete</span>
@@ -88,7 +88,7 @@
 							<span class="sr-only">90% Complete</span>
 						</div>
 					</div>
-					UNIX System
+					UNIX/Bash
 					<div class="progress">
 						<div class="progress-bar progress-bar-theme" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;">
 							<span class="sr-only">80% Complete</span>
