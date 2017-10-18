@@ -6,7 +6,7 @@
 			<div class="row">
 				<div class="col-lg-8 col-lg-offset-2 centered">
 					<header>
-						<img src="<?php echo URL . '/img/avatar.png'; ?>" alt="Clément Cazaud - Developer">
+						<img src="<?php echo APP_URL . '/img/avatar.png'; ?>" alt="Clément Cazaud - Developer">
 						<h1><?php echo $metaTitle; ?></h1>
 					</header>
 					<div class="row">
@@ -115,7 +115,7 @@
 			<div class="row centered">	
 				<div class="col-lg-4 mb">
 					<section>
-						<a href="https://github.com/opportus/orm/" target="_blank"><img class="img-responsive" src="<?php echo URL . '/img/project-1.jpg'; ?>" alt="Hedo" /></a>
+						<a href="https://github.com/opportus/orm/" target="_blank"><img class="img-responsive" src="<?php echo APP_URL . '/img/project-1.jpg'; ?>" alt="Hedo" /></a>
 						<header>
 							<h3 class="mt"><pn>ORM</pn></h3>
 						</header>
@@ -123,7 +123,7 @@
 				</div>
 				<div class="col-lg-4 mb">
 					<section>
-						<a href="http://vps320850.ovh.net/les-films-de-plein-air.org/" target="_blank"><img class="img-responsive" src="<?php echo URL . '/img/project-2.jpg'; ?>" alt="Les Films de Plein Air" /></a>
+						<a href="http://vps320850.ovh.net/les-films-de-plein-air.org/" target="_blank"><img class="img-responsive" src="<?php echo APP_URL . '/img/project-2.jpg'; ?>" alt="Les Films de Plein Air" /></a>
 						<header>
 							<h3 class="mt"><pn>Les Films de Plein Air</pn></h3>
 						</header>
@@ -131,7 +131,7 @@
 				</div>
 				<div class="col-lg-4 mb">
 					<section>
-						<a href="http://animochic.com/" target="_blank"><img class="img-responsive" src="<?php echo URL . '/img/project-3.jpg'; ?>" alt="AnimoChic" /></a>
+						<a href="http://animochic.com/" target="_blank"><img class="img-responsive" src="<?php echo APP_URL . '/img/project-3.jpg'; ?>" alt="AnimoChic" /></a>
 						<header>
 							<h3 class="mt"><pn>AnimoChic</pn></h3>
 						</header>
@@ -168,7 +168,7 @@
 						<textarea id="message" name="message" class="form-control" rows="6" placeholder="Your message..."></textarea>
 						<br>
 						<input id="token" name="token" type="hidden" value="<?php echo $token; ?>">
-						<button id="contact-form-send" class="form-send btn btn-default" ajaxaction="<?php echo URL . '/contact/'; ?>">SEND</button>
+						<button id="contact-form-send" class="form-send btn btn-default" ajaxaction="<?php echo APP_URL . '/contact/'; ?>">SEND</button>
 					</form>    			
 				</div><!-- /.col-lg-8 -->
 			</div><!-- /.row -->

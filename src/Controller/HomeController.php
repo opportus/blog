@@ -50,7 +50,7 @@ class HomeController extends AbstractController
 	 */
 	public function view()
 	{
-		$sessionToken = $this->session->set('contactFormToken', hash_hmac('sha256', bin2hex(random_bytes(32)), SECRET_KEY));
+		$sessionToken = $this->session->set('contactFormToken', hash_hmac('sha256', bin2hex(random_bytes(32)), APP_SECRET_KEY));
 
 		$body = $this->response->getBody();
 
@@ -83,14 +83,14 @@ class HomeController extends AbstractController
 				),
 				array(
 					'name'  => 'BLOG',
-					'link'  => URL . '/blog/',
+					'link'  => APP_URL . '/blog/',
 					'title' => '',
 					'class' => '',
 					'style' => '',
 				),
 				array(
 					'name'  => 'WRITE',
-					'link'  => URL . '/cockpit/post/edit/',
+					'link'  => APP_URL . '/cockpit/post/edit/',
 					'title' => '',
 					'class' => '',
 					'style' => '',
@@ -141,7 +141,7 @@ class HomeController extends AbstractController
 		try {
 			if (empty($errors)) {
 				$this->mailer->isSMTP();
-				$this->mailer->SMTPDebug  = DEBUG;
+				$this->mailer->SMTPDebug  = APP_DEBUG;
 				$this->mailer->SMTPAuth   = SMTP_AUTH;
 				$this->mailer->SMTPSecure = SMTP_SECURE;
 				$this->mailer->Host       = SMTP_HOST;
@@ -149,11 +149,11 @@ class HomeController extends AbstractController
 				$this->mailer->Username   = SMTP_USERNAME;
 				$this->mailer->Password   = SMTP_PASSWORD;
 
-				$this->mailer->setFrom(SMTP_USERNAME, NAME . ' Mailer');
-				$this->mailer->addAddress(EMAIL);
+				$this->mailer->setFrom(SMTP_USERNAME, APP_NAME . ' Mailer');
+				$this->mailer->addAddress(APP_EMAIL);
 				$this->mailer->addReplyTo($email);
 
-				$this->mailer->Subject = 'Message from a user of ' . NAME;
+				$this->mailer->Subject = 'Message from a user of ' . APP_NAME;
 				$this->mailer->Body    = $message . "\n\n" . $name;
 
 				if (! $this->mailer->send()) {

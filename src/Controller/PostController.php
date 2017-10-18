@@ -4,11 +4,8 @@ namespace Opportus\Blog;
 
 use Opportus\Session\Session;
 use Opportus\Orm\EntityManager;
-
 use Psr\Http\Message\ResponseInterface;
-
 use \Parsedown;
-
 use \Exception;
 
 /**
@@ -81,35 +78,35 @@ class PostController extends AbstractController
 				'menuItems'       => array(
 					array(
 						'name'  => 'ABOUT',
-						'link'  => URL . '/#about',
+						'link'  => APP_URL . '/#about',
 						'title' => '',
 						'class' => '',
 						'style' => '',
 					),
 					array(
 						'name'  => 'PROJECTS',
-						'link'  => URL . '/#projects',
+						'link'  => APP_URL . '/#projects',
 						'title' => '',
 						'class' => '',
 						'style' => '',
 					),
 					array(
 						'name'  => 'CONTACT',
-						'link'  => URL . '/#contact',
+						'link'  => APP_URL . '/#contact',
 						'title' => '',
 						'class' => '',
 						'style' => '',
 					),
 					array(
 						'name'  => 'BLOG',
-						'link'  => URL . '/blog/',
+						'link'  => APP_URL . '/blog/',
 						'title' => '',
 						'class' => '',
 						'style' => '',
 					),
 					array(
 						'name'  => 'WRITE',
-						'link'  => URL . '/cockpit/post/edit/',
+						'link'  => APP_URL . '/cockpit/post/edit/',
 						'title' => '',
 						'class' => '',
 						'style' => '',
@@ -142,7 +139,7 @@ class PostController extends AbstractController
 			$post = $this->entityManager->get('post')->get('factory')->create();
 		}
 
-		$sessionToken = $this->session->set('postEditToken', hash_hmac('sha256', bin2hex(random_bytes(32)), SECRET_KEY));
+		$sessionToken = $this->session->set('postEditToken', hash_hmac('sha256', bin2hex(random_bytes(32)), APP_SECRET_KEY));
 
 		$body = $this->response->getBody();
 
@@ -160,35 +157,35 @@ class PostController extends AbstractController
 			'menuItems'       => array(
 				array(
 					'name'  => 'ABOUT',
-					'link'  => URL . '/#about',
+					'link'  => APP_URL . '/#about',
 					'title' => '',
 					'class' => '',
 					'style' => '',
 				),
 				array(
 					'name'  => 'PROJECTS',
-					'link'  => URL . '/#projects',
+					'link'  => APP_URL . '/#projects',
 					'title' => '',
 					'class' => '',
 					'style' => '',
 				),
 				array(
 					'name'  => 'CONTACT',
-					'link'  => URL . '/#contact',
+					'link'  => APP_URL . '/#contact',
 					'title' => '',
 					'class' => '',
 					'style' => '',
 				),
 				array(
 					'name'  => 'BLOG',
-					'link'  => URL . '/blog/',
+					'link'  => APP_URL . '/blog/',
 					'title' => '',
 					'class' => '',
 					'style' => '',
 				),
 				array(
 					'name'  => 'WRITE',
-					'link'  => URL . '/cockpit/post/edit/',
+					'link'  => APP_URL . '/cockpit/post/edit/',
 					'title' => '',
 					'class' => '',
 					'style' => '',
@@ -267,7 +264,7 @@ class PostController extends AbstractController
 				'status'   => empty($errors),
 				'notif'    => empty($errors) ? false : $notif,
 				'errors'   => $errors,
-				'redirect' => empty($errors) ? URL . '/post/' . $id : false,
+				'redirect' => empty($errors) ? APP_URL . '/post/' . $id : false,
 				'refresh'  => $post->get('updatedAt') ? false : true
 			));
 
@@ -305,7 +302,7 @@ class PostController extends AbstractController
 				'status'   => empty($notif),
 				'notif'    => $notif,
 				'errors'   => array(),
-				'redirect' => empty($notif) ? URL . '/cockpit/post/edit/' : false,
+				'redirect' => empty($notif) ? APP_URL . '/cockpit/post/edit/' : false,
 				'refresh'  => false
 			));
 

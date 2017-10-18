@@ -116,7 +116,7 @@ class AppKernel
 
 		$container->set('Opportus\Orm\PdoMySqlGateway', function () {
 			return new PdoMySqlGateway(
-				DATABASES
+				APP_DATABASES
 			);
 		});
 

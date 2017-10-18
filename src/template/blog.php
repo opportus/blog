@@ -24,7 +24,7 @@
 						<!-- Post Image -->
 						<!-- <p><img src="assets/img/user.png" width="50px" height="50px"> <ba>Stanley Stinson</ba></p> -->
 						<!-- Post Date/Time -->
-						<p><i class="fa fa-clock-o" aria-hidden="true"></i><bd><?php echo date(DATE_FORMAT . ' ' . TIME_FORMAT, strtotime($post['datetime'])); ?></bd></p>
+						<p><i class="fa fa-clock-o" aria-hidden="true"></i><bd><?php echo date(APP_DATE_FORMAT . ' ' . APP_TIME_FORMAT, strtotime($post['datetime'])); ?></bd></p>
 						<!-- Post Header -->
 						<header>
 							<!-- Post Title -->
@@ -34,7 +34,7 @@
 						<!-- Post Excerpt -->
 						<p><?php echo filter_var($post['excerpt'], FILTER_SANITIZE_STRING); ?></p>
 						<!-- Post Link -->
-						<p><a href="<?php echo URL . '/post/' . $post['id']; ?>">Continue Reading...</a></p>
+						<p><a href="<?php echo APP_URL . '/post/' . $post['id']; ?>">Continue Reading...</a></p>
 					</article>
 				</div>
 			</div><!-- /.row -->

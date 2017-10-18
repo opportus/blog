@@ -4,7 +4,6 @@ namespace Opportus\Blog;
 
 use Opportus\Session\Session;
 use Opportus\Orm\EntityManager;
-
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -71,35 +70,35 @@ class BlogController extends AbstractController
 			'menuItems'       => array(
 				array(
 					'name'  => 'ABOUT',
-					'link'  => URL . '/#about',
+					'link'  => APP_URL . '/#about',
 					'title' => '',
 					'class' => '',
 					'style' => '',
 				),
 				array(
 					'name'  => 'PROJECTS',
-					'link'  => URL . '/#projects',
+					'link'  => APP_URL . '/#projects',
 					'title' => '',
 					'class' => '',
 					'style' => '',
 				),
 				array(
 					'name'  => 'CONTACT',
-					'link'  => URL . '/#contact',
+					'link'  => APP_URL . '/#contact',
 					'title' => '',
 					'class' => '',
 					'style' => '',
 				),
 				array(
 					'name'  => 'BLOG',
-					'link'  => URL . '/blog/',
+					'link'  => APP_URL . '/blog/',
 					'title' => '',
 					'class' => '',
 					'style' => '',
 				),
 				array(
 					'name'  => 'WRITE',
-					'link'  => URL . '/cockpit/post/edit/',
+					'link'  => APP_URL . '/cockpit/post/edit/',
 					'title' => '',
 					'class' => '',
 					'style' => '',

@@ -8,16 +8,16 @@
 		<meta name="author" content="<?php echo filter_var($metaAuthor, FILTER_SANITIZE_STRING) ?>" />
 		<title><?php echo filter_var($metaTitle, FILTER_SANITIZE_STRING); ?></title>
 		<!-- Icon -->
-		<link rel="shortcut icon" href="<?php echo URL . '/img/favicon.ico'; ?>" type="image/x-icon" />
-		<link rel="apple-touch-icon" href="<?php echo URL . '/img/apple-touch-icon.png'; ?>" />
-		<link rel="apple-touch-icon" sizes="57x57" href="<?php echo URL . '/img/apple-touch-icon-57x57.png'; ?>" />
-		<link rel="apple-touch-icon" sizes="72x72" href="<?php echo URL . '/img/apple-touch-icon-72x72.png'; ?>" />
-		<link rel="apple-touch-icon" sizes="76x76" href="<?php echo URL . '/img/apple-touch-icon-76x76.png'; ?>" />
-		<link rel="apple-touch-icon" sizes="114x114" href="<?php echo URL . '/img/apple-touch-icon-114x114.png'; ?>" />
-		<link rel="apple-touch-icon" sizes="120x120" href="<?php echo URL . '/img/apple-touch-icon-120x120.png'; ?>" />
-		<link rel="apple-touch-icon" sizes="144x144" href="<?php echo URL . '/img/apple-touch-icon-144x144.png'; ?>" />
-		<link rel="apple-touch-icon" sizes="152x152" href="<?php echo URL . '/img/apple-touch-icon-152x152.png'; ?>" />
-		<link rel="apple-touch-icon" sizes="180x180" href="<?php echo URL . '/img/apple-touch-icon-180x180.png'; ?>" />
+		<link rel="shortcut icon" href="<?php echo APP_URL . '/img/favicon.ico'; ?>" type="image/x-icon" />
+		<link rel="apple-touch-icon" href="<?php echo APP_URL . '/img/apple-touch-icon.png'; ?>" />
+		<link rel="apple-touch-icon" sizes="57x57" href="<?php echo APP_URL . '/img/apple-touch-icon-57x57.png'; ?>" />
+		<link rel="apple-touch-icon" sizes="72x72" href="<?php echo APP_URL . '/img/apple-touch-icon-72x72.png'; ?>" />
+		<link rel="apple-touch-icon" sizes="76x76" href="<?php echo APP_URL . '/img/apple-touch-icon-76x76.png'; ?>" />
+		<link rel="apple-touch-icon" sizes="114x114" href="<?php echo APP_URL . '/img/apple-touch-icon-114x114.png'; ?>" />
+		<link rel="apple-touch-icon" sizes="120x120" href="<?php echo APP_URL . '/img/apple-touch-icon-120x120.png'; ?>" />
+		<link rel="apple-touch-icon" sizes="144x144" href="<?php echo APP_URL . '/img/apple-touch-icon-144x144.png'; ?>" />
+		<link rel="apple-touch-icon" sizes="152x152" href="<?php echo APP_URL . '/img/apple-touch-icon-152x152.png'; ?>" />
+		<link rel="apple-touch-icon" sizes="180x180" href="<?php echo APP_URL . '/img/apple-touch-icon-180x180.png'; ?>" />
 		<!-- FontAwesome CSS -->
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 		<!-- Bootstrap Core CSS -->
@@ -25,7 +25,7 @@
 		<!-- Font -->
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway" rel="stylesheet">
 		<!-- Custom styles -->
-		<link href="<?php echo URL . '/css/style.min.css'; ?>" rel="stylesheet" />
+		<link href="<?php echo APP_URL . '/css/style.min.css'; ?>" rel="stylesheet" />
 		<!-- Layout CSS -->
 	</head>
 	<body>
@@ -39,8 +39,8 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="<?php echo URL; ?>">
-						<?php echo NAME; ?>
+					<a class="navbar-brand" href="<?php echo APP_URL; ?>">
+						<?php echo APP_NAME; ?>
 					</a>
 				</div>
 				<div class="navbar-collapse collapse">

@@ -5,7 +5,7 @@
 			<div class="col-lg-8 col-lg-offset-2">
 				<?php if ('' !== $postId) : ?>
 					<div class="mb">
-						<a class="btn btn-default" href="<?php echo URL . '/post/' . $postId; ?>">View Post</a>
+						<a class="btn btn-default" href="<?php echo APP_URL . '/post/' . $postId; ?>">View Post</a>
 					</div>
 				<?php endif; ?>
 				<header>
@@ -35,9 +35,9 @@
 						<textarea id="content" name="content" class="form-control" value="<?php echo filter_var($postContent, FILTER_SANITIZE_STRING); ?>" rows="20"><?php echo filter_var($postContent, FILTER_SANITIZE_STRING); ?></textarea>
 					</div>
 					<input id="token" name="token" type="hidden" value="<?php echo $token; ?>">
-					<button class="form-send btn btn-default" ajaxaction="<?php echo URL . '/cockpit/post/save/' . $postId; ?>">Save</button>
+					<button class="form-send btn btn-default" ajaxaction="<?php echo APP_URL . '/cockpit/post/save/' . $postId; ?>">Save</button>
 					<?php if ($postId) : ?>
-						<button class="form-send btn btn-danger" ajaxaction="<?php echo URL . '/cockpit/post/delete/' . $postId; ?>">Delete</button>
+						<button class="form-send btn btn-danger" ajaxaction="<?php echo APP_URL . '/cockpit/post/delete/' . $postId; ?>">Delete</button>
 					<?php endif; ?>
 				</form>
 			</div>
