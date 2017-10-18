@@ -20,6 +20,7 @@ use Opportus\Blog\BlogController;
 use Opportus\Blog\HomeController;
 use Opportus\Blog\PostController;
 use Opportus\Blog\NotFoundController;
+use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * The application kernel...
@@ -177,6 +178,10 @@ class AppKernel
 	{
 		$container = $this->container;
 
+		$container->set('PHPMailer\PHPMailer\PHPMailer', function () {
+			return new PHPMailer();
+		});
+
 		$container->set('Erusev\Parsedown', function () {
 			return new Parsedown();
 		});
@@ -192,7 +197,8 @@ class AppKernel
 		$container->set('Opportus\Blog\HomeController', function () use ($container) {
 			return new HomeController(
 				$container->get('Opportus\Session\Session'),
-				$container->get('Opportus\Http\Message\Response')
+				$container->get('Opportus\Http\Message\Response'),
+				$container->get('PHPMailer\PHPMailer\PHPMailer')
 			);
 		});
 

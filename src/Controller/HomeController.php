@@ -3,9 +3,8 @@
 namespace Opportus\Blog;
 
 use Opportus\Session\Session;
-
 use Psr\Http\Message\ResponseInterface;
-
+use PHPMailer\PHPMailer\PHPMailer;
 use \Exception;
 
 /**
@@ -28,15 +27,22 @@ class HomeController extends AbstractController
 	protected $response;
 
 	/**
+	 * @var PHPMailer $mailer
+	 */
+	protected $mailer;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Session           $session
 	 * @param ResponseInterface $response
+	 * @param PHPMailer         $mailer
 	 */
-	public function __construct(Session $session, ResponseInterface $response)
+	public function __construct(Session $session, ResponseInterface $response, PHPMailer $mailer)
 	{
 		$this->session  = $session;
 		$this->response = $response;
+		$this->mailer   = $mailer;
 	}
 
 	/**
@@ -114,58 +120,70 @@ class HomeController extends AbstractController
 		if (empty($email)) {
 			$errors['email'] = 'Required email';
 
-		} elseif (! preg_match('/^[a-z0-9_.-]+@[a-z0-9_.-]{2,}\.[a-z]{2,4}$/', $email)) {
+		} elseif (! preg_match('/^[a-z0-9_.-]{4,50}@[a-z0-9_.-]{2,}\.[a-z]{2,4}$/', $email)) {
 			$errors['email'] = 'Invalid email';
 		}
 
-		if (! preg_match('/^[\p{L}\s]{0,50}$/u', $name)) {
+		if (empty($name)) {
+			$errors['name'] = 'Required name';
+
+		} elseif (! preg_match('/^[\p{L}\s]{0,50}$/u', $name)) {
 			$errors['name'] = 'Invalid name';
 		}
 
 		if (empty($message)) {
 			$errors['message'] = 'Required message';
 
-		} elseif (! preg_match('/^[\p{L}\s1-9"\'\(\)\:\;\,\.\?\!\+\-\@\=\°\~\*\/\\\$\€\£\µ\%]{0,50}$/u', $message)) {
-			$errors['message'] = 'Invalid message';
-		}
-
-		if (empty($errors)) {
-			$to       = EMAIL;
-			$subject  = 'Mail From ' . NAME . ' Contact Form';
-			$headers  = 'From: "' . $name . '"<' . $email . ">\r\n";
-			$headers .= 'Reply-to: "' . $name . '"<' . $email . ">\r\n";
-			$headers .= 'MIME-Version: 1.0' . "\r\n";
-			$headers .= 'Content-type: text/plain; charset="utf8"' . "\r\n";
-			$headers .= 'Content-Transfer-Encoding: 8bit' . "\r\n";
-
-			if (! mail($to, $subject, $message, $headers)) {
-				$errors['sending'] = 'Your message has not been sent. Please try again.';
-			}
-		}
-
-
-		if (empty($errors)) {
-			$notif = 'I\'ll read your message soon, thanks !';
-
 		} else {
-			$notif = implode(' - ', $errors);
+			$message = substr(filter_var($message, FILTER_SANITIZE_FULL_SPECIAL_CHARS), 0, 16384);
 		}
 
-		$notif .= '...';
+		try {
+			if (empty($errors)) {
+				$this->mailer->isSMTP();
+				$this->mailer->SMTPDebug  = DEBUG;
+				$this->mailer->SMTPAuth   = SMTP_AUTH;
+				$this->mailer->SMTPSecure = SMTP_SECURE;
+				$this->mailer->Host       = SMTP_HOST;
+				$this->mailer->Port       = SMTP_PORT;
+				$this->mailer->Username   = SMTP_USERNAME;
+				$this->mailer->Password   = SMTP_PASSWORD;
 
-		$ajaxResponse = json_encode(array(
-			'status'   => empty($errors),
-			'notif'    => $notif,
-			'errors'   => $errors,
-			'redirect' => false,
-			'refresh'  => false
-		));
+				$this->mailer->setFrom(SMTP_USERNAME, NAME . ' Mailer');
+				$this->mailer->addAddress(EMAIL);
+				$this->mailer->addReplyTo($email);
 
-		$body = $this->response->getBody();
-		$body->write($ajaxResponse);
-		$this->response->withHeader('Content-Type', 'application/json')->withBody($body)->send();
+				$this->mailer->Subject = 'Message from a user of ' . NAME;
+				$this->mailer->Body    = $message . "\n\n" . $name;
 
-		exit;
+				if (! $this->mailer->send()) {
+					throw new Exception($this->mailer->errorInfo);
+				}
+
+				$notif = 'I\'ll read your message soon, thanks !';
+
+			} else {
+				$notif = implode(' - ', $errors) . '...';
+			}
+
+		} catch (Exception $e) {
+			$notif = 'Your message has not been sent. Please try again.';
+
+		} finally {
+			$ajaxResponse = json_encode(array(
+				'status'   => empty($errors),
+				'notif'    => $notif,
+				'errors'   => $errors,
+				'redirect' => false,
+				'refresh'  => false
+			));
+
+			$body = $this->response->getBody();
+			$body->write($ajaxResponse);
+			$this->response->withHeader('Content-Type', 'application/json')->withBody($body)->send();
+
+			exit;
+		}
 	}
 }
 
