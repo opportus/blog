@@ -1,8 +1,13 @@
-jQuery(document).ready(function($) {
-	$('.scrollTo').click(function() {
-		var page = $(this).attr('href');
-		var speed = 750;
-		$('html, body').animate({scrollTop: $(page).offset().top}, speed);
+jQuery(document).ready(function ($) {
+	var elems = $('.navbar-left').find('.scroll-to');
+
+	elems.click(function () {
+		var href  = $(this).attr('href'),
+		    id    = href.substring(href.lastIndexOf('#')),
+		    speed = 750;
+
+		$('html, body').animate({scrollTop: $(id).offset().top}, speed);
+
 		return false;
 	});
 });
