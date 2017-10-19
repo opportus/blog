@@ -20,22 +20,11 @@ jQuery(document).ready(function($) {
 						return;
 					}
 
-					if ($('#form-notif').length === 0 && response.notif !== false) {
+					if ($('#form-notif').length === 0 && response.notif != false) {
 						$('<p id="form-notif" style="display:none;"></p><hr>').insertBefore('form');
 					}
 					
-					if (response.status === true) {
-						$('#form-notif').attr('class', 'form-notif-success').html('<i class="fa fa-check" aria-hidden="true"></i>' + response.notif);
-
-						fields.each(function() {
-							$(this).removeAttr('style');
-						});
-
-						if (response.refresh) {
-							form[0].reset();
-						}
-
-					} else {
+					if (response.errors) {
 						$('#form-notif').attr('class', 'form-notif-failure').html('<i class="fa fa-times" aria-hidden="true"></i>' + response.notif);
 
 						fields.each(function() {
@@ -46,6 +35,17 @@ jQuery(document).ready(function($) {
 								$(this).css('border-color', '#4BB543');
 							}
 						});
+
+					} else {
+						$('#form-notif').attr('class', 'form-notif-success').html('<i class="fa fa-check" aria-hidden="true"></i>' + response.notif);
+
+						fields.each(function() {
+							$(this).removeAttr('style');
+						});
+
+						if (response.resetForm) {
+							form[0].reset();
+						}
 					}
 
 					$('#form-notif').fadeIn();

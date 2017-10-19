@@ -171,11 +171,10 @@ class HomeController extends AbstractController
 
 		} finally {
 			$ajaxResponse = json_encode(array(
-				'status'   => empty($errors),
-				'notif'    => $notif,
-				'errors'   => $errors,
-				'redirect' => false,
-				'refresh'  => false
+				'errors'    => empty($errors) ? false : $errors,
+				'notif'     => $notif,
+				'redirect'  => false,
+				'resetForm' => false
 			));
 
 			$body = $this->response->getBody();

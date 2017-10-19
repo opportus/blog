@@ -261,11 +261,10 @@ class PostController extends AbstractController
 			$notif .= '...';
 
 			$ajaxResponse = json_encode(array(
-				'status'   => empty($errors),
-				'notif'    => empty($errors) ? false : $notif,
-				'errors'   => $errors,
-				'redirect' => empty($errors) ? APP_URL . '/post/' . $id : false,
-				'refresh'  => $post->get('updatedAt') ? false : true
+				'errors'    => empty($errors) ? false : $errors,
+				'notif'     => empty($errors) ? false : $notif,
+				'redirect'  => empty($errors) ? APP_URL . '/post/' . $id : false,
+				'resetForm' => false
 			));
 
 			$body = $this->response->getBody();
@@ -295,15 +294,14 @@ class PostController extends AbstractController
 			$this->entityManager->get('post')->get('repository')->delete((int) $id);
 
 		} catch (Exception $e) {
-			$notif = 'Your post couldn\`t be deleted...';
+			$notif = 'Your post has not been deleted...';
 
 		} finally {
 			$ajaxResponse = json_encode(array(
-				'status'   => empty($notif),
-				'notif'    => $notif,
-				'errors'   => array(),
-				'redirect' => empty($notif) ? APP_URL . '/cockpit/post/edit/' : false,
-				'refresh'  => false
+				'errors'    => empty($notif) ? false : array(),
+				'notif'     => $notif,
+				'redirect'  => empty($notif) ? APP_URL . '/cockpit/post/edit/' : false,
+				'resetForm' => false
 			));
 
 			$body = $this->response->getBody();
