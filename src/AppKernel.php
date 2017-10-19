@@ -54,7 +54,7 @@ class AppKernel
 		$endpoint = $this->container->get('Opportus\Router\Router')->resolve($this->container->get('Opportus\Http\Message\Request')->getUri()->getPath());
 
 		try {
-			if (! class_exists($endpoint['controller']) ||! method_exists($endpoint['controller'], $endpoint['action'])) {
+			if (! class_exists($endpoint['controller']) || ! method_exists($endpoint['controller'], $endpoint['action'])) {
 				throw new Exception('[' . __CLASS__ . '::' . __FUNCTION__ . ']: Controller/Action not found! Check your routes and endpoints...');
 			}
 
@@ -69,7 +69,7 @@ class AppKernel
 			);
 
 		} catch (Exception $e) {
-			if (DEBUG >= 1) {
+			if (APP_DEBUG >= 1) {
 				error_log($e->getMessage());
 			}
 
