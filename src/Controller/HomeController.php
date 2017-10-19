@@ -102,15 +102,15 @@ class HomeController extends AbstractController
 			if (empty($errors)) {
 				$this->mailer->isSMTP();
 				$this->mailer->SMTPDebug  = APP_DEBUG;
-				$this->mailer->SMTPAuth   = SMTP_AUTH;
-				$this->mailer->SMTPSecure = SMTP_SECURE;
-				$this->mailer->Host       = SMTP_HOST;
-				$this->mailer->Port       = SMTP_PORT;
-				$this->mailer->Username   = SMTP_USERNAME;
-				$this->mailer->Password   = SMTP_PASSWORD;
+				$this->mailer->SMTPAuth   = APP_SMTP_AUTH;
+				$this->mailer->SMTPSecure = APP_SMTP_SECURE;
+				$this->mailer->Host       = APP_SMTP_HOST;
+				$this->mailer->Port       = APP_SMTP_PORT;
+				$this->mailer->Username   = APP_SMTP_USERNAME;
+				$this->mailer->Password   = APP_SMTP_PASSWORD;
 
-				$this->mailer->setFrom(SMTP_USERNAME, APP_NAME . ' Mailer');
-				$this->mailer->addAddress(APP_EMAIL);
+				$this->mailer->setFrom(APP_SMTP_USERNAME, APP_NAME . ' Mailer');
+				$this->mailer->addAddress(APP_EMAIL_ADDRESS);
 				$this->mailer->addReplyTo($email);
 
 				$this->mailer->Subject = 'Message from a user of ' . APP_NAME;
