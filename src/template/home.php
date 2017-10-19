@@ -1,3 +1,6 @@
+<?php $metaTitle       = 'Clément CAZAUD'; ?>
+<?php $metaDescription = 'Application Developer available for hire'; ?>
+<?php $metaAuthor      = 'Clément CAZAUD'; ?>
 <?php require_once('header.php'); ?>
 <!-- +++++ Welcome Section +++++ -->
 <div class="section white py">
@@ -175,4 +178,18 @@
 		</section>
 	</div><!-- /.container -->
 </div><!-- /.section -->
+<!-- JS Scripts
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+<!-- Smooth Scroll -->
+<script src="<?php echo APP_URL . '/js/smooth-scroll.min.js'; ?>"></script>
+<!-- Form AJAX -->
+<script src="<?php echo APP_URL . '/js/form-ajax.min.js'; ?>"></script>
 <?php require_once('footer.php'); ?>

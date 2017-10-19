@@ -55,47 +55,7 @@ class HomeController extends AbstractController
 		$body = $this->response->getBody();
 
 		$body->write($this->render(TEMPLATE_DIR . '/home.php', array(
-			'metaTitle'       => 'Clément CAZAUD',
-			'metaDescription' => 'Application Developer available for hire',
-			'metaAuthor'      => 'Clément CAZAUD',
-			'token'           => hash_hmac('sha256', 'contactFormToken', $sessionToken),
-			'menuItems'       => array(
-				array(
-					'name'  => 'ABOUT',
-					'link'  => '#about',
-					'title' => '',
-					'class' => 'scrollTo',
-					'style' => '',
-				),
-				array(
-					'name'  => 'PROJECTS',
-					'link'  => '#projects',
-					'title' => '',
-					'class' => 'scrollTo',
-					'style' => '',
-				),
-				array(
-					'name'  => 'CONTACT',
-					'link'  => '#contact',
-					'title' => '',
-					'class' => 'scrollTo',
-					'style' => '',
-				),
-				array(
-					'name'  => 'BLOG',
-					'link'  => APP_URL . '/blog/',
-					'title' => '',
-					'class' => '',
-					'style' => '',
-				),
-				array(
-					'name'  => 'WRITE',
-					'link'  => APP_URL . '/cockpit/post/edit/',
-					'title' => '',
-					'class' => '',
-					'style' => '',
-				),
-			),
+			'token' => hash_hmac('sha256', 'contactFormToken', $sessionToken)
 		)));
 
 		$this->response->withBody($body)->send();

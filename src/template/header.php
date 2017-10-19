@@ -45,11 +45,21 @@
 				</div>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-left">
-						<?php foreach ($menuItems as $item) : ?>
-							<li>
-								<a class="<?php echo $item['class']; ?>" href="<?php echo $item['link']; ?>" title="<?php echo $item['title']; ?>" style="<?php echo $item['style']; ?>"><?php echo $item['name']; ?></a>
-							</li>
-						<?php endforeach; ?>
+						<li>
+							<a class="scroll-to" href="<?php echo APP_URL . '/#about'; ?>">ABOUT</a>
+						</li>
+						<li>
+							<a class="scroll-to" href="<?php echo APP_URL . '/#projects'; ?>">PROJECTS</a>
+						</li>
+						<li>
+							<a class="scroll-to" href="<?php echo APP_URL . '/#contact'; ?>">CONTACT</a>
+						</li>
+						<li>
+							<a href="<?php echo APP_URL . '/blog/'; ?>">BLOG</a>
+						</li>
+						<li>
+							<a href="<?php echo APP_URL . '/cockpit/post/edit/'; ?>">WRITE</a>
+						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li>

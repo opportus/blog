@@ -1,3 +1,6 @@
+<?php $metaTitle       = 'My Tech Blog'; ?>
+<?php $metaDescription = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquam pellentesque sem id molestie. Pellentesque nec lectus a sapien posuere sollicitudin. Vivamus nec tortor turpis.'; ?>
+<?php $metaAuthor      = 'Clément Cazaud'; ?>
 <?php require_once('header.php'); ?>
 <!-- +++++ Posts Lists +++++ -->
 <div class="section grey py">
@@ -41,4 +44,12 @@
 		</div> <!-- /.container -->
 	</div><!-- /.section -->
 <?php endforeach; ?>
+<!-- JS Scripts
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
 <?php require_once('footer.php'); ?>

@@ -63,47 +63,7 @@ class BlogController extends AbstractController
 		$body = $this->response->getBody();
 
 		$body->write($this->render(TEMPLATE_DIR . '/blog.php', array(
-			'metaTitle'       => 'My Tech Blog',
-			'metaDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquam pellentesque sem id molestie. Pellentesque nec lectus a sapien posuere sollicitudin. Vivamus nec tortor turpis.',
-			'metaAuthor'      => 'Clément Cazaud',
-			'posts'           => $posts,
-			'menuItems'       => array(
-				array(
-					'name'  => 'ABOUT',
-					'link'  => APP_URL . '/#about',
-					'title' => '',
-					'class' => '',
-					'style' => '',
-				),
-				array(
-					'name'  => 'PROJECTS',
-					'link'  => APP_URL . '/#projects',
-					'title' => '',
-					'class' => '',
-					'style' => '',
-				),
-				array(
-					'name'  => 'CONTACT',
-					'link'  => APP_URL . '/#contact',
-					'title' => '',
-					'class' => '',
-					'style' => '',
-				),
-				array(
-					'name'  => 'BLOG',
-					'link'  => APP_URL . '/blog/',
-					'title' => '',
-					'class' => '',
-					'style' => '',
-				),
-				array(
-					'name'  => 'WRITE',
-					'link'  => APP_URL . '/cockpit/post/edit/',
-					'title' => '',
-					'class' => '',
-					'style' => '',
-				),
-			),
+			'posts' => $posts,
 		)));
 
 		$this->response->withBody($body)->send();

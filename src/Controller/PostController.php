@@ -68,50 +68,13 @@ class PostController extends AbstractController
 				'metaTitle'       => $post->get('title'),
 				'metaDescription' => $post->get('excerpt'),
 				'metaAuthor'      => $post->get('author'),
-				'postTitle'       => $post->get('title'),
-				'postDescription' => $post->get('excerpt'),
+				'postId'          => $post->get('id'),
 				'postAuthor'      => $post->get('author'),
 				'postDatetime'    => $post->get('updatedAt') !== null ? $post->get('updatedAt') : $post->get('createdAt'),
+				'postTitle'       => $post->get('title'),
+				'postDescription' => $post->get('excerpt'),
 				'postExcerpt'     => $post->get('excerpt'),
 				'postContent'     => $post->get('content'),
-				'postId'          => $post->get('id'),
-				'menuItems'       => array(
-					array(
-						'name'  => 'ABOUT',
-						'link'  => APP_URL . '/#about',
-						'title' => '',
-						'class' => '',
-						'style' => '',
-					),
-					array(
-						'name'  => 'PROJECTS',
-						'link'  => APP_URL . '/#projects',
-						'title' => '',
-						'class' => '',
-						'style' => '',
-					),
-					array(
-						'name'  => 'CONTACT',
-						'link'  => APP_URL . '/#contact',
-						'title' => '',
-						'class' => '',
-						'style' => '',
-					),
-					array(
-						'name'  => 'BLOG',
-						'link'  => APP_URL . '/blog/',
-						'title' => '',
-						'class' => '',
-						'style' => '',
-					),
-					array(
-						'name'  => 'WRITE',
-						'link'  => APP_URL . '/cockpit/post/edit/',
-						'title' => '',
-						'class' => '',
-						'style' => '',
-					),
-				),
 			)));
 
 			$this->response->withBody($body)->send();
@@ -144,54 +107,16 @@ class PostController extends AbstractController
 		$body = $this->response->getBody();
 
 		$body->write($this->render(TEMPLATE_DIR . '/post-edit.php', array(
-			'metaTitle'       => is_null($post->get('title')) ? 'Editing New Post' : 'Editing ' . $post->get('title'),
-			'metaDescription' => 'Post edition',
-			'metaAuthor'      => is_null($post->get('author')) ? '' : $post->get('author'),
-			'postId'          => is_null($post->get('id')) ? '' : $post->get('id'),
-			'postSlug'        => is_null($post->get('slug')) ? '' : $post->get('slug'),
-			'postAuthor'      => is_null($post->get('author')) ? '' : $post->get('author'),
-			'postTitle'       => is_null($post->get('title')) ? '' : $post->get('title'),
+			'metaTitle'       => is_null($post->get('title'))   ? 'Editing New Post' : 'Editing ' . $post->get('title'),
+			'metaDescription' => is_null($post->get('title'))   ? 'Editing New Post' : 'Editing ' . $post->get('title'),
+			'metaAuthor'      => is_null($post->get('author'))  ? '' : $post->get('author'),
+			'postId'          => is_null($post->get('id'))      ? '' : $post->get('id'),
+			'postSlug'        => is_null($post->get('slug'))    ? '' : $post->get('slug'),
+			'postAuthor'      => is_null($post->get('author'))  ? '' : $post->get('author'),
+			'postTitle'       => is_null($post->get('title'))   ? '' : $post->get('title'),
 			'postExcerpt'     => is_null($post->get('excerpt')) ? '' : $post->get('excerpt'),
 			'postContent'     => is_null($post->get('content')) ? '' : $post->get('content'),
 			'token'           => hash_hmac('sha256', 'postEditToken', $sessionToken),
-			'menuItems'       => array(
-				array(
-					'name'  => 'ABOUT',
-					'link'  => APP_URL . '/#about',
-					'title' => '',
-					'class' => '',
-					'style' => '',
-				),
-				array(
-					'name'  => 'PROJECTS',
-					'link'  => APP_URL . '/#projects',
-					'title' => '',
-					'class' => '',
-					'style' => '',
-				),
-				array(
-					'name'  => 'CONTACT',
-					'link'  => APP_URL . '/#contact',
-					'title' => '',
-					'class' => '',
-					'style' => '',
-				),
-				array(
-					'name'  => 'BLOG',
-					'link'  => APP_URL . '/blog/',
-					'title' => '',
-					'class' => '',
-					'style' => '',
-				),
-				array(
-					'name'  => 'WRITE',
-					'link'  => APP_URL . '/cockpit/post/edit/',
-					'title' => '',
-					'class' => '',
-					'style' => '',
-				),
-			),
-
 		)));
 
 		$this->response->withBody($body)->send();
@@ -252,13 +177,11 @@ class PostController extends AbstractController
 
 		} finally {
 			if (empty($errors)) {
-				$notif = 'Saved';
+				$notif = 'Saved...';
 
 			} else {
-				$notif = implode('. ', $errors);
+				$notif = implode('. ', $errors) . '...';
 			}
-
-			$notif .= '...';
 
 			$ajaxResponse = json_encode(array(
 				'errors'    => empty($errors) ? false : $errors,
