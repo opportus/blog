@@ -54,7 +54,32 @@ class PostController extends AbstractController
 	}
 
 	/**
-	 * Renders the view.
+	 * Lists posts.
+	 */
+	public function list()
+	{
+		$posts = array();
+
+		foreach ($this->entityManager->get('post')->get('repository')->get() as $post) {
+			$posts[] = array(
+				'title'    => $post->get('title'),
+				'excerpt'  => $post->get('excerpt'),
+				'datetime' => $post->get('updatedAt') !== null ? $post->get('updatedAt') : $post->get('createdAt'),
+				'id'       => $post->get('id'),
+			);
+		}
+
+		$body = $this->response->getBody();
+
+		$body->write($this->render(TEMPLATE_DIR . '/blog.php', array(
+			'posts' => $posts,
+		)));
+
+		$this->response->withBody($body)->send();
+	}
+
+	/**
+	 * Renders the post.
 	 *
 	 * @param string $id
 	 */
@@ -86,7 +111,7 @@ class PostController extends AbstractController
 	}
 
 	/**
-	 * Renders the edition view.
+	 * Renders the post edition.
 	 *
 	 * @param string $id
 	 */

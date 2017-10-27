@@ -303,8 +303,8 @@ class AppKernel
 				'action'     => 'contact',
 			),
 			'#^/blog/?$#i' => array(
-				'controller' => 'Opportus\Blog\BlogController',
-				'action'     => 'view',
+				'controller' => 'Opportus\Blog\PostController',
+				'action'     => 'list',
 			),
 			'#^/post/(.+)$#i' => array(
 				'controller' => 'Opportus\Blog\PostController',
