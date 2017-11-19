@@ -60,7 +60,7 @@ class PostController extends AbstractController
 	{
 		$posts = array();
 
-		foreach ($this->entityManager->get('post')->get('repository')->get() as $post) {
+		foreach ($this->entityManager->getPostRepository()->get() as $post) {
 			$posts[] = array(
 				'title'    => $post->get('title'),
 				'excerpt'  => $post->get('excerpt'),
@@ -85,7 +85,7 @@ class PostController extends AbstractController
 	 */
 	public function view($id)
 	{
-		if ($post = $this->entityManager->get('post')->get('repository')->get((int) $id)) {
+		if ($post = $this->entityManager->getPostRepository()->get((int) $id)) {
 			$body = $this->response->getBody();
 
 			$body->write($this->render(TEMPLATE_DIR . '/post.php', array(
@@ -119,12 +119,12 @@ class PostController extends AbstractController
 	{
 
 		if ($id) {
-			if (! $post = $this->entityManager->get('post')->get('repository')->get((int) $id)) {
+			if (! $post = $this->entityManager->getPostRepository()->get((int) $id)) {
 				$this->notFound();
 			}
 
 		} else {
-			$post = $this->entityManager->get('post')->get('factory')->create();
+			$post = $this->entityManager->getPostFactory()->create();
 		}
 
 		$sessionToken = $this->session->set('postEditToken', hash_hmac('sha256', bin2hex(random_bytes(32)), APP_SECRET_KEY));
@@ -160,14 +160,14 @@ class PostController extends AbstractController
 			throw new Exception('[' . __CLASS__ . '::' . __FUNCTION__ . ']: Invalid token for IP: ' . $_SERVER['REMOTE_ADDR']);
 		}
 
-		$repository     = $this->entityManager->get('post')->get('repository');
+		$repository     = $this->entityManager->getPostRepository();
 		$requiredFields = array('title', 'slug', 'author', 'excerpt', 'content');
 		$errors         = array();
 		$data           = array();
 
 		switch ($id) {
 			case '' :
-				$post = $this->entityManager->get('post')->get('factory')->create();
+				$post = $this->entityManager->getPostFactory()->create();
 				$post->set('createdAt', date('Y-m-d H:i:s', time()));
 				break;
 			default :
@@ -239,7 +239,7 @@ class PostController extends AbstractController
 		$notif = '';
 
 		try {
-			$this->entityManager->get('post')->get('repository')->delete((int) $id);
+			$this->entityManager->getPostRepository()->delete((int) $id);
 
 		} catch (Exception $e) {
 			$notif = 'Your post has not been deleted...';

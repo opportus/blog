@@ -284,7 +284,7 @@ class AppKernel
 		);
 
 		$this->container->get('Opportus\Orm\EntityManager')
-			->register($entity, $this->container->get('Opportus\Orm\PdoMySqlGateway'));
+			->registerEntity($entity, $this->container->get('Opportus\Orm\PdoMySqlGateway'));
 	}
 
 	/**
